@@ -1,0 +1,20 @@
+[package]
+name = "anfs_core"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "anfs_core"
+crate-type = ["cdylib"]
+
+[dependencies]
+hex = "0.4"
+pyo3 = { version = "0.22.6", features = ["extension-module"] }
+rusqlite = { version = "0.31", features = ["bundled"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+uuid = { version = "1", features = ["v4"] }
+
+[lints.rust]
+unexpected_cfgs = "allow"

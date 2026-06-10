@@ -1,0 +1,3138 @@
+{
+  "backend": "anfs",
+  "case_count": 18,
+  "cases": [
+    {
+      "case": "a2_f16_p256_n2",
+      "parameters": {
+        "agents": 2,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 16,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 2,
+        "payload_bytes": 256,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 16,
+          "grep_recall": 16,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 32,
+          "merge_rows": 32,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 32,
+          "read_recall": 32,
+          "replay_expected": 34,
+          "replay_rows": 34,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 239,
+          "event_count": 101,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 2,
+            "merge_workspace": 2,
+            "policy_decision": 6,
+            "publish": 10,
+            "read_ref": 32,
+            "search": 2,
+            "write": 43
+          },
+          "ref_event_count": 93,
+          "seq_count": 101
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 85.45074996072799,
+          "enabled": true,
+          "expected_file_count": 18,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            18,
+            18
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            20.593499997630715,
+            21.269917022436857
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:a3954751-3a95-4c0a-afa2-b809c4213362",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 13136.289416527918,
+            "chunk_derive_mb_per_s": 26.11897868579026,
+            "range_reads_per_s": 7796.320786554013
+          },
+          "timings_ms": {
+            "cache_build": 4.894249956123531,
+            "cache_read": 0.15224999515339732,
+            "derive_chunks": 4.785792028997093,
+            "range_reads": 1.0261250426992774,
+            "write": 5.885374965146184
+          }
+        },
+        "parameters": {
+          "agents": 2,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 16,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 2,
+          "payload_bytes": 256,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-g7o7wiyq/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-g7o7wiyq/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-g7o7wiyq/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-g7o7wiyq"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 317.53329651453123,
+          "merge_refs_per_s": 10017.869318909989,
+          "replay_files_per_s": 1548.813216696653
+        },
+        "timings_ms": {
+          "approve": 6.467500003054738,
+          "cache_contention": 85.45074996072799,
+          "concurrent_read_write_grep": 100.77683301642537,
+          "integrity": 29.26233399193734,
+          "large_file": 16.743791988119483,
+          "merge": 3.194292017724365,
+          "replay": 21.95229200879112,
+          "setup_checkout": 2.6709999656304717,
+          "total": 299.6797089581378,
+          "worker_elapsed": [
+            11.234750039875507,
+            11.85687503311783
+          ],
+          "working_set_cache": 19.84745799563825
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 19.84745799563825,
+          "enabled": true,
+          "expected_file_count": 18,
+          "file_count": 18,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 9.923728997819126,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "a2_f16_p256_n5",
+      "parameters": {
+        "agents": 2,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 16,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 5,
+        "payload_bytes": 256,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 8,
+          "grep_recall": 8,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 32,
+          "merge_rows": 32,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 32,
+          "read_recall": 32,
+          "replay_expected": 34,
+          "replay_rows": 34,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 231,
+          "event_count": 101,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 2,
+            "merge_workspace": 2,
+            "policy_decision": 6,
+            "publish": 10,
+            "read_ref": 32,
+            "search": 2,
+            "write": 43
+          },
+          "ref_event_count": 93,
+          "seq_count": 101
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 82.08458399167284,
+          "enabled": true,
+          "expected_file_count": 18,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            18,
+            18
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            20.679458044469357,
+            21.090916998218745
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:ba730b1e-4e17-4fb6-9a2c-49841e0b1aae",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 13032.878823269251,
+            "chunk_derive_mb_per_s": 26.36088051387893,
+            "range_reads_per_s": 7924.385283040626
+          },
+          "timings_ms": {
+            "cache_build": 4.861749999690801,
+            "cache_read": 0.15345803694799542,
+            "derive_chunks": 4.741874989122152,
+            "range_reads": 1.009542029350996,
+            "write": 5.894833942875266
+          }
+        },
+        "parameters": {
+          "agents": 2,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 16,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 5,
+          "payload_bytes": 256,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-tv8qyjxp/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-tv8qyjxp/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-tv8qyjxp/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-tv8qyjxp"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 383.7265961581127,
+          "merge_refs_per_s": 10643.31161697385,
+          "replay_files_per_s": 1572.872575105574
+        },
+        "timings_ms": {
+          "approve": 5.905458994675428,
+          "cache_contention": 82.08458399167284,
+          "concurrent_read_write_grep": 83.39270803844556,
+          "integrity": 28.560208971612155,
+          "large_file": 16.66145899798721,
+          "merge": 3.0065830214880407,
+          "replay": 21.61649998743087,
+          "setup_checkout": 1.5088330255821347,
+          "total": 271.28787501715124,
+          "worker_elapsed": [
+            10.027167038060725,
+            10.778625030070543
+          ],
+          "working_set_cache": 19.932916038669646
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 19.932916038669646,
+          "enabled": true,
+          "expected_file_count": 18,
+          "file_count": 18,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 9.966458019334823,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "a2_f16_p4096_n2",
+      "parameters": {
+        "agents": 2,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 16,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 2,
+        "payload_bytes": 4096,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 16,
+          "grep_recall": 16,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 32,
+          "merge_rows": 32,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 32,
+          "read_recall": 32,
+          "replay_expected": 34,
+          "replay_rows": 34,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 239,
+          "event_count": 101,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 2,
+            "merge_workspace": 2,
+            "policy_decision": 6,
+            "publish": 10,
+            "read_ref": 32,
+            "search": 2,
+            "write": 43
+          },
+          "ref_event_count": 93,
+          "seq_count": 101
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 81.68416703119874,
+          "enabled": true,
+          "expected_file_count": 18,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            18,
+            18
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            21.316958009265363,
+            20.876042020972818
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:e3d58e31-7e68-4291-a150-2d67b3877f7b",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 13089.688427233006,
+            "chunk_derive_mb_per_s": 26.24855420090255,
+            "range_reads_per_s": 7475.761978280962
+          },
+          "timings_ms": {
+            "cache_build": 4.8727080575190485,
+            "cache_read": 0.15279202489182353,
+            "derive_chunks": 4.762167052831501,
+            "range_reads": 1.0701250284910202,
+            "write": 6.027041003108025
+          }
+        },
+        "parameters": {
+          "agents": 2,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 16,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 2,
+          "payload_bytes": 4096,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-0fzdaijt/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-0fzdaijt/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-0fzdaijt/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-0fzdaijt"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 344.12703196076416,
+          "merge_refs_per_s": 10761.276325904415,
+          "replay_files_per_s": 1574.1348547118143
+        },
+        "timings_ms": {
+          "approve": 7.902749988716096,
+          "cache_contention": 81.68416703119874,
+          "concurrent_read_write_grep": 92.98891696380451,
+          "integrity": 34.36920902458951,
+          "large_file": 16.884833166841418,
+          "merge": 2.9736249707639217,
+          "replay": 21.599165978841484,
+          "setup_checkout": 1.5880839782766998,
+          "total": 287.3328329878859,
+          "worker_elapsed": [
+            14.13466699887067,
+            13.510291988495737
+          ],
+          "working_set_cache": 19.989957974758
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 19.989957974758,
+          "enabled": true,
+          "expected_file_count": 18,
+          "file_count": 18,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 9.994978987379,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "a2_f16_p4096_n5",
+      "parameters": {
+        "agents": 2,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 16,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 5,
+        "payload_bytes": 4096,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 8,
+          "grep_recall": 8,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 32,
+          "merge_rows": 32,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 32,
+          "read_recall": 32,
+          "replay_expected": 34,
+          "replay_rows": 34,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 231,
+          "event_count": 101,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 2,
+            "merge_workspace": 2,
+            "policy_decision": 6,
+            "publish": 10,
+            "read_ref": 32,
+            "search": 2,
+            "write": 43
+          },
+          "ref_event_count": 93,
+          "seq_count": 101
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 81.64258400211111,
+          "enabled": true,
+          "expected_file_count": 18,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            18,
+            18
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            21.16362500237301,
+            20.458250015508384
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:abe7c4a1-d3a7-47e9-ae45-a2d901af161b",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 12983.474045890658,
+            "chunk_derive_mb_per_s": 26.201100510724647,
+            "range_reads_per_s": 7357.444858999791
+          },
+          "timings_ms": {
+            "cache_build": 4.851292003877461,
+            "cache_read": 0.15404197620227933,
+            "derive_chunks": 4.770791972987354,
+            "range_reads": 1.087334007024765,
+            "write": 6.166042003314942
+          }
+        },
+        "parameters": {
+          "agents": 2,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 16,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 5,
+          "payload_bytes": 4096,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-npuzlfto/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-npuzlfto/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-npuzlfto/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-npuzlfto"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 356.52444232995964,
+          "merge_refs_per_s": 10919.015977524325,
+          "replay_files_per_s": 1599.0280146547002
+        },
+        "timings_ms": {
+          "approve": 7.909666979685426,
+          "cache_contention": 81.64258400211111,
+          "concurrent_read_write_grep": 89.75541702238843,
+          "integrity": 34.268958028405905,
+          "large_file": 17.0295019634068,
+          "merge": 2.930667018517852,
+          "replay": 21.262917027343065,
+          "setup_checkout": 1.3706249883398414,
+          "total": 283.47795899026096,
+          "worker_elapsed": [
+            13.467832992319018,
+            13.61670799087733
+          ],
+          "working_set_cache": 20.016749971546233
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 20.016749971546233,
+          "enabled": true,
+          "expected_file_count": 18,
+          "file_count": 18,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 10.008374985773116,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "a2_f32_p256_n2",
+      "parameters": {
+        "agents": 2,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 32,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 2,
+        "payload_bytes": 256,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 32,
+          "grep_recall": 32,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 64,
+          "merge_rows": 64,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 64,
+          "read_recall": 64,
+          "replay_expected": 66,
+          "replay_rows": 66,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 415,
+          "event_count": 165,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 2,
+            "merge_workspace": 2,
+            "policy_decision": 6,
+            "publish": 10,
+            "read_ref": 64,
+            "search": 2,
+            "write": 75
+          },
+          "ref_event_count": 157,
+          "seq_count": 165
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 99.69416703097522,
+          "enabled": true,
+          "expected_file_count": 34,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            34,
+            34
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            38.92387496307492,
+            38.146625040099025
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:5f5644c6-6b9d-459f-b41b-01c61013e414",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 12980.01620172217,
+            "chunk_derive_mb_per_s": 26.218961433573625,
+            "range_reads_per_s": 7389.44729384433
+          },
+          "timings_ms": {
+            "cache_build": 4.896167025435716,
+            "cache_read": 0.15408301260322332,
+            "derive_chunks": 4.767542006447911,
+            "range_reads": 1.0826249490492046,
+            "write": 6.077416997868568
+          }
+        },
+        "parameters": {
+          "agents": 2,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 32,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 2,
+          "payload_bytes": 256,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-uk3046fp/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-uk3046fp/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-uk3046fp/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-uk3046fp"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 532.3001519608637,
+          "merge_refs_per_s": 13138.311484407015,
+          "replay_files_per_s": 1656.2783293068594
+        },
+        "timings_ms": {
+          "approve": 6.914499972481281,
+          "cache_contention": 99.69416703097522,
+          "concurrent_read_write_grep": 120.23291701916605,
+          "integrity": 35.30345903709531,
+          "large_file": 16.977833991404623,
+          "merge": 4.871250013820827,
+          "replay": 39.848375017754734,
+          "setup_checkout": 1.4432499883696437,
+          "total": 369.7701249620877,
+          "worker_elapsed": [
+            27.556707966141403,
+            54.192167008295655
+          ],
+          "working_set_cache": 37.20762499142438
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 37.20762499142438,
+          "enabled": true,
+          "expected_file_count": 34,
+          "file_count": 34,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 18.60381249571219,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "a2_f32_p256_n5",
+      "parameters": {
+        "agents": 2,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 32,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 5,
+        "payload_bytes": 256,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 14,
+          "grep_recall": 14,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 64,
+          "merge_rows": 64,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 64,
+          "read_recall": 64,
+          "replay_expected": 66,
+          "replay_rows": 66,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 397,
+          "event_count": 165,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 2,
+            "merge_workspace": 2,
+            "policy_decision": 6,
+            "publish": 10,
+            "read_ref": 64,
+            "search": 2,
+            "write": 75
+          },
+          "ref_event_count": 157,
+          "seq_count": 165
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 100.51120800198987,
+          "enabled": true,
+          "expected_file_count": 34,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            34,
+            34
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            39.88520900020376,
+            39.014458016026765
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:9bd7b28f-ddeb-4ac0-8bd0-dd745b8bcee7",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 13039.932009671484,
+            "chunk_derive_mb_per_s": 26.061799447276908,
+            "range_reads_per_s": 7802.023811340359
+          },
+          "timings_ms": {
+            "cache_build": 4.850833036471158,
+            "cache_read": 0.15337503282353282,
+            "derive_chunks": 4.796291992533952,
+            "range_reads": 1.0253749787807465,
+            "write": 5.914292007219046
+          }
+        },
+        "parameters": {
+          "agents": 2,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 32,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 5,
+          "payload_bytes": 256,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-ikz2agjd/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-ikz2agjd/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-ikz2agjd/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-ikz2agjd"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 509.1462353147953,
+          "merge_refs_per_s": 13821.523936388727,
+          "replay_files_per_s": 1652.587332167823
+        },
+        "timings_ms": {
+          "approve": 6.72629097243771,
+          "cache_contention": 100.51120800198987,
+          "concurrent_read_write_grep": 125.70062500890344,
+          "integrity": 35.20829201443121,
+          "large_file": 16.740167047828436,
+          "merge": 4.630459006875753,
+          "replay": 39.93737499695271,
+          "setup_checkout": 1.5582499909214675,
+          "total": 375.14091696357355,
+          "worker_elapsed": [
+            22.650833998341113,
+            54.00420801015571
+          ],
+          "working_set_cache": 36.85383399715647
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 36.85383399715647,
+          "enabled": true,
+          "expected_file_count": 34,
+          "file_count": 34,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 18.426916998578236,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "a2_f32_p4096_n2",
+      "parameters": {
+        "agents": 2,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 32,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 2,
+        "payload_bytes": 4096,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 32,
+          "grep_recall": 32,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 64,
+          "merge_rows": 64,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 64,
+          "read_recall": 64,
+          "replay_expected": 66,
+          "replay_rows": 66,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 415,
+          "event_count": 165,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 2,
+            "merge_workspace": 2,
+            "policy_decision": 6,
+            "publish": 10,
+            "read_ref": 64,
+            "search": 2,
+            "write": 75
+          },
+          "ref_event_count": 157,
+          "seq_count": 165
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 99.57916603889316,
+          "enabled": true,
+          "expected_file_count": 34,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            34,
+            34
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            38.4860000340268,
+            38.10637502465397
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:d9a2c202-c456-472a-9ac8-c1a271f3a9e4",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 12725.315299493464,
+            "chunk_derive_mb_per_s": 26.65553246770979,
+            "range_reads_per_s": 7510.263356406185
+          },
+          "timings_ms": {
+            "cache_build": 4.898041021078825,
+            "cache_read": 0.15716702910140157,
+            "derive_chunks": 4.689458000939339,
+            "range_reads": 1.0652089840732515,
+            "write": 7.742332993075252
+          }
+        },
+        "parameters": {
+          "agents": 2,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 32,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 2,
+          "payload_bytes": 4096,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-6dk85spx/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-6dk85spx/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-6dk85spx/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-6dk85spx"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 550.2297848509344,
+          "merge_refs_per_s": 13562.913859101232,
+          "replay_files_per_s": 1609.8215521540048
+        },
+        "timings_ms": {
+          "approve": 7.27662502322346,
+          "cache_contention": 99.57916603889316,
+          "concurrent_read_write_grep": 116.31504102842882,
+          "integrity": 47.76629200205207,
+          "large_file": 18.55220802826807,
+          "merge": 4.718750016763806,
+          "replay": 40.99833295913413,
+          "setup_checkout": 1.471291994675994,
+          "total": 381.00941700395197,
+          "worker_elapsed": [
+            27.125791006255895,
+            25.270416983403265
+          ],
+          "working_set_cache": 37.16608299873769
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 37.16608299873769,
+          "enabled": true,
+          "expected_file_count": 34,
+          "file_count": 34,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 18.583041499368846,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "a2_f32_p4096_n5",
+      "parameters": {
+        "agents": 2,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 32,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 5,
+        "payload_bytes": 4096,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 14,
+          "grep_recall": 14,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 64,
+          "merge_rows": 64,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 64,
+          "read_recall": 64,
+          "replay_expected": 66,
+          "replay_rows": 66,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 397,
+          "event_count": 165,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 2,
+            "merge_workspace": 2,
+            "policy_decision": 6,
+            "publish": 10,
+            "read_ref": 64,
+            "search": 2,
+            "write": 75
+          },
+          "ref_event_count": 157,
+          "seq_count": 165
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 99.70062499633059,
+          "enabled": true,
+          "expected_file_count": 34,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            34,
+            34
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            38.76466699875891,
+            38.243165996391326
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:8a3d8c5f-2cdf-4725-9b85-8894015e95ed",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 13089.773200809164,
+            "chunk_derive_mb_per_s": 26.12466693533207,
+            "range_reads_per_s": 7662.835431940719
+          },
+          "timings_ms": {
+            "cache_build": 4.862500005401671,
+            "cache_read": 0.152791035361588,
+            "derive_chunks": 4.7847499954514205,
+            "range_reads": 1.0439999750815332,
+            "write": 6.068000046070665
+          }
+        },
+        "parameters": {
+          "agents": 2,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 32,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 5,
+          "payload_bytes": 4096,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-xrskcdis/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-xrskcdis/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-xrskcdis/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-xrskcdis"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 544.9577775496232,
+          "merge_refs_per_s": 12924.178061247567,
+          "replay_files_per_s": 1644.074466857294
+        },
+        "timings_ms": {
+          "approve": 8.252832980360836,
+          "cache_contention": 99.70062499633059,
+          "concurrent_read_write_grep": 117.44029104011133,
+          "integrity": 47.71100002108142,
+          "large_file": 16.912041057366878,
+          "merge": 4.9519590102136135,
+          "replay": 40.14416702557355,
+          "setup_checkout": 1.4765000087209046,
+          "total": 381.13958295434713,
+          "worker_elapsed": [
+            58.01966699073091,
+            27.00199995888397
+          ],
+          "working_set_cache": 37.2105420101434
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 37.2105420101434,
+          "enabled": true,
+          "expected_file_count": 34,
+          "file_count": 34,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 18.6052710050717,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "a4_f16_p256_n2",
+      "parameters": {
+        "agents": 4,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 16,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 2,
+        "payload_bytes": 256,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 32,
+          "grep_recall": 32,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 64,
+          "merge_rows": 64,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 64,
+          "read_recall": 64,
+          "replay_expected": 66,
+          "replay_rows": 66,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 423,
+          "event_count": 173,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 4,
+            "merge_workspace": 4,
+            "policy_decision": 8,
+            "publish": 10,
+            "read_ref": 64,
+            "search": 4,
+            "write": 75
+          },
+          "ref_event_count": 161,
+          "seq_count": 173
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 82.31216605054215,
+          "enabled": true,
+          "expected_file_count": 18,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            18,
+            18
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            20.688417018391192,
+            21.181332995183766
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:d03a3b67-d24f-4519-a360-c6c5e4a6f4e7",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 13075.397352021602,
+            "chunk_derive_mb_per_s": 26.421938976606224,
+            "range_reads_per_s": 7904.490293776783
+          },
+          "timings_ms": {
+            "cache_build": 4.8830839805305,
+            "cache_read": 0.15295902267098427,
+            "derive_chunks": 4.730916989501566,
+            "range_reads": 1.0120829683728516,
+            "write": 6.261042028199881
+          }
+        },
+        "parameters": {
+          "agents": 4,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 16,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 2,
+          "payload_bytes": 256,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-7hfa7s6z/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-7hfa7s6z/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-7hfa7s6z/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-7hfa7s6z"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 515.8151378423032,
+          "merge_refs_per_s": 12079.079460793399,
+          "replay_files_per_s": 1651.221243496148
+        },
+        "timings_ms": {
+          "approve": 8.420208003371954,
+          "cache_contention": 82.31216605054215,
+          "concurrent_read_write_grep": 124.07545902533457,
+          "integrity": 34.49062502477318,
+          "large_file": 17.040084989275783,
+          "merge": 5.298417003359646,
+          "replay": 39.97041599359363,
+          "setup_checkout": 1.829416025429964,
+          "total": 341.0450000083074,
+          "worker_elapsed": [
+            10.000416950788349,
+            10.028832999523729,
+            9.038208983838558,
+            10.807082988321781
+          ],
+          "working_set_cache": 20.107584015931934
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 20.107584015931934,
+          "enabled": true,
+          "expected_file_count": 18,
+          "file_count": 18,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 10.053792007965967,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "a4_f16_p256_n5",
+      "parameters": {
+        "agents": 4,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 16,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 5,
+        "payload_bytes": 256,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 16,
+          "grep_recall": 16,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 64,
+          "merge_rows": 64,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 64,
+          "read_recall": 64,
+          "replay_expected": 66,
+          "replay_rows": 66,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 407,
+          "event_count": 173,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 4,
+            "merge_workspace": 4,
+            "policy_decision": 8,
+            "publish": 10,
+            "read_ref": 64,
+            "search": 4,
+            "write": 75
+          },
+          "ref_event_count": 161,
+          "seq_count": 173
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 85.18400002503768,
+          "enabled": true,
+          "expected_file_count": 18,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            18,
+            18
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            20.987541996873915,
+            20.343750016763806
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:9de2d5a0-4c1c-4933-9ac2-ef24df00e607",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 12872.079687621168,
+            "chunk_derive_mb_per_s": 26.245573025578476,
+            "range_reads_per_s": 7324.612381055415
+          },
+          "timings_ms": {
+            "cache_build": 4.870999953709543,
+            "cache_read": 0.15537504805251956,
+            "derive_chunks": 4.76270797662437,
+            "range_reads": 1.0922079673036933,
+            "write": 6.097042001783848
+          }
+        },
+        "parameters": {
+          "agents": 4,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 16,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 5,
+          "payload_bytes": 256,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-h9zz7ly4/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-h9zz7ly4/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-h9zz7ly4/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-h9zz7ly4"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 518.7040759952773,
+          "merge_refs_per_s": 11819.383538605385,
+          "replay_files_per_s": 1660.6767815055052
+        },
+        "timings_ms": {
+          "approve": 8.016333042178303,
+          "cache_contention": 85.18400002503768,
+          "concurrent_read_write_grep": 123.38441697647795,
+          "integrity": 34.46350002195686,
+          "large_file": 16.978332947473973,
+          "merge": 5.414834013208747,
+          "replay": 39.742833003401756,
+          "setup_checkout": 1.8884169985540211,
+          "total": 342.34433295205235,
+          "worker_elapsed": [
+            10.219416988547891,
+            10.86974999634549,
+            9.990707971155643,
+            9.092166961636394
+          ],
+          "working_set_cache": 20.086249976884574
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 20.086249976884574,
+          "enabled": true,
+          "expected_file_count": 18,
+          "file_count": 18,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 10.043124988442287,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "a4_f16_p4096_n2",
+      "parameters": {
+        "agents": 4,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 16,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 2,
+        "payload_bytes": 4096,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 32,
+          "grep_recall": 32,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 64,
+          "merge_rows": 64,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 64,
+          "read_recall": 64,
+          "replay_expected": 66,
+          "replay_rows": 66,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 423,
+          "event_count": 173,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 4,
+            "merge_workspace": 4,
+            "policy_decision": 8,
+            "publish": 10,
+            "read_ref": 64,
+            "search": 4,
+            "write": 75
+          },
+          "ref_event_count": 161,
+          "seq_count": 173
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 81.87983400421217,
+          "enabled": true,
+          "expected_file_count": 18,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            18,
+            18
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            20.782250037882477,
+            21.484291006345302
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:4f2a57da-034c-454c-97cd-af3cb4855039",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 13046.99778852463,
+            "chunk_derive_mb_per_s": 26.315556846324554,
+            "range_reads_per_s": 7724.490844997952
+          },
+          "timings_ms": {
+            "cache_build": 4.8773339949548244,
+            "cache_read": 0.1532919704914093,
+            "derive_chunks": 4.750041989609599,
+            "range_reads": 1.0356669663451612,
+            "write": 5.999958026222885
+          }
+        },
+        "parameters": {
+          "agents": 4,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 16,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 2,
+          "payload_bytes": 4096,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-rik6ejnr/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-rik6ejnr/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-rik6ejnr/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-rik6ejnr"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 401.83693966837063,
+          "merge_refs_per_s": 11512.690219682005,
+          "replay_files_per_s": 1618.4685501473534
+        },
+        "timings_ms": {
+          "approve": 7.215540972538292,
+          "cache_contention": 81.87983400421217,
+          "concurrent_read_write_grep": 159.2685830546543,
+          "integrity": 45.47345801256597,
+          "large_file": 16.81629294762388,
+          "merge": 5.559082957915962,
+          "replay": 40.77929101185873,
+          "setup_checkout": 1.9174580229446292,
+          "total": 387.16208399273455,
+          "worker_elapsed": [
+            12.08008301910013,
+            19.054042000789195,
+            83.63100001588464,
+            12.897250009700656
+          ],
+          "working_set_cache": 21.435500006191432
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 21.435500006191432,
+          "enabled": true,
+          "expected_file_count": 18,
+          "file_count": 18,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 10.717750003095716,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "a4_f16_p4096_n5",
+      "parameters": {
+        "agents": 4,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 16,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 5,
+        "payload_bytes": 4096,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 16,
+          "grep_recall": 16,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 64,
+          "merge_rows": 64,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 64,
+          "read_recall": 64,
+          "replay_expected": 66,
+          "replay_rows": 66,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 407,
+          "event_count": 173,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 4,
+            "merge_workspace": 4,
+            "policy_decision": 8,
+            "publish": 10,
+            "read_ref": 64,
+            "search": 4,
+            "write": 75
+          },
+          "ref_event_count": 161,
+          "seq_count": 173
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 83.38045800337568,
+          "enabled": true,
+          "expected_file_count": 18,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            18,
+            18
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            21.619125036522746,
+            20.638582995161414
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:6255f865-5fa3-433f-af9e-d3b6711444ff",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 7656.733791656369,
+            "chunk_derive_mb_per_s": 26.19287049640045,
+            "range_reads_per_s": 8145.60265810392
+          },
+          "timings_ms": {
+            "cache_build": 4.918332968372852,
+            "cache_read": 0.26120798429474235,
+            "derive_chunks": 4.772290994878858,
+            "range_reads": 0.9821249986998737,
+            "write": 6.5934170270338655
+          }
+        },
+        "parameters": {
+          "agents": 4,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 16,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 5,
+          "payload_bytes": 4096,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-rnbw752e/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-rnbw752e/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-rnbw752e/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-rnbw752e"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 410.2737232241567,
+          "merge_refs_per_s": 12025.554276226565,
+          "replay_files_per_s": 1632.929075387223
+        },
+        "timings_ms": {
+          "approve": 6.845415977295488,
+          "cache_contention": 83.38045800337568,
+          "concurrent_read_write_grep": 155.99341702181846,
+          "integrity": 46.28145799506456,
+          "large_file": 17.52737397328019,
+          "merge": 5.32200001180172,
+          "replay": 40.41816695826128,
+          "setup_checkout": 1.95162498857826,
+          "total": 385.7204999658279,
+          "worker_elapsed": [
+            13.982083008158952,
+            13.718959002289921,
+            12.029709003400058,
+            13.386165956035256
+          ],
+          "working_set_cache": 20.60583303682506
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 20.60583303682506,
+          "enabled": true,
+          "expected_file_count": 18,
+          "file_count": 18,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 10.30291651841253,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "a4_f32_p256_n2",
+      "parameters": {
+        "agents": 4,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 32,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 2,
+        "payload_bytes": 256,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 64,
+          "grep_recall": 64,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 128,
+          "merge_rows": 128,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 128,
+          "read_recall": 128,
+          "replay_expected": 130,
+          "replay_rows": 130,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 775,
+          "event_count": 301,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 4,
+            "merge_workspace": 4,
+            "policy_decision": 8,
+            "publish": 10,
+            "read_ref": 128,
+            "search": 4,
+            "write": 139
+          },
+          "ref_event_count": 289,
+          "seq_count": 301
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 99.61787500651553,
+          "enabled": true,
+          "expected_file_count": 34,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            34,
+            34
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            38.658375036902726,
+            38.04308298276737
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:ef2508a1-7377-4be6-886e-8c9fc49f256e",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 12158.052477469748,
+            "chunk_derive_mb_per_s": 25.804006367143497,
+            "range_reads_per_s": 7038.127362090905
+          },
+          "timings_ms": {
+            "cache_build": 4.927500034682453,
+            "cache_read": 0.1645000302232802,
+            "derive_chunks": 4.844209004659206,
+            "range_reads": 1.1366659891791642,
+            "write": 7.681709015741944
+          }
+        },
+        "parameters": {
+          "agents": 4,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 32,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 2,
+          "payload_bytes": 256,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-4cadt9ni/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-4cadt9ni/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-4cadt9ni/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-4cadt9ni"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 786.4871673071522,
+          "merge_refs_per_s": 13607.069291847461,
+          "replay_files_per_s": 1677.5456139722937
+        },
+        "timings_ms": {
+          "approve": 9.220790991093963,
+          "cache_contention": 99.61787500651553,
+          "concurrent_read_write_grep": 162.74900001008064,
+          "integrity": 48.244541976600885,
+          "large_file": 18.754584074486047,
+          "merge": 9.406875004060566,
+          "replay": 77.4941670242697,
+          "setup_checkout": 1.8139170133508742,
+          "total": 471.64254199014977,
+          "worker_elapsed": [
+            18.961208988912404,
+            19.202624971512705,
+            18.991833028849214,
+            20.47999994829297
+          ],
+          "working_set_cache": 37.01824997551739
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 37.01824997551739,
+          "enabled": true,
+          "expected_file_count": 34,
+          "file_count": 34,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 18.509124987758696,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "a4_f32_p256_n5",
+      "parameters": {
+        "agents": 4,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 32,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 5,
+        "payload_bytes": 256,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 28,
+          "grep_recall": 28,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 128,
+          "merge_rows": 128,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 128,
+          "read_recall": 128,
+          "replay_expected": 130,
+          "replay_rows": 130,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 739,
+          "event_count": 301,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 4,
+            "merge_workspace": 4,
+            "policy_decision": 8,
+            "publish": 10,
+            "read_ref": 128,
+            "search": 4,
+            "write": 139
+          },
+          "ref_event_count": 289,
+          "seq_count": 301
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 100.19341699080542,
+          "enabled": true,
+          "expected_file_count": 34,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            34,
+            34
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            38.72662497451529,
+            38.56150002684444
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:684a3f27-af42-4538-8776-0607ef7f0118",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 12457.797211187013,
+            "chunk_derive_mb_per_s": 26.051620620880296,
+            "range_reads_per_s": 7803.926526471632
+          },
+          "timings_ms": {
+            "cache_build": 5.0706249894574285,
+            "cache_read": 0.16054202569648623,
+            "derive_chunks": 4.798165988177061,
+            "range_reads": 1.0251249768771231,
+            "write": 7.175167032983154
+          }
+        },
+        "parameters": {
+          "agents": 4,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 32,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 5,
+          "payload_bytes": 256,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-p3r5fg8u/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-p3r5fg8u/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-p3r5fg8u/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-p3r5fg8u"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 797.4972294715196,
+          "merge_refs_per_s": 13429.155884994487,
+          "replay_files_per_s": 1702.62089059439
+        },
+        "timings_ms": {
+          "approve": 8.901416964363307,
+          "cache_contention": 100.19341699080542,
+          "concurrent_read_write_grep": 160.50212498521432,
+          "integrity": 48.321166017558426,
+          "large_file": 18.229625013191253,
+          "merge": 9.531500050798059,
+          "replay": 76.35287498123944,
+          "setup_checkout": 1.9240829860791564,
+          "total": 468.7330410233699,
+          "worker_elapsed": [
+            18.39679101249203,
+            20.227375032845885,
+            19.317917001899332,
+            18.781708960887045
+          ],
+          "working_set_cache": 36.99304204201326
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 36.99304204201326,
+          "enabled": true,
+          "expected_file_count": 34,
+          "file_count": 34,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 18.49652102100663,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "a4_f32_p4096_n2",
+      "parameters": {
+        "agents": 4,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 32,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 2,
+        "payload_bytes": 4096,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 64,
+          "grep_recall": 64,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 128,
+          "merge_rows": 128,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 128,
+          "read_recall": 128,
+          "replay_expected": 130,
+          "replay_rows": 130,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 775,
+          "event_count": 301,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 4,
+            "merge_workspace": 4,
+            "policy_decision": 8,
+            "publish": 10,
+            "read_ref": 128,
+            "search": 4,
+            "write": 139
+          },
+          "ref_event_count": 289,
+          "seq_count": 301
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 99.8302919906564,
+          "enabled": true,
+          "expected_file_count": 34,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            34,
+            34
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            38.901541964150965,
+            38.35375001654029
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:9d6d8660-66be-4a37-b93e-a06a807ea9b4",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 12678.29013285001,
+            "chunk_derive_mb_per_s": 26.172759369876545,
+            "range_reads_per_s": 7316.2387066682295
+          },
+          "timings_ms": {
+            "cache_build": 4.904750036075711,
+            "cache_read": 0.15774997882544994,
+            "derive_chunks": 4.775958019308746,
+            "range_reads": 1.093458035029471,
+            "write": 6.203458004165441
+          }
+        },
+        "parameters": {
+          "agents": 4,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 32,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 2,
+          "payload_bytes": 4096,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-oxxdmkx3/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-oxxdmkx3/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-oxxdmkx3/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-oxxdmkx3"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 618.0939767638951,
+          "merge_refs_per_s": 13423.639524871427,
+          "replay_files_per_s": 1665.2042762177932
+        },
+        "timings_ms": {
+          "approve": 10.798041999805719,
+          "cache_contention": 99.8302919906564,
+          "concurrent_read_write_grep": 207.0882500265725,
+          "integrity": 76.40387502033263,
+          "large_file": 17.13537407340482,
+          "merge": 9.535416960716248,
+          "replay": 78.06849997723475,
+          "setup_checkout": 1.923541014548391,
+          "total": 546.016416978091,
+          "worker_elapsed": [
+            32.247791008558124,
+            26.733500009868294,
+            61.71020801411942,
+            61.5673330030404
+          ],
+          "working_set_cache": 37.43416600627825
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 37.43416600627825,
+          "enabled": true,
+          "expected_file_count": 34,
+          "file_count": 34,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 18.717083003139123,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "a4_f32_p4096_n5",
+      "parameters": {
+        "agents": 4,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 32,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 5,
+        "payload_bytes": 4096,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 28,
+          "grep_recall": 28,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 128,
+          "merge_rows": 128,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 128,
+          "read_recall": 128,
+          "replay_expected": 130,
+          "replay_rows": 130,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 739,
+          "event_count": 301,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 4,
+            "merge_workspace": 4,
+            "policy_decision": 8,
+            "publish": 10,
+            "read_ref": 128,
+            "search": 4,
+            "write": 139
+          },
+          "ref_event_count": 289,
+          "seq_count": 301
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 100.94075003871694,
+          "enabled": true,
+          "expected_file_count": 34,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            34,
+            34
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            38.29529200447723,
+            38.82633300963789
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:4340ff42-e5e0-4991-8920-f693bb7cb5ea",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 12735.446645818824,
+            "chunk_derive_mb_per_s": 26.172529065317576,
+            "range_reads_per_s": 7293.999258600513
+          },
+          "timings_ms": {
+            "cache_build": 4.915917001198977,
+            "cache_read": 0.15704199904575944,
+            "derive_chunks": 4.776000045239925,
+            "range_reads": 1.0967919952236116,
+            "write": 6.110290996730328
+          }
+        },
+        "parameters": {
+          "agents": 4,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 32,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 5,
+          "payload_bytes": 4096,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-9z05n4po/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-9z05n4po/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-9z05n4po/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-9z05n4po"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 594.2656843159014,
+          "merge_refs_per_s": 13261.386112649647,
+          "replay_files_per_s": 1647.8266842272685
+        },
+        "timings_ms": {
+          "approve": 10.634415957611054,
+          "cache_contention": 100.94075003871694,
+          "concurrent_read_write_grep": 215.39187501184642,
+          "integrity": 76.58424996770918,
+          "large_file": 17.0560420374386,
+          "merge": 9.652083041146398,
+          "replay": 78.89179198537022,
+          "setup_checkout": 1.7777500324882567,
+          "total": 555.8205420384184,
+          "worker_elapsed": [
+            25.041042012162507,
+            54.78329199831933,
+            89.93995800847188,
+            123.74145799549296
+          ],
+          "working_set_cache": 37.447959010023624
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 37.447959010023624,
+          "enabled": true,
+          "expected_file_count": 34,
+          "file_count": 34,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 18.723979505011812,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "large_file_131072",
+      "parameters": {
+        "agents": 2,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 16,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 2,
+        "payload_bytes": 256,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 16,
+          "grep_recall": 16,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 32,
+          "merge_rows": 32,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 32,
+          "read_recall": 32,
+          "replay_expected": 34,
+          "replay_rows": 34,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 239,
+          "event_count": 101,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 2,
+            "merge_workspace": 2,
+            "policy_decision": 6,
+            "publish": 10,
+            "read_ref": 32,
+            "search": 2,
+            "write": 43
+          },
+          "ref_event_count": 93,
+          "seq_count": 101
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 81.96829201187938,
+          "enabled": true,
+          "expected_file_count": 18,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            18,
+            18
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            21.156084025278687,
+            20.393415994476527
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 131072,
+          "cached_chunks": 2,
+          "chunk_size": 65536,
+          "derived_chunks": 2,
+          "enabled": true,
+          "expected_chunks": 2,
+          "node_id": "node:42915ddd-df65-4145-a54a-5050b27ff3ab",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 12841.094494133264,
+            "chunk_derive_mb_per_s": 26.18555082374883,
+            "range_reads_per_s": 7413.990446323034
+          },
+          "timings_ms": {
+            "cache_build": 4.851041012443602,
+            "cache_read": 0.1557499635964632,
+            "derive_chunks": 4.773624998051673,
+            "range_reads": 1.0790410451591015,
+            "write": 5.965749965980649
+          }
+        },
+        "parameters": {
+          "agents": 2,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 16,
+          "large_file_bytes": 131072,
+          "large_range_stride": 65537,
+          "needle_every": 2,
+          "payload_bytes": 256,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-2zubvhi4/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-2zubvhi4/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-2zubvhi4/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-2zubvhi4"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 382.7270496747438,
+          "merge_refs_per_s": 10137.541123922869,
+          "replay_files_per_s": 1563.6347135824328
+        },
+        "timings_ms": {
+          "approve": 5.910334002692252,
+          "cache_contention": 81.96829201187938,
+          "concurrent_read_write_grep": 83.6105000344105,
+          "integrity": 28.860833030194044,
+          "large_file": 16.82520698523149,
+          "merge": 3.1565839890390635,
+          "replay": 21.74420899245888,
+          "setup_checkout": 1.4676249702461064,
+          "total": 270.9132920135744,
+          "worker_elapsed": [
+            10.046624985989183,
+            11.138917005155236
+          ],
+          "working_set_cache": 19.934749987442046
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 19.934749987442046,
+          "enabled": true,
+          "expected_file_count": 18,
+          "file_count": 18,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 9.967374993721023,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    },
+    {
+      "case": "large_file_262144",
+      "parameters": {
+        "agents": 2,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": false,
+        "cache_worker_repeats": 2,
+        "cache_workers": 2,
+        "chunk_size": 65536,
+        "files_per_agent": 16,
+        "large_file_bytes": 262144,
+        "large_range_stride": 65537,
+        "needle_every": 2,
+        "payload_bytes": 256,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "passed": true,
+      "result": {
+        "accuracy": {
+          "approvals_expected": 4,
+          "approved_refs": 4,
+          "cache_contention_passed": true,
+          "event_sequence_contiguous": true,
+          "grep_expected": 16,
+          "grep_recall": 16,
+          "integrity_issues": [],
+          "large_file_passed": true,
+          "merge_expected": 32,
+          "merge_rows": 32,
+          "passed": true,
+          "process_exitcodes_ok": true,
+          "read_expected": 32,
+          "read_recall": 32,
+          "replay_expected": 34,
+          "replay_rows": 34,
+          "worker_failures": [],
+          "worker_result_count_ok": true,
+          "working_set_cache_passed": true
+        },
+        "audit": {
+          "edge_count": 239,
+          "event_count": 101,
+          "event_kinds": {
+            "approve": 4,
+            "checkout": 2,
+            "merge_workspace": 2,
+            "policy_decision": 6,
+            "publish": 10,
+            "read_ref": 32,
+            "search": 2,
+            "write": 43
+          },
+          "ref_event_count": 93,
+          "seq_count": 101
+        },
+        "backend": "anfs",
+        "cache_contention": {
+          "elapsed_ms": 81.47304103476927,
+          "enabled": true,
+          "expected_file_count": 18,
+          "expected_hits": 2,
+          "expected_misses": 2,
+          "failures": [],
+          "file_counts": [
+            18,
+            18
+          ],
+          "hits": 2,
+          "listed_contention_cache_count": 2,
+          "misses": 2,
+          "passed": true,
+          "process_exitcodes": [
+            0,
+            0
+          ],
+          "repeat_count": 2,
+          "shared_key": false,
+          "total_attempts": 4,
+          "worker_count": 2,
+          "worker_elapsed": [
+            21.117750031407923,
+            20.32362500904128
+          ],
+          "workspace": "ws:agent-0"
+        },
+        "large_file": {
+          "bytes": 262144,
+          "cached_chunks": 4,
+          "chunk_size": 65536,
+          "derived_chunks": 4,
+          "enabled": true,
+          "expected_chunks": 4,
+          "node_id": "node:b40a1389-e3e0-47b7-96ca-5d4b96c374d7",
+          "passed": true,
+          "range_ok": 8,
+          "range_read_count": 8,
+          "range_size": 2048,
+          "throughput": {
+            "chunk_cache_read_rows_per_s": 25531.856448347567,
+            "chunk_derive_mb_per_s": 26.262573324119085,
+            "range_reads_per_s": 7434.363599079417
+          },
+          "timings_ms": {
+            "cache_build": 9.664459037594497,
+            "cache_read": 0.15666702529415488,
+            "derive_chunks": 9.519249957520515,
+            "range_reads": 1.0760840377770364,
+            "write": 11.159542016685009
+          }
+        },
+        "parameters": {
+          "agents": 2,
+          "approvals": 4,
+          "base_files": 2,
+          "cache_repeats": 2,
+          "cache_shared_key": false,
+          "cache_worker_repeats": 2,
+          "cache_workers": 2,
+          "chunk_size": 65536,
+          "files_per_agent": 16,
+          "large_file_bytes": 262144,
+          "large_range_stride": 65537,
+          "needle_every": 2,
+          "payload_bytes": 256,
+          "range_read_count": 8,
+          "range_size": 2048
+        },
+        "paths": {
+          "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-kjsiwxw3/anfs.db",
+          "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-kjsiwxw3/objs",
+          "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-kjsiwxw3/replay",
+          "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-kjsiwxw3"
+        },
+        "throughput": {
+          "concurrent_writes_per_s": 385.61050064780443,
+          "merge_refs_per_s": 10432.798060474634,
+          "replay_files_per_s": 1562.479032766434
+        },
+        "timings_ms": {
+          "approve": 5.817166995257139,
+          "cache_contention": 81.47304103476927,
+          "concurrent_read_write_grep": 82.98529201420024,
+          "integrity": 65.10608299868181,
+          "large_file": 31.576002074871212,
+          "merge": 3.067250014282763,
+          "replay": 21.760292001999915,
+          "setup_checkout": 1.4772909926250577,
+          "total": 320.271541015245,
+          "worker_elapsed": [
+            10.009291989263147,
+            11.00304099963978
+          ],
+          "working_set_cache": 20.133832993451506
+        },
+        "working_set_cache": {
+          "cache_key": "agent-0",
+          "elapsed_ms": 20.133832993451506,
+          "enabled": true,
+          "expected_file_count": 18,
+          "file_count": 18,
+          "hits": 1,
+          "listed_cache_count": 1,
+          "misses": 1,
+          "passed": true,
+          "per_repeat_ms": 10.066916496725753,
+          "repeat_count": 2,
+          "workspace": "ws:agent-0"
+        }
+      }
+    }
+  ],
+  "matrix": "full",
+  "passed": true
+}

@@ -1,0 +1,1918 @@
+{
+  "results": [
+    {
+      "answers": [
+        {
+          "answer": "lisbon",
+          "answer_event_id": "event:a663ae06-ed04-4bad-b564-074e0a64b25f",
+          "coverage": [
+            [
+              "memory:locomo/raw/session-0000",
+              "node:2194be81-3229-47b4-8890-4a0bc28c943c",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "lisbon",
+          "expected_answers": [
+            "lisbon"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0000"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:7fc226f8-1f8c-4134-b49c-4050aeed86e2",
+          "question_id": "q-0000",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0000"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "mercury",
+          "answer_event_id": "event:086787e6-c091-435e-9ae9-489359b76d1c",
+          "coverage": [
+            [
+              "memory:locomo/raw/session-0001",
+              "node:0fe9c92d-c461-40cd-83ab-1da453b1cc6d",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "mercury",
+          "expected_answers": [
+            "mercury"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0001"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:2bf37712-ccba-4324-a91e-f19c913c1406",
+          "question_id": "q-0001",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0001"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "tacos",
+          "answer_event_id": "event:fa4bf92c-0ce8-4c8e-a0ce-3bcc19f143cf",
+          "coverage": [
+            [
+              "memory:locomo/raw/session-0002",
+              "node:dedc9838-f59e-4d63-a707-8560cccf01c3",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "tacos",
+          "expected_answers": [
+            "tacos"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0002"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:80925d52-8587-434d-8fd2-0ea6469ccffe",
+          "question_id": "q-0002",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0002"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "berlin",
+          "answer_event_id": "event:af212a1a-fb28-4a38-9a07-a81edee75a32",
+          "coverage": [
+            [
+              "memory:locomo/raw/session-0003",
+              "node:e6d59762-d1f6-45d5-b36e-892571abcdbd",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "berlin",
+          "expected_answers": [
+            "berlin"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0003"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:6e21a616-e16d-4c50-9b7d-133c9ff9c23c",
+          "question_id": "q-0003",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0003"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "artemis",
+          "answer_event_id": "event:cbcc4304-c9c4-4b45-a589-b2fe5c50af83",
+          "coverage": [
+            [
+              "memory:locomo/raw/session-0004",
+              "node:753fccc0-f59b-4098-ae14-46de9d2de3f5",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "artemis",
+          "expected_answers": [
+            "artemis"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0004"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:0350bad6-68f5-418c-95ee-3b6eed313811",
+          "question_id": "q-0004",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0004"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "paella",
+          "answer_event_id": "event:d8192781-432d-400f-b4ee-6ef5486cc8c6",
+          "coverage": [
+            [
+              "memory:locomo/raw/session-0005",
+              "node:b5e82fcd-29a7-4afc-bc0a-053cafde7f18",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "paella",
+          "expected_answers": [
+            "paella"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0005"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:aeadd218-5d9f-4521-828f-e338581a37e9",
+          "question_id": "q-0005",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0005"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "lisbon",
+          "answer_event_id": "event:b8a6c644-b555-402a-99c7-a7364022c9fd",
+          "coverage": [
+            [
+              "memory:locomo/raw/session-0006",
+              "node:e704e32a-9787-4693-9166-3ecf9490cba3",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "lisbon",
+          "expected_answers": [
+            "lisbon"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0006"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:053a5e09-07c6-481f-a1e8-ce39d89f6544",
+          "question_id": "q-0006",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0006"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "mercury",
+          "answer_event_id": "event:070cd835-4117-44c0-bc11-c6a2c75255d6",
+          "coverage": [
+            [
+              "memory:locomo/raw/session-0007",
+              "node:1d19af95-3d7d-427e-818d-fcf666ff96cb",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "mercury",
+          "expected_answers": [
+            "mercury"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0007"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:c8721195-a44e-47a9-bcd0-d18c11bee493",
+          "question_id": "q-0007",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0007"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "tacos",
+          "answer_event_id": "event:26d6c78b-4980-434b-b0bc-cc88832b45f6",
+          "coverage": [
+            [
+              "memory:locomo/raw/session-0008",
+              "node:f3120981-190a-4a12-be8d-2d3f6d9a580a",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "tacos",
+          "expected_answers": [
+            "tacos"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0008"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:786edf44-4c8b-40ef-8537-669b656bee2a",
+          "question_id": "q-0008",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0008"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "berlin",
+          "answer_event_id": "event:60c48d7a-04ef-4884-9c07-e885dd8c2b65",
+          "coverage": [
+            [
+              "memory:locomo/raw/session-0009",
+              "node:feab1711-0378-4d01-8449-5b49870eb591",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "berlin",
+          "expected_answers": [
+            "berlin"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0009"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:e2ee8a17-bbac-49cf-9e54-4273124b7698",
+          "question_id": "q-0009",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0009"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "artemis",
+          "answer_event_id": "event:61c79de9-12f1-41da-a27d-294bac6fadf5",
+          "coverage": [
+            [
+              "memory:locomo/raw/session-0010",
+              "node:4e4238d1-c98b-4e2b-b77f-5ada328ee8d2",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "artemis",
+          "expected_answers": [
+            "artemis"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0010"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:aae0eeef-220d-4368-8641-cc1a1d5161cd",
+          "question_id": "q-0010",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0010"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "paella",
+          "answer_event_id": "event:179a8f23-ff57-4b25-9384-633a08fc251b",
+          "coverage": [
+            [
+              "memory:locomo/raw/session-0011",
+              "node:26ac1bd5-c754-44c2-aab1-d3e2fdc084e0",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "paella",
+          "expected_answers": [
+            "paella"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0011"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:04dc3e8b-135e-4080-bf61-60bedc301623",
+          "question_id": "q-0011",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0011"
+          ],
+          "token_f1": 1.0
+        }
+      ],
+      "backend": "anfs",
+      "metrics": {
+        "context_bytes": 1916,
+        "covered_answers": 12,
+        "derived_lineage_links": 0,
+        "exact_match_rate": 1.0,
+        "exact_matches": 12,
+        "extracted_fact_refs": 0,
+        "integrity_issues": [],
+        "questions": 12,
+        "raw_session_refs": 24,
+        "recall_at_k": 1.0,
+        "retrieval_hits": 12,
+        "token_f1": 1.0
+      },
+      "parameters": {
+        "dataset": "synthetic-locomo-like",
+        "memory_mode": "raw",
+        "questions": 12,
+        "sessions": 24,
+        "top_k": 3
+      },
+      "passed": true,
+      "paths": {
+        "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-raw-task-memory-bench-eogq4vbo/task-memory.db",
+        "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-raw-task-memory-bench-eogq4vbo/objs",
+        "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-raw-task-memory-bench-eogq4vbo"
+      },
+      "semantic_evidence": [
+        "raw sessions are stored as immutable ANFS nodes",
+        "extracted memories are derived nodes with lineage to raw sessions when enabled",
+        "questions use audited Workspace.query retrieval events",
+        "answers cite retrieved memory refs and expose evidence coverage",
+        "verify_integrity checks the resulting event/ref/evidence graph"
+      ],
+      "timings_ms": {
+        "ingest": 13.428541016764939,
+        "integrity": 6.671292008832097,
+        "qa": 25.232958025299013,
+        "total": 45.33279105089605
+      }
+    },
+    {
+      "answers": [
+        {
+          "answer": "lisbon",
+          "exact_match": true,
+          "expected_answer": "lisbon",
+          "expected_answers": [
+            "lisbon"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0000"
+          ],
+          "question_id": "q-0000",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0000"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "mercury",
+          "exact_match": true,
+          "expected_answer": "mercury",
+          "expected_answers": [
+            "mercury"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0001"
+          ],
+          "question_id": "q-0001",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0001"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "tacos",
+          "exact_match": true,
+          "expected_answer": "tacos",
+          "expected_answers": [
+            "tacos"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0002"
+          ],
+          "question_id": "q-0002",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0002"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "berlin",
+          "exact_match": true,
+          "expected_answer": "berlin",
+          "expected_answers": [
+            "berlin"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0003"
+          ],
+          "question_id": "q-0003",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0003"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "artemis",
+          "exact_match": true,
+          "expected_answer": "artemis",
+          "expected_answers": [
+            "artemis"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0004"
+          ],
+          "question_id": "q-0004",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0004"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "paella",
+          "exact_match": true,
+          "expected_answer": "paella",
+          "expected_answers": [
+            "paella"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0005"
+          ],
+          "question_id": "q-0005",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0005"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "lisbon",
+          "exact_match": true,
+          "expected_answer": "lisbon",
+          "expected_answers": [
+            "lisbon"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0006"
+          ],
+          "question_id": "q-0006",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0006"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "mercury",
+          "exact_match": true,
+          "expected_answer": "mercury",
+          "expected_answers": [
+            "mercury"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0007"
+          ],
+          "question_id": "q-0007",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0007"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "tacos",
+          "exact_match": true,
+          "expected_answer": "tacos",
+          "expected_answers": [
+            "tacos"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0008"
+          ],
+          "question_id": "q-0008",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0008"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "berlin",
+          "exact_match": true,
+          "expected_answer": "berlin",
+          "expected_answers": [
+            "berlin"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0009"
+          ],
+          "question_id": "q-0009",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0009"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "artemis",
+          "exact_match": true,
+          "expected_answer": "artemis",
+          "expected_answers": [
+            "artemis"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0010"
+          ],
+          "question_id": "q-0010",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0010"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "paella",
+          "exact_match": true,
+          "expected_answer": "paella",
+          "expected_answers": [
+            "paella"
+          ],
+          "expected_refs": [
+            "memory:locomo/raw/session-0011"
+          ],
+          "question_id": "q-0011",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/raw/session-0011"
+          ],
+          "token_f1": 1.0
+        }
+      ],
+      "backend": "native-jsonl",
+      "metrics": {
+        "context_bytes": 1916,
+        "covered_answers": 0,
+        "derived_lineage_links": 0,
+        "exact_match_rate": 1.0,
+        "exact_matches": 12,
+        "extracted_fact_refs": 0,
+        "integrity_issues": [],
+        "questions": 12,
+        "raw_session_refs": 24,
+        "recall_at_k": 1.0,
+        "retrieval_hits": 12,
+        "token_f1": 1.0
+      },
+      "parameters": {
+        "dataset": "synthetic-locomo-like",
+        "memory_mode": "raw",
+        "questions": 12,
+        "sessions": 24,
+        "top_k": 3
+      },
+      "passed": true,
+      "paths": {
+        "audit_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/native-jsonl-raw-task-memory-bench-jkuzp0dm/events.jsonl",
+        "memory_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/native-jsonl-raw-task-memory-bench-jkuzp0dm/memory",
+        "source_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/native-jsonl-raw-task-memory-bench-jkuzp0dm/sources",
+        "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/native-jsonl-raw-task-memory-bench-jkuzp0dm"
+      },
+      "semantic_limitations": [
+        "no immutable CAS node graph",
+        "retrieval is direct file scan rather than audited query events",
+        "answers do not carry typed citation edges or evidence coverage",
+        "no kernel integrity verification"
+      ],
+      "timings_ms": {
+        "ingest": 4.817500011995435,
+        "integrity": 0.0,
+        "qa": 0.11287495726719499,
+        "total": 4.93037496926263
+      }
+    },
+    {
+      "answers": [
+        {
+          "answer": "lisbon",
+          "answer_event_id": "event:7545fbf5-860e-4f8b-888f-b0a21162045a",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0000city",
+              "node:c0c61fc8-8304-44bc-8ab3-fce621737038",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "lisbon",
+          "expected_answers": [
+            "lisbon"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0000city"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:f67775f1-1299-4fcf-9428-faa61f14c4fd",
+          "question_id": "q-0000",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0000city"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "mercury",
+          "answer_event_id": "event:2d197423-e05d-4e23-85e1-9f8c4b2af043",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0001project",
+              "node:56aeaeb0-74ad-4ba4-ada1-4b4586b5883a",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "mercury",
+          "expected_answers": [
+            "mercury"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0001project"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:38b081cf-cd4e-4926-8fbd-03b4184dd2d8",
+          "question_id": "q-0001",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0001project"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "tacos",
+          "answer_event_id": "event:de0e9376-b3d3-4e74-9a42-93e2f7e46d37",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0002food",
+              "node:ea6518dd-03fc-4590-81c8-4c6fab68ab40",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "tacos",
+          "expected_answers": [
+            "tacos"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0002food"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:926842f5-e10c-4c1d-b297-87d1fffd1c06",
+          "question_id": "q-0002",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0002food"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "berlin",
+          "answer_event_id": "event:b4c49af1-aa23-4ee8-8218-65a51c7a02c4",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0003city",
+              "node:f7f53f0c-7608-4e74-ba2c-87a37b369053",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "berlin",
+          "expected_answers": [
+            "berlin"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0003city"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:f5c93675-2d0d-4e93-9851-4530afafdb62",
+          "question_id": "q-0003",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0003city"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "artemis",
+          "answer_event_id": "event:e18ed997-5ed0-45ef-92bb-bd81cd5647c2",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0004project",
+              "node:8a868560-0018-41d6-8b51-2d7f9714c0e7",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "artemis",
+          "expected_answers": [
+            "artemis"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0004project"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:b372899a-eb48-4603-bb0f-f3293f1345cd",
+          "question_id": "q-0004",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0004project"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "paella",
+          "answer_event_id": "event:33c1b5a0-4938-4b4b-9093-ab0915002329",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0005food",
+              "node:8bd147c6-4347-4826-a491-0130d660686d",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "paella",
+          "expected_answers": [
+            "paella"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0005food"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:dc12b549-5a52-4692-8063-c3ee66d9dbb9",
+          "question_id": "q-0005",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0005food"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "lisbon",
+          "answer_event_id": "event:2d0660bc-2db3-4059-b2d7-ce2e19e4c4f3",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0006city",
+              "node:5743e13a-0cf6-455f-a0b8-40c9780bd354",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "lisbon",
+          "expected_answers": [
+            "lisbon"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0006city"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:011ae103-e7c9-42d8-acb0-1e33470b9802",
+          "question_id": "q-0006",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0006city"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "mercury",
+          "answer_event_id": "event:9b51cfc3-2468-417e-84fd-741f41c7ff05",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0007project",
+              "node:88e1756c-fa34-410d-a9fc-2470fe71b61b",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "mercury",
+          "expected_answers": [
+            "mercury"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0007project"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:e2462709-f07e-420e-95d1-7298ba3f3ae7",
+          "question_id": "q-0007",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0007project"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "tacos",
+          "answer_event_id": "event:f1205b9e-82d4-4773-a5ea-4454f5bad967",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0008food",
+              "node:a051c49c-c399-4cf4-abdf-94d91ef95139",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "tacos",
+          "expected_answers": [
+            "tacos"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0008food"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:b89f9cfa-5c39-40e4-9a9b-a33f1a0d7c20",
+          "question_id": "q-0008",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0008food"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "berlin",
+          "answer_event_id": "event:b6015f30-5332-4515-86d2-0b5af20597a6",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0009city",
+              "node:fc41a7da-1267-419b-b9c3-763b4383ad58",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "berlin",
+          "expected_answers": [
+            "berlin"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0009city"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:78f4d7d0-a368-4629-98d2-0eb4a63c218f",
+          "question_id": "q-0009",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0009city"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "artemis",
+          "answer_event_id": "event:3f49d301-c8d9-4d2b-abc3-aee8900ea935",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0010project",
+              "node:234e1005-5358-4deb-b19c-caf8fb240430",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "artemis",
+          "expected_answers": [
+            "artemis"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0010project"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:355f98c3-89a7-4abd-855f-7505a5d4432e",
+          "question_id": "q-0010",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0010project"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "paella",
+          "answer_event_id": "event:67854051-e408-461d-aff4-836602b4d05f",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0011food",
+              "node:2d4f99e6-30be-4fe2-a06e-8c360dedcc27",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "paella",
+          "expected_answers": [
+            "paella"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0011food"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:662bc105-73a6-4b36-9283-13f932e0c363",
+          "question_id": "q-0011",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0011food"
+          ],
+          "token_f1": 1.0
+        }
+      ],
+      "backend": "anfs",
+      "metrics": {
+        "context_bytes": 1656,
+        "covered_answers": 12,
+        "derived_lineage_links": 24,
+        "exact_match_rate": 1.0,
+        "exact_matches": 12,
+        "extracted_fact_refs": 24,
+        "integrity_issues": [],
+        "questions": 12,
+        "raw_session_refs": 0,
+        "recall_at_k": 1.0,
+        "retrieval_hits": 12,
+        "token_f1": 1.0
+      },
+      "parameters": {
+        "dataset": "synthetic-locomo-like",
+        "memory_mode": "extracted",
+        "questions": 12,
+        "sessions": 24,
+        "top_k": 3
+      },
+      "passed": true,
+      "paths": {
+        "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-extracted-task-memory-bench-1vduwn7n/task-memory.db",
+        "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-extracted-task-memory-bench-1vduwn7n/objs",
+        "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-extracted-task-memory-bench-1vduwn7n"
+      },
+      "semantic_evidence": [
+        "raw sessions are stored as immutable ANFS nodes",
+        "extracted memories are derived nodes with lineage to raw sessions when enabled",
+        "questions use audited Workspace.query retrieval events",
+        "answers cite retrieved memory refs and expose evidence coverage",
+        "verify_integrity checks the resulting event/ref/evidence graph"
+      ],
+      "timings_ms": {
+        "ingest": 25.462957972195,
+        "integrity": 8.926292008254677,
+        "qa": 27.042082976549864,
+        "total": 61.43133295699954
+      }
+    },
+    {
+      "answers": [
+        {
+          "answer": "lisbon",
+          "exact_match": true,
+          "expected_answer": "lisbon",
+          "expected_answers": [
+            "lisbon"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0000city"
+          ],
+          "question_id": "q-0000",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0000city"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "mercury",
+          "exact_match": true,
+          "expected_answer": "mercury",
+          "expected_answers": [
+            "mercury"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0001project"
+          ],
+          "question_id": "q-0001",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0001project"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "tacos",
+          "exact_match": true,
+          "expected_answer": "tacos",
+          "expected_answers": [
+            "tacos"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0002food"
+          ],
+          "question_id": "q-0002",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0002food"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "berlin",
+          "exact_match": true,
+          "expected_answer": "berlin",
+          "expected_answers": [
+            "berlin"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0003city"
+          ],
+          "question_id": "q-0003",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0003city"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "artemis",
+          "exact_match": true,
+          "expected_answer": "artemis",
+          "expected_answers": [
+            "artemis"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0004project"
+          ],
+          "question_id": "q-0004",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0004project"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "paella",
+          "exact_match": true,
+          "expected_answer": "paella",
+          "expected_answers": [
+            "paella"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0005food"
+          ],
+          "question_id": "q-0005",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0005food"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "lisbon",
+          "exact_match": true,
+          "expected_answer": "lisbon",
+          "expected_answers": [
+            "lisbon"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0006city"
+          ],
+          "question_id": "q-0006",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0006city"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "mercury",
+          "exact_match": true,
+          "expected_answer": "mercury",
+          "expected_answers": [
+            "mercury"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0007project"
+          ],
+          "question_id": "q-0007",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0007project"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "tacos",
+          "exact_match": true,
+          "expected_answer": "tacos",
+          "expected_answers": [
+            "tacos"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0008food"
+          ],
+          "question_id": "q-0008",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0008food"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "berlin",
+          "exact_match": true,
+          "expected_answer": "berlin",
+          "expected_answers": [
+            "berlin"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0009city"
+          ],
+          "question_id": "q-0009",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0009city"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "artemis",
+          "exact_match": true,
+          "expected_answer": "artemis",
+          "expected_answers": [
+            "artemis"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0010project"
+          ],
+          "question_id": "q-0010",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0010project"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "paella",
+          "exact_match": true,
+          "expected_answer": "paella",
+          "expected_answers": [
+            "paella"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0011food"
+          ],
+          "question_id": "q-0011",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0011food"
+          ],
+          "token_f1": 1.0
+        }
+      ],
+      "backend": "native-jsonl",
+      "metrics": {
+        "context_bytes": 1656,
+        "covered_answers": 0,
+        "derived_lineage_links": 0,
+        "exact_match_rate": 1.0,
+        "exact_matches": 12,
+        "extracted_fact_refs": 24,
+        "integrity_issues": [],
+        "questions": 12,
+        "raw_session_refs": 0,
+        "recall_at_k": 1.0,
+        "retrieval_hits": 12,
+        "token_f1": 1.0
+      },
+      "parameters": {
+        "dataset": "synthetic-locomo-like",
+        "memory_mode": "extracted",
+        "questions": 12,
+        "sessions": 24,
+        "top_k": 3
+      },
+      "passed": true,
+      "paths": {
+        "audit_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/native-jsonl-extracted-task-memory-bench-zea71bpa/events.jsonl",
+        "memory_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/native-jsonl-extracted-task-memory-bench-zea71bpa/memory",
+        "source_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/native-jsonl-extracted-task-memory-bench-zea71bpa/sources",
+        "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/native-jsonl-extracted-task-memory-bench-zea71bpa"
+      },
+      "semantic_limitations": [
+        "no immutable CAS node graph",
+        "retrieval is direct file scan rather than audited query events",
+        "answers do not carry typed citation edges or evidence coverage",
+        "no kernel integrity verification"
+      ],
+      "timings_ms": {
+        "ingest": 5.049041996244341,
+        "integrity": 0.0,
+        "qa": 0.10995898628607392,
+        "total": 5.159000982530415
+      }
+    },
+    {
+      "answers": [
+        {
+          "answer": "lisbon",
+          "answer_event_id": "event:560d4d7b-1e2b-4129-9962-e6379b9e1824",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0000city",
+              "node:62f22840-13a9-4400-95f6-a1d1183e98f6",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "lisbon",
+          "expected_answers": [
+            "lisbon"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0000city",
+            "memory:locomo/raw/session-0000"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:c3442770-63c7-4b61-8c1c-db43c86a42e9",
+          "question_id": "q-0000",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0000city"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "mercury",
+          "answer_event_id": "event:952f3e42-ab18-4a93-b2df-def6f5ce874b",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0001project",
+              "node:7a844548-c711-4d25-b7a3-b78a5ae739a7",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "mercury",
+          "expected_answers": [
+            "mercury"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0001project",
+            "memory:locomo/raw/session-0001"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:059a0b55-eae0-4098-a9f3-12e0ea833fd5",
+          "question_id": "q-0001",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0001project"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "tacos",
+          "answer_event_id": "event:ffc477fd-968c-4456-98ab-1d25271a8dfd",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0002food",
+              "node:95ceda0a-0fa5-42c7-98a1-8bc1d3318b69",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "tacos",
+          "expected_answers": [
+            "tacos"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0002food",
+            "memory:locomo/raw/session-0002"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:311316b7-c021-417e-94b2-6b72d36dc701",
+          "question_id": "q-0002",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0002food"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "berlin",
+          "answer_event_id": "event:1b1ea218-90df-48fb-8afc-8dd62b0e295b",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0003city",
+              "node:5674dfa3-40b4-476b-8eea-98a30c80e18d",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "berlin",
+          "expected_answers": [
+            "berlin"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0003city",
+            "memory:locomo/raw/session-0003"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:026ab277-5eea-4cc5-b413-831b27b7c0da",
+          "question_id": "q-0003",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0003city"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "artemis",
+          "answer_event_id": "event:44f7e574-b00d-44cc-989c-29e667f2655f",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0004project",
+              "node:691a0f93-2e5b-4888-8497-e6587d9c4a4b",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "artemis",
+          "expected_answers": [
+            "artemis"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0004project",
+            "memory:locomo/raw/session-0004"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:c4393d30-bed2-4dce-844f-5704a131373e",
+          "question_id": "q-0004",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0004project"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "paella",
+          "answer_event_id": "event:333383c1-c5d7-48f1-849a-898eb0c94d37",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0005food",
+              "node:73e17c50-5650-41d7-8603-a2d3aaf43b34",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "paella",
+          "expected_answers": [
+            "paella"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0005food",
+            "memory:locomo/raw/session-0005"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:ba657abb-0a66-4bcb-a698-86e39e8ee587",
+          "question_id": "q-0005",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0005food"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "lisbon",
+          "answer_event_id": "event:046045a9-7526-4599-811b-375cde112afd",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0006city",
+              "node:7fb805b9-fa2e-47d6-bd05-a03aeee53194",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "lisbon",
+          "expected_answers": [
+            "lisbon"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0006city",
+            "memory:locomo/raw/session-0006"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:e9634813-1d9d-43ef-9a73-af59f60eb717",
+          "question_id": "q-0006",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0006city"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "mercury",
+          "answer_event_id": "event:e53daa56-9f6b-49bc-b175-71d45e51eff0",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0007project",
+              "node:388bf2b2-7a1b-4571-9334-3dab72c592f7",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "mercury",
+          "expected_answers": [
+            "mercury"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0007project",
+            "memory:locomo/raw/session-0007"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:82fc137d-dc08-4c7d-95c3-304dcecab283",
+          "question_id": "q-0007",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0007project"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "tacos",
+          "answer_event_id": "event:8b78ba59-4723-4234-87f8-a53cb22c3891",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0008food",
+              "node:432add0d-7bd1-4471-9e77-6fb58e51ec94",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "tacos",
+          "expected_answers": [
+            "tacos"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0008food",
+            "memory:locomo/raw/session-0008"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:3e2c28b4-4b3d-4bf8-83dd-1b06356d2097",
+          "question_id": "q-0008",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0008food"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "berlin",
+          "answer_event_id": "event:04535129-68c5-453c-b6a0-ccab9b9547ae",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0009city",
+              "node:1718ef69-47ba-4290-bff0-4ddee0024931",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "berlin",
+          "expected_answers": [
+            "berlin"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0009city",
+            "memory:locomo/raw/session-0009"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:626974e5-69a1-49b0-a552-cfc41043cfea",
+          "question_id": "q-0009",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0009city"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "artemis",
+          "answer_event_id": "event:6e004c23-fc3a-4f49-bce9-61bcb1764866",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0010project",
+              "node:8dcef37d-8014-41f1-9e74-06cecac78343",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "artemis",
+          "expected_answers": [
+            "artemis"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0010project",
+            "memory:locomo/raw/session-0010"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:08f0c476-a457-4413-a5df-0a8a7189cddc",
+          "question_id": "q-0010",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0010project"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "paella",
+          "answer_event_id": "event:6f713867-5851-43cd-a104-8832f2eec333",
+          "coverage": [
+            [
+              "memory:locomo/fact/memorykey0011food",
+              "node:2c9f0ba4-5ac5-410d-b884-28d5f52ee078",
+              true,
+              1
+            ]
+          ],
+          "exact_match": true,
+          "expected_answer": "paella",
+          "expected_answers": [
+            "paella"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0011food",
+            "memory:locomo/raw/session-0011"
+          ],
+          "fallback_used": false,
+          "query_event_id": "event:5084473c-90a1-4f16-b126-5cea81acdad7",
+          "question_id": "q-0011",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0011food"
+          ],
+          "token_f1": 1.0
+        }
+      ],
+      "backend": "anfs",
+      "metrics": {
+        "context_bytes": 1656,
+        "covered_answers": 12,
+        "derived_lineage_links": 24,
+        "exact_match_rate": 1.0,
+        "exact_matches": 12,
+        "extracted_fact_refs": 24,
+        "integrity_issues": [],
+        "questions": 12,
+        "raw_session_refs": 24,
+        "recall_at_k": 1.0,
+        "retrieval_hits": 12,
+        "token_f1": 1.0
+      },
+      "parameters": {
+        "dataset": "synthetic-locomo-like",
+        "memory_mode": "hybrid",
+        "questions": 12,
+        "sessions": 24,
+        "top_k": 3
+      },
+      "passed": true,
+      "paths": {
+        "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-hybrid-task-memory-bench-o718jkcd/task-memory.db",
+        "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-hybrid-task-memory-bench-o718jkcd/objs",
+        "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-hybrid-task-memory-bench-o718jkcd"
+      },
+      "semantic_evidence": [
+        "raw sessions are stored as immutable ANFS nodes",
+        "extracted memories are derived nodes with lineage to raw sessions when enabled",
+        "questions use audited Workspace.query retrieval events",
+        "answers cite retrieved memory refs and expose evidence coverage",
+        "verify_integrity checks the resulting event/ref/evidence graph"
+      ],
+      "timings_ms": {
+        "ingest": 28.191625024192035,
+        "integrity": 9.857958008069545,
+        "qa": 26.19491599034518,
+        "total": 64.24449902260676
+      }
+    },
+    {
+      "answers": [
+        {
+          "answer": "lisbon",
+          "exact_match": true,
+          "expected_answer": "lisbon",
+          "expected_answers": [
+            "lisbon"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0000city",
+            "memory:locomo/raw/session-0000"
+          ],
+          "question_id": "q-0000",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0000city"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "mercury",
+          "exact_match": true,
+          "expected_answer": "mercury",
+          "expected_answers": [
+            "mercury"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0001project",
+            "memory:locomo/raw/session-0001"
+          ],
+          "question_id": "q-0001",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0001project"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "tacos",
+          "exact_match": true,
+          "expected_answer": "tacos",
+          "expected_answers": [
+            "tacos"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0002food",
+            "memory:locomo/raw/session-0002"
+          ],
+          "question_id": "q-0002",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0002food"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "berlin",
+          "exact_match": true,
+          "expected_answer": "berlin",
+          "expected_answers": [
+            "berlin"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0003city",
+            "memory:locomo/raw/session-0003"
+          ],
+          "question_id": "q-0003",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0003city"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "artemis",
+          "exact_match": true,
+          "expected_answer": "artemis",
+          "expected_answers": [
+            "artemis"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0004project",
+            "memory:locomo/raw/session-0004"
+          ],
+          "question_id": "q-0004",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0004project"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "paella",
+          "exact_match": true,
+          "expected_answer": "paella",
+          "expected_answers": [
+            "paella"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0005food",
+            "memory:locomo/raw/session-0005"
+          ],
+          "question_id": "q-0005",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0005food"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "lisbon",
+          "exact_match": true,
+          "expected_answer": "lisbon",
+          "expected_answers": [
+            "lisbon"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0006city",
+            "memory:locomo/raw/session-0006"
+          ],
+          "question_id": "q-0006",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0006city"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "mercury",
+          "exact_match": true,
+          "expected_answer": "mercury",
+          "expected_answers": [
+            "mercury"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0007project",
+            "memory:locomo/raw/session-0007"
+          ],
+          "question_id": "q-0007",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0007project"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "tacos",
+          "exact_match": true,
+          "expected_answer": "tacos",
+          "expected_answers": [
+            "tacos"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0008food",
+            "memory:locomo/raw/session-0008"
+          ],
+          "question_id": "q-0008",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0008food"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "berlin",
+          "exact_match": true,
+          "expected_answer": "berlin",
+          "expected_answers": [
+            "berlin"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0009city",
+            "memory:locomo/raw/session-0009"
+          ],
+          "question_id": "q-0009",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0009city"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "artemis",
+          "exact_match": true,
+          "expected_answer": "artemis",
+          "expected_answers": [
+            "artemis"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0010project",
+            "memory:locomo/raw/session-0010"
+          ],
+          "question_id": "q-0010",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0010project"
+          ],
+          "token_f1": 1.0
+        },
+        {
+          "answer": "paella",
+          "exact_match": true,
+          "expected_answer": "paella",
+          "expected_answers": [
+            "paella"
+          ],
+          "expected_refs": [
+            "memory:locomo/fact/memorykey0011food",
+            "memory:locomo/raw/session-0011"
+          ],
+          "question_id": "q-0011",
+          "retrieval_hit": true,
+          "retrieved_refs": [
+            "memory:locomo/fact/memorykey0011food"
+          ],
+          "token_f1": 1.0
+        }
+      ],
+      "backend": "native-jsonl",
+      "metrics": {
+        "context_bytes": 1656,
+        "covered_answers": 0,
+        "derived_lineage_links": 0,
+        "exact_match_rate": 1.0,
+        "exact_matches": 12,
+        "extracted_fact_refs": 24,
+        "integrity_issues": [],
+        "questions": 12,
+        "raw_session_refs": 24,
+        "recall_at_k": 1.0,
+        "retrieval_hits": 12,
+        "token_f1": 1.0
+      },
+      "parameters": {
+        "dataset": "synthetic-locomo-like",
+        "memory_mode": "hybrid",
+        "questions": 12,
+        "sessions": 24,
+        "top_k": 3
+      },
+      "passed": true,
+      "paths": {
+        "audit_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/native-jsonl-hybrid-task-memory-bench-ak_e7e0p/events.jsonl",
+        "memory_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/native-jsonl-hybrid-task-memory-bench-ak_e7e0p/memory",
+        "source_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/native-jsonl-hybrid-task-memory-bench-ak_e7e0p/sources",
+        "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/native-jsonl-hybrid-task-memory-bench-ak_e7e0p"
+      },
+      "semantic_limitations": [
+        "no immutable CAS node graph",
+        "retrieval is direct file scan rather than audited query events",
+        "answers do not carry typed citation edges or evidence coverage",
+        "no kernel integrity verification"
+      ],
+      "timings_ms": {
+        "ingest": 6.977792014367878,
+        "integrity": 0.0,
+        "qa": 0.15458400594070554,
+        "total": 7.132376020308584
+      }
+    }
+  ]
+}

@@ -1,0 +1,1060 @@
+{
+  "results": [
+    {
+      "accuracy": {
+        "approvals_expected": 4,
+        "approved_refs": 4,
+        "cache_contention_passed": true,
+        "event_sequence_contiguous": true,
+        "grep_expected": 20,
+        "grep_recall": 20,
+        "integrity_issues": [],
+        "large_file_passed": true,
+        "merge_expected": 40,
+        "merge_rows": 40,
+        "passed": true,
+        "process_exitcodes_ok": true,
+        "read_expected": 40,
+        "read_recall": 40,
+        "replay_expected": 42,
+        "replay_rows": 42,
+        "worker_failures": [],
+        "worker_result_count_ok": true,
+        "working_set_cache_passed": true
+      },
+      "audit": {
+        "edge_count": 283,
+        "event_count": 117,
+        "event_kinds": {
+          "approve": 4,
+          "checkout": 2,
+          "merge_workspace": 2,
+          "policy_decision": 6,
+          "publish": 10,
+          "read_ref": 40,
+          "search": 2,
+          "write": 51
+        },
+        "ref_event_count": 109,
+        "seq_count": 117
+      },
+      "backend": "anfs",
+      "cache_contention": {
+        "elapsed_ms": 112.71424998994917,
+        "enabled": true,
+        "expected_file_count": 22,
+        "expected_hits": null,
+        "expected_misses": null,
+        "failures": [],
+        "file_counts": [
+          22,
+          22,
+          22,
+          22
+        ],
+        "hits": 11,
+        "listed_contention_cache_count": 1,
+        "misses": 1,
+        "passed": true,
+        "process_exitcodes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "repeat_count": 3,
+        "shared_key": true,
+        "total_attempts": 12,
+        "worker_count": 4,
+        "worker_elapsed": [
+          37.04912500688806,
+          33.82854099618271,
+          36.5419999579899,
+          36.31237498484552
+        ],
+        "workspace": "ws:agent-0"
+      },
+      "large_file": {
+        "bytes": 131072,
+        "cached_chunks": 2,
+        "chunk_size": 65536,
+        "derived_chunks": 2,
+        "enabled": true,
+        "expected_chunks": 2,
+        "node_id": "node:47e21091-8fd1-480c-b9d3-fc73a5758b62",
+        "passed": true,
+        "range_ok": 8,
+        "range_read_count": 8,
+        "range_size": 2048,
+        "throughput": {
+          "chunk_cache_read_rows_per_s": 12834.254710349283,
+          "chunk_derive_mb_per_s": 25.882377000644635,
+          "range_reads_per_s": 7298.9904369963915
+        },
+        "timings_ms": {
+          "cache_build": 4.855541046708822,
+          "cache_read": 0.1558329677209258,
+          "derive_chunks": 4.8295409651473165,
+          "range_reads": 1.0960419895127416,
+          "write": 6.16425002226606
+        }
+      },
+      "parameters": {
+        "agents": 2,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": true,
+        "cache_worker_repeats": 3,
+        "cache_workers": 4,
+        "chunk_size": 65536,
+        "files_per_agent": 20,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 2,
+        "payload_bytes": 256,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "paths": {
+        "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-8op50k2x/anfs.db",
+        "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-8op50k2x/objs",
+        "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-8op50k2x/replay",
+        "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-8op50k2x"
+      },
+      "throughput": {
+        "concurrent_writes_per_s": 346.11869256447847,
+        "merge_refs_per_s": 11035.496483653265,
+        "replay_files_per_s": 1618.0606366046086
+      },
+      "timings_ms": {
+        "approve": 7.662332965992391,
+        "cache_contention": 112.71424998994917,
+        "concurrent_read_write_grep": 115.56729197036475,
+        "integrity": 29.800000018440187,
+        "large_file": 17.101206991355866,
+        "merge": 3.6246670060791075,
+        "replay": 25.957000034395605,
+        "setup_checkout": 1.734166988171637,
+        "total": 346.01300000213087,
+        "worker_elapsed": [
+          13.513749989215285,
+          12.648375006392598
+        ],
+        "working_set_cache": 24.241167004220188
+      },
+      "working_set_cache": {
+        "cache_key": "agent-0",
+        "elapsed_ms": 24.241167004220188,
+        "enabled": true,
+        "expected_file_count": 22,
+        "file_count": 22,
+        "hits": 1,
+        "listed_cache_count": 1,
+        "misses": 1,
+        "passed": true,
+        "per_repeat_ms": 12.120583502110094,
+        "repeat_count": 2,
+        "workspace": "ws:agent-0"
+      }
+    },
+    {
+      "accuracy": {
+        "approvals_expected": 4,
+        "approved_refs": 4,
+        "cache_contention_passed": true,
+        "event_sequence_contiguous": true,
+        "grep_expected": 20,
+        "grep_recall": 20,
+        "integrity_issues": [],
+        "large_file_passed": true,
+        "merge_expected": 40,
+        "merge_rows": 40,
+        "passed": true,
+        "process_exitcodes_ok": true,
+        "read_expected": 40,
+        "read_recall": 40,
+        "replay_expected": 42,
+        "replay_rows": 42,
+        "worker_failures": [],
+        "worker_result_count_ok": true,
+        "working_set_cache_passed": true
+      },
+      "audit": {
+        "edge_count": 234,
+        "event_count": 114,
+        "event_kinds": {
+          "approve": 4,
+          "checkout": 2,
+          "merge_workspace": 2,
+          "policy_decision": 4,
+          "publish": 10,
+          "read_ref": 40,
+          "search": 2,
+          "write": 50
+        },
+        "ref_event_count": 108,
+        "semantic_limitations": [
+          "audit log is separate from file mutations",
+          "no immutable CAS node graph",
+          "lineage approval is simulated in Python metadata",
+          "replay is current-directory copy, not event-time reconstruction"
+        ],
+        "seq_count": 114
+      },
+      "backend": "native-jsonl",
+      "cache_contention": {
+        "elapsed_ms": 69.92470804834738,
+        "enabled": true,
+        "expected_file_count": 22,
+        "expected_hits": null,
+        "expected_misses": null,
+        "failures": [],
+        "file_counts": [
+          22,
+          22,
+          22,
+          22
+        ],
+        "hits": 11,
+        "misses": 1,
+        "passed": true,
+        "process_exitcodes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "repeat_count": 3,
+        "semantic_limitations": [
+          "workers use separate cache directories",
+          "cache reuse is based only on file-count metadata",
+          "no kernel integrity verification over cached files"
+        ],
+        "shared_key": true,
+        "total_attempts": 12,
+        "worker_count": 4,
+        "worker_elapsed": [
+          5.136708961799741,
+          7.012415968347341,
+          7.965416996739805,
+          6.065832974854857
+        ],
+        "workspace": "ws:agent-0"
+      },
+      "large_file": {
+        "bytes": 131072,
+        "cached_chunks": 2,
+        "chunk_size": 65536,
+        "derived_chunks": 2,
+        "enabled": true,
+        "expected_chunks": 2,
+        "passed": true,
+        "range_ok": 8,
+        "range_read_count": 8,
+        "range_size": 2048,
+        "semantic_limitations": [
+          "chunk index is sidecar JSON, not a kernel-verified derived table",
+          "range reads do not pass through fragment policy gates",
+          "no immutable node id ties the chunk index to file content"
+        ],
+        "throughput": {
+          "chunk_cache_read_rows_per_s": 40336.4271091968,
+          "chunk_derive_mb_per_s": 1304.3526826441723,
+          "range_reads_per_s": 167686.80185013244
+        },
+        "timings_ms": {
+          "cache_build": 0.12275000335648656,
+          "cache_read": 0.04958297358825803,
+          "derive_chunks": 0.09583297651261091,
+          "range_reads": 0.047707988414913416,
+          "write": 0.18266699044033885
+        }
+      },
+      "parameters": {
+        "agents": 2,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": true,
+        "cache_worker_repeats": 3,
+        "cache_workers": 4,
+        "chunk_size": 65536,
+        "files_per_agent": 20,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 2,
+        "payload_bytes": 256,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "paths": {
+        "audit_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/native-jsonl-agent-memory-bench-bq295b70/audit",
+        "base_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/native-jsonl-agent-memory-bench-bq295b70/base",
+        "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/native-jsonl-agent-memory-bench-bq295b70/replay",
+        "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/native-jsonl-agent-memory-bench-bq295b70"
+      },
+      "throughput": {
+        "concurrent_writes_per_s": 568.3476560652243,
+        "merge_refs_per_s": 3800.023750108093,
+        "replay_files_per_s": 5974.998039354998
+      },
+      "timings_ms": {
+        "approve": 4.41412499640137,
+        "cache_contention": 69.92470804834738,
+        "concurrent_read_write_grep": 70.37945801857859,
+        "integrity": 0.5882090190425515,
+        "large_file": 0.49854093231260777,
+        "merge": 10.526250000111759,
+        "replay": 7.029291009530425,
+        "setup_checkout": 2.718583040405065,
+        "total": 171.0481659974903,
+        "worker_elapsed": [
+          11.219042004086077,
+          11.108709033578634
+        ],
+        "working_set_cache": 4.0868750074878335
+      },
+      "working_set_cache": {
+        "cache_key": "agent-0",
+        "elapsed_ms": 4.0868750074878335,
+        "enabled": true,
+        "expected_file_count": 22,
+        "file_count": 22,
+        "hits": 1,
+        "misses": 1,
+        "passed": true,
+        "per_repeat_ms": 2.0434375037439167,
+        "repeat_count": 2,
+        "semantic_limitations": [
+          "cache reuse is based only on file-count metadata",
+          "no manifest hash over ANFS refs and node ids",
+          "no kernel integrity verification over cached files"
+        ],
+        "workspace": "ws:agent-0"
+      }
+    },
+    {
+      "accuracy": {
+        "approvals_expected": 4,
+        "approved_refs": 4,
+        "cache_contention_passed": true,
+        "event_sequence_contiguous": true,
+        "grep_expected": 20,
+        "grep_recall": 20,
+        "integrity_issues": [],
+        "large_file_passed": true,
+        "merge_expected": 40,
+        "merge_rows": 40,
+        "passed": true,
+        "process_exitcodes_ok": true,
+        "read_expected": 40,
+        "read_recall": 40,
+        "replay_expected": 42,
+        "replay_rows": 42,
+        "retrieval_index_documents": 94,
+        "worker_failures": [],
+        "worker_result_count_ok": true,
+        "working_set_cache_passed": true
+      },
+      "audit": {
+        "edge_count": 234,
+        "event_count": 114,
+        "event_kinds": {
+          "approve": 4,
+          "checkout": 2,
+          "merge_workspace": 2,
+          "policy_decision": 4,
+          "publish": 10,
+          "read_ref": 40,
+          "retrieval_search": 2,
+          "write": 50
+        },
+        "ref_event_count": 108,
+        "semantic_limitations": [
+          "retrieval index is append-only JSONL outside the file mutation primitive",
+          "retrieval search is lexical token matching, not vector similarity",
+          "no immutable CAS node graph",
+          "lineage approval is simulated in Python metadata",
+          "replay is current-directory copy, not event-time reconstruction",
+          "no integrated policy or fragment visibility semantics"
+        ],
+        "seq_count": 114
+      },
+      "backend": "rag-jsonl",
+      "cache_contention": {
+        "elapsed_ms": 69.06404200708494,
+        "enabled": true,
+        "expected_file_count": 22,
+        "expected_hits": null,
+        "expected_misses": null,
+        "failures": [],
+        "file_counts": [
+          22,
+          22,
+          22,
+          22
+        ],
+        "hits": 11,
+        "misses": 1,
+        "passed": true,
+        "process_exitcodes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "repeat_count": 3,
+        "semantic_limitations": [
+          "workers use separate cache directories",
+          "cache reuse is based only on file-count metadata",
+          "no kernel integrity verification over cached files"
+        ],
+        "shared_key": true,
+        "total_attempts": 12,
+        "worker_count": 4,
+        "worker_elapsed": [
+          7.940332987345755,
+          5.05933299427852,
+          6.949000002350658,
+          6.006874958984554
+        ],
+        "workspace": "ws:agent-0"
+      },
+      "large_file": {
+        "bytes": 131072,
+        "cached_chunks": 2,
+        "chunk_size": 65536,
+        "derived_chunks": 2,
+        "enabled": true,
+        "expected_chunks": 2,
+        "passed": true,
+        "range_ok": 8,
+        "range_read_count": 8,
+        "range_size": 2048,
+        "semantic_limitations": [
+          "chunk index is sidecar JSON, not a kernel-verified derived table",
+          "range reads do not pass through fragment policy gates",
+          "no immutable node id ties the chunk index to file content"
+        ],
+        "throughput": {
+          "chunk_cache_read_rows_per_s": 36809.36478508245,
+          "chunk_derive_mb_per_s": 1578.9612730605465,
+          "range_reads_per_s": 137537.2926362349
+        },
+        "timings_ms": {
+          "cache_build": 0.15008304035291076,
+          "cache_read": 0.054333999287337065,
+          "derive_chunks": 0.0791659695096314,
+          "range_reads": 0.05816604243591428,
+          "write": 0.15495799016207457
+        }
+      },
+      "parameters": {
+        "agents": 2,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": true,
+        "cache_worker_repeats": 3,
+        "cache_workers": 4,
+        "chunk_size": 65536,
+        "files_per_agent": 20,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 2,
+        "payload_bytes": 256,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "paths": {
+        "audit_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/rag-jsonl-agent-memory-bench-vnmmayws/audit",
+        "base_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/rag-jsonl-agent-memory-bench-vnmmayws/base",
+        "index_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/rag-jsonl-agent-memory-bench-vnmmayws/retrieval_index",
+        "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/rag-jsonl-agent-memory-bench-vnmmayws/replay",
+        "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/rag-jsonl-agent-memory-bench-vnmmayws"
+      },
+      "retrieval_index": {
+        "document_rows": 94,
+        "token_rows": 510,
+        "unique_documents": 94
+      },
+      "throughput": {
+        "concurrent_writes_per_s": 566.6384530131315,
+        "merge_refs_per_s": 3212.679293296805,
+        "replay_files_per_s": 6101.289239291306
+      },
+      "timings_ms": {
+        "approve": 4.705166968051344,
+        "cache_contention": 69.06404200708494,
+        "concurrent_read_write_grep": 70.59174997266382,
+        "integrity": 0.822375004645437,
+        "large_file": 0.49670704174786806,
+        "merge": 12.450666981749237,
+        "replay": 6.883791007567197,
+        "setup_checkout": 3.6139169824309647,
+        "total": 173.58775000320747,
+        "worker_elapsed": [
+          12.848832993768156,
+          12.762208003550768
+        ],
+        "working_set_cache": 4.120249999687076
+      },
+      "working_set_cache": {
+        "cache_key": "agent-0",
+        "elapsed_ms": 4.120249999687076,
+        "enabled": true,
+        "expected_file_count": 22,
+        "file_count": 22,
+        "hits": 1,
+        "misses": 1,
+        "passed": true,
+        "per_repeat_ms": 2.060124999843538,
+        "repeat_count": 2,
+        "semantic_limitations": [
+          "cache reuse is based only on file-count metadata",
+          "no manifest hash over ANFS refs and node ids",
+          "no kernel integrity verification over cached files"
+        ],
+        "workspace": "ws:agent-0"
+      }
+    },
+    {
+      "accuracy": {
+        "approvals_expected": 4,
+        "approved_refs": 4,
+        "cache_contention_passed": true,
+        "event_sequence_contiguous": true,
+        "grep_expected": 20,
+        "grep_recall": 20,
+        "integrity_issues": [],
+        "large_file_passed": true,
+        "merge_expected": 40,
+        "merge_rows": 40,
+        "passed": true,
+        "process_exitcodes_ok": true,
+        "read_expected": 40,
+        "read_recall": 40,
+        "replay_expected": 42,
+        "replay_rows": 42,
+        "retrieval_index_documents": 94,
+        "worker_failures": [],
+        "worker_result_count_ok": true,
+        "working_set_cache_passed": true
+      },
+      "audit": {
+        "edge_count": 234,
+        "event_count": 114,
+        "event_kinds": {
+          "approve": 4,
+          "checkout": 2,
+          "merge_workspace": 2,
+          "policy_decision": 4,
+          "publish": 10,
+          "read_ref": 40,
+          "vector_search": 2,
+          "write": 50
+        },
+        "ref_event_count": 108,
+        "semantic_limitations": [
+          "external vector index is append-only JSONL outside the file mutation primitive",
+          "vector search uses deterministic hashed embeddings and cosine similarity, not a managed vector database service",
+          "no immutable CAS node graph",
+          "lineage approval is simulated in Python metadata",
+          "replay is current-directory copy, not event-time reconstruction",
+          "no integrated policy or fragment visibility semantics"
+        ],
+        "seq_count": 114
+      },
+      "backend": "external-vector-jsonl",
+      "cache_contention": {
+        "elapsed_ms": 68.89116700040177,
+        "enabled": true,
+        "expected_file_count": 22,
+        "expected_hits": null,
+        "expected_misses": null,
+        "failures": [],
+        "file_counts": [
+          22,
+          22,
+          22,
+          22
+        ],
+        "hits": 11,
+        "misses": 1,
+        "passed": true,
+        "process_exitcodes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "repeat_count": 3,
+        "semantic_limitations": [
+          "workers use separate cache directories",
+          "cache reuse is based only on file-count metadata",
+          "no kernel integrity verification over cached files"
+        ],
+        "shared_key": true,
+        "total_attempts": 12,
+        "worker_count": 4,
+        "worker_elapsed": [
+          7.066750025842339,
+          6.1085419729352,
+          8.008334029000252,
+          5.170332966372371
+        ],
+        "workspace": "ws:agent-0"
+      },
+      "large_file": {
+        "bytes": 131072,
+        "cached_chunks": 2,
+        "chunk_size": 65536,
+        "derived_chunks": 2,
+        "enabled": true,
+        "expected_chunks": 2,
+        "passed": true,
+        "range_ok": 8,
+        "range_read_count": 8,
+        "range_size": 2048,
+        "semantic_limitations": [
+          "chunk index is sidecar JSON, not a kernel-verified derived table",
+          "range reads do not pass through fragment policy gates",
+          "no immutable node id ties the chunk index to file content"
+        ],
+        "throughput": {
+          "chunk_cache_read_rows_per_s": 37735.85182305309,
+          "chunk_derive_mb_per_s": 1600.0003337860803,
+          "range_reads_per_s": 120376.75256363094
+        },
+        "timings_ms": {
+          "cache_build": 0.13595802010968328,
+          "cache_read": 0.05299999611452222,
+          "derive_chunks": 0.07812498370185494,
+          "range_reads": 0.06645801477134228,
+          "write": 0.15379098476842046
+        }
+      },
+      "parameters": {
+        "agents": 2,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": true,
+        "cache_worker_repeats": 3,
+        "cache_workers": 4,
+        "chunk_size": 65536,
+        "files_per_agent": 20,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 2,
+        "payload_bytes": 256,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "paths": {
+        "audit_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/external-vector-jsonl-agent-memory-bench-otr0mtbx/audit",
+        "base_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/external-vector-jsonl-agent-memory-bench-otr0mtbx/base",
+        "index_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/external-vector-jsonl-agent-memory-bench-otr0mtbx/vector_index",
+        "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/external-vector-jsonl-agent-memory-bench-otr0mtbx/replay",
+        "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/external-vector-jsonl-agent-memory-bench-otr0mtbx"
+      },
+      "retrieval_index": {
+        "dimensions": 64,
+        "unique_documents": 94,
+        "vector_rows": 94
+      },
+      "throughput": {
+        "concurrent_writes_per_s": 561.9289619075743,
+        "merge_refs_per_s": 3035.822699483023,
+        "replay_files_per_s": 6090.230253223786
+      },
+      "timings_ms": {
+        "approve": 5.03225001739338,
+        "cache_contention": 68.89116700040177,
+        "concurrent_read_write_grep": 71.18337496649474,
+        "integrity": 1.159041014034301,
+        "large_file": 0.4873319994658232,
+        "merge": 13.17600003676489,
+        "replay": 6.896290986333042,
+        "setup_checkout": 3.7531249690800905,
+        "total": 175.63320900080726,
+        "worker_elapsed": [
+          13.303416024427861,
+          13.036082964390516
+        ],
+        "working_set_cache": 4.180124960839748
+      },
+      "working_set_cache": {
+        "cache_key": "agent-0",
+        "elapsed_ms": 4.180124960839748,
+        "enabled": true,
+        "expected_file_count": 22,
+        "file_count": 22,
+        "hits": 1,
+        "misses": 1,
+        "passed": true,
+        "per_repeat_ms": 2.090062480419874,
+        "repeat_count": 2,
+        "semantic_limitations": [
+          "cache reuse is based only on file-count metadata",
+          "no manifest hash over ANFS refs and node ids",
+          "no kernel integrity verification over cached files"
+        ],
+        "workspace": "ws:agent-0"
+      }
+    },
+    {
+      "accuracy": {
+        "approvals_expected": 4,
+        "approved_refs": 4,
+        "cache_contention_passed": true,
+        "event_sequence_contiguous": true,
+        "grep_expected": 20,
+        "grep_recall": 20,
+        "integrity_issues": [],
+        "large_file_passed": true,
+        "merge_expected": 40,
+        "merge_rows": 40,
+        "passed": true,
+        "process_exitcodes_ok": true,
+        "read_expected": 40,
+        "read_recall": 40,
+        "replay_expected": 42,
+        "replay_rows": 42,
+        "worker_failures": [],
+        "worker_result_count_ok": true,
+        "working_set_cache_passed": true
+      },
+      "audit": {
+        "edge_count": 234,
+        "event_count": 114,
+        "event_kinds": {
+          "approve": 4,
+          "checkout": 2,
+          "merge_workspace": 2,
+          "policy_decision": 4,
+          "publish": 10,
+          "read_ref": 40,
+          "search": 2,
+          "write": 50
+        },
+        "ref_event_count": 108,
+        "semantic_limitations": [
+          "human-readable markdown audit is separate from file mutations",
+          "no immutable CAS node graph",
+          "lineage approval is simulated in Python metadata",
+          "replay is current-directory copy, not event-time reconstruction",
+          "no integrated policy or fragment visibility semantics"
+        ],
+        "seq_count": 114
+      },
+      "backend": "markdownfs",
+      "cache_contention": {
+        "elapsed_ms": 69.31225000880659,
+        "enabled": true,
+        "expected_file_count": 22,
+        "expected_hits": null,
+        "expected_misses": null,
+        "failures": [],
+        "file_counts": [
+          22,
+          22,
+          22,
+          22
+        ],
+        "hits": 11,
+        "misses": 1,
+        "passed": true,
+        "process_exitcodes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "repeat_count": 3,
+        "semantic_limitations": [
+          "workers use separate cache directories",
+          "cache reuse is based only on file-count metadata",
+          "no kernel integrity verification over cached files"
+        ],
+        "shared_key": true,
+        "total_attempts": 12,
+        "worker_count": 4,
+        "worker_elapsed": [
+          9.166124975308776,
+          7.821541978046298,
+          5.235541961155832,
+          6.501083029434085
+        ],
+        "workspace": "ws:agent-0"
+      },
+      "large_file": {
+        "bytes": 131072,
+        "cached_chunks": 2,
+        "chunk_size": 65536,
+        "derived_chunks": 2,
+        "enabled": true,
+        "expected_chunks": 2,
+        "passed": true,
+        "range_ok": 8,
+        "range_read_count": 8,
+        "range_size": 2048,
+        "semantic_limitations": [
+          "chunk index is sidecar JSON, not a kernel-verified derived table",
+          "range reads do not pass through fragment policy gates",
+          "no immutable node id ties the chunk index to file content"
+        ],
+        "throughput": {
+          "chunk_cache_read_rows_per_s": 47619.01499954958,
+          "chunk_derive_mb_per_s": 1742.159733129113,
+          "range_reads_per_s": 174227.2012413022
+        },
+        "timings_ms": {
+          "cache_build": 0.12858299305662513,
+          "cache_read": 0.042000028770416975,
+          "derive_chunks": 0.07175002247095108,
+          "range_reads": 0.04591705510392785,
+          "write": 0.18420902779325843
+        }
+      },
+      "parameters": {
+        "agents": 2,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": true,
+        "cache_worker_repeats": 3,
+        "cache_workers": 4,
+        "chunk_size": 65536,
+        "files_per_agent": 20,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 2,
+        "payload_bytes": 256,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "paths": {
+        "audit_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/markdownfs-agent-memory-bench-xkwvngeg/audit",
+        "base_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/markdownfs-agent-memory-bench-xkwvngeg/base",
+        "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/markdownfs-agent-memory-bench-xkwvngeg/replay",
+        "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/markdownfs-agent-memory-bench-xkwvngeg"
+      },
+      "throughput": {
+        "concurrent_writes_per_s": 556.6511379257428,
+        "merge_refs_per_s": 4728.085975861809,
+        "replay_files_per_s": 6039.545224774725
+      },
+      "timings_ms": {
+        "approve": 5.116834014188498,
+        "cache_contention": 69.31225000880659,
+        "concurrent_read_write_grep": 71.85829197987914,
+        "integrity": 3.3130000228993595,
+        "large_file": 0.47245912719517946,
+        "merge": 8.460083045065403,
+        "replay": 6.954165990464389,
+        "setup_checkout": 2.948499983176589,
+        "total": 173.4612500295043,
+        "worker_elapsed": [
+          13.99858295917511,
+          13.853457989171147
+        ],
+        "working_set_cache": 4.105167055968195
+      },
+      "working_set_cache": {
+        "cache_key": "agent-0",
+        "elapsed_ms": 4.105167055968195,
+        "enabled": true,
+        "expected_file_count": 22,
+        "file_count": 22,
+        "hits": 1,
+        "misses": 1,
+        "passed": true,
+        "per_repeat_ms": 2.0525835279840976,
+        "repeat_count": 2,
+        "semantic_limitations": [
+          "cache reuse is based only on file-count metadata",
+          "no manifest hash over ANFS refs and node ids",
+          "no kernel integrity verification over cached files"
+        ],
+        "workspace": "ws:agent-0"
+      }
+    },
+    {
+      "accuracy": {
+        "approvals_expected": 4,
+        "approved_refs": 4,
+        "cache_contention_passed": true,
+        "event_sequence_contiguous": true,
+        "grep_expected": 20,
+        "grep_recall": 20,
+        "integrity_issues": [],
+        "large_file_passed": true,
+        "merge_expected": 40,
+        "merge_rows": 40,
+        "passed": true,
+        "process_exitcodes_ok": true,
+        "read_expected": 40,
+        "read_recall": 40,
+        "replay_expected": 42,
+        "replay_rows": 42,
+        "worker_failures": [],
+        "worker_result_count_ok": true,
+        "working_set_cache_passed": true
+      },
+      "audit": {
+        "edge_count": 234,
+        "event_count": 114,
+        "event_kinds": {
+          "approve": 4,
+          "checkout": 2,
+          "merge_workspace": 2,
+          "policy_decision": 4,
+          "publish": 10,
+          "read_ref": 40,
+          "search": 2,
+          "write": 50
+        },
+        "ref_event_count": 108,
+        "semantic_limitations": [
+          "plain workspace/path/content rows, not immutable CAS nodes",
+          "audit events are not typed causal graph edges",
+          "lineage approval is simulated through one metadata table",
+          "replay is current-row materialization, not event-time reconstruction",
+          "no integrated policy or fragment visibility semantics"
+        ],
+        "seq_count": 114
+      },
+      "backend": "sqlite-memory",
+      "cache_contention": {
+        "elapsed_ms": 73.29650002066046,
+        "enabled": true,
+        "expected_file_count": 22,
+        "expected_hits": null,
+        "expected_misses": null,
+        "failures": [],
+        "file_counts": [
+          22,
+          22,
+          22,
+          22
+        ],
+        "hits": 8,
+        "misses": 4,
+        "passed": true,
+        "process_exitcodes": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "repeat_count": 3,
+        "semantic_limitations": [
+          "cache rows store counts, not materialized immutable working sets",
+          "shared-key contention relies on SQLite row locking only"
+        ],
+        "shared_key": true,
+        "total_attempts": 12,
+        "worker_count": 4,
+        "worker_elapsed": [
+          12.235292000696063,
+          1.6052499995566905,
+          4.724874976091087,
+          0.09541702456772327
+        ],
+        "workspace": "ws:agent-0"
+      },
+      "large_file": {
+        "bytes": 131072,
+        "cached_chunks": 2,
+        "chunk_size": 65536,
+        "derived_chunks": 2,
+        "enabled": true,
+        "expected_chunks": 2,
+        "passed": true,
+        "range_ok": 8,
+        "range_read_count": 8,
+        "range_size": 2048,
+        "semantic_limitations": [
+          "large blob is mutable table content, not an immutable node",
+          "range reads do not pass through fragment policy gates",
+          "chunk rows are application-maintained, not kernel-repairable projections"
+        ],
+        "throughput": {
+          "chunk_cache_read_rows_per_s": 172042.99288990366,
+          "chunk_derive_mb_per_s": 1606.8699342057512,
+          "range_reads_per_s": 119776.57931032078
+        },
+        "timings_ms": {
+          "cache_build": 0.034416967537254095,
+          "cache_read": 0.011625001206994057,
+          "derive_chunks": 0.07779098814353347,
+          "range_reads": 0.06679102079942822,
+          "write": 0.23920799139887094
+        }
+      },
+      "parameters": {
+        "agents": 2,
+        "approvals": 4,
+        "base_files": 2,
+        "cache_repeats": 2,
+        "cache_shared_key": true,
+        "cache_worker_repeats": 3,
+        "cache_workers": 4,
+        "chunk_size": 65536,
+        "files_per_agent": 20,
+        "large_file_bytes": 131072,
+        "large_range_stride": 65537,
+        "needle_every": 2,
+        "payload_bytes": 256,
+        "range_read_count": 8,
+        "range_size": 2048
+      },
+      "paths": {
+        "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/sqlite-memory-agent-memory-bench-lhoz8yjn/sqlite-memory.db",
+        "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/sqlite-memory-agent-memory-bench-lhoz8yjn/replay",
+        "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/sqlite-memory-agent-memory-bench-lhoz8yjn"
+      },
+      "throughput": {
+        "concurrent_writes_per_s": 661.5598001058354,
+        "merge_refs_per_s": 97195.42218522205,
+        "replay_files_per_s": 12725.664736180126
+      },
+      "timings_ms": {
+        "approve": 0.315292039886117,
+        "cache_contention": 73.29650002066046,
+        "concurrent_read_write_grep": 60.46316598076373,
+        "integrity": 0.21708296844735742,
+        "large_file": 0.4298319690860808,
+        "merge": 0.411542016081512,
+        "replay": 3.3004169818013906,
+        "setup_checkout": 0.19400002202019095,
+        "total": 140.825041977223,
+        "worker_elapsed": [
+          1.1132090003229678,
+          2.6627909974195063
+        ],
+        "working_set_cache": 0.0547909876331687
+      },
+      "working_set_cache": {
+        "cache_key": "agent-0",
+        "elapsed_ms": 0.0547909876331687,
+        "enabled": true,
+        "expected_file_count": 22,
+        "file_count": 22,
+        "hits": 1,
+        "misses": 1,
+        "passed": true,
+        "per_repeat_ms": 0.02739549381658435,
+        "repeat_count": 2,
+        "semantic_limitations": [
+          "cache reuse is based only on row-count metadata",
+          "no manifest hash over refs and immutable node ids",
+          "no kernel integrity verification over cached working sets"
+        ],
+        "workspace": "ws:agent-0"
+      }
+    }
+  ]
+}

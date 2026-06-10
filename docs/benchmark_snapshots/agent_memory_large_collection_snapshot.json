@@ -1,0 +1,154 @@
+{
+  "accuracy": {
+    "approvals_expected": 8,
+    "approved_refs": 8,
+    "cache_contention_passed": true,
+    "event_sequence_contiguous": true,
+    "grep_expected": 64,
+    "grep_recall": 64,
+    "integrity_issues": [],
+    "large_file_passed": true,
+    "merge_expected": 256,
+    "merge_rows": 256,
+    "passed": true,
+    "process_exitcodes_ok": true,
+    "read_expected": 256,
+    "read_recall": 256,
+    "replay_expected": 260,
+    "replay_rows": 260,
+    "worker_failures": [],
+    "worker_result_count_ok": true,
+    "working_set_cache_passed": true
+  },
+  "audit": {
+    "edge_count": 1485,
+    "event_count": 585,
+    "event_kinds": {
+      "approve": 8,
+      "checkout": 4,
+      "merge_workspace": 4,
+      "policy_decision": 12,
+      "publish": 20,
+      "read_ref": 256,
+      "search": 4,
+      "write": 277
+    },
+    "ref_event_count": 577,
+    "seq_count": 585
+  },
+  "backend": "anfs",
+  "cache_contention": {
+    "elapsed_ms": 107.61454200837761,
+    "enabled": true,
+    "expected_file_count": 68,
+    "expected_hits": 0,
+    "expected_misses": 2,
+    "failures": [],
+    "file_counts": [
+      68,
+      68
+    ],
+    "hits": 0,
+    "listed_contention_cache_count": 2,
+    "misses": 2,
+    "passed": true,
+    "process_exitcodes": [
+      0,
+      0
+    ],
+    "repeat_count": 1,
+    "shared_key": false,
+    "total_attempts": 2,
+    "worker_count": 2,
+    "worker_elapsed": [
+      41.8743749614805,
+      42.560292000416666
+    ],
+    "workspace": "ws:agent-0"
+  },
+  "large_file": {
+    "bytes": 262144,
+    "cached_chunks": 4,
+    "chunk_size": 65536,
+    "derived_chunks": 4,
+    "enabled": true,
+    "expected_chunks": 4,
+    "node_id": "node:7e39ff51-fc7b-4490-b043-81efabf4c61e",
+    "passed": true,
+    "range_ok": 8,
+    "range_read_count": 8,
+    "range_size": 4096,
+    "throughput": {
+      "chunk_cache_read_rows_per_s": 25572.825887994488,
+      "chunk_derive_mb_per_s": 26.205220015851992,
+      "range_reads_per_s": 7238.724811386963
+    },
+    "timings_ms": {
+      "cache_build": 9.662333992309868,
+      "cache_read": 0.156416033860296,
+      "derive_chunks": 9.540083992760628,
+      "range_reads": 1.105167029891163,
+      "write": 11.337584001012146
+    }
+  },
+  "parameters": {
+    "agents": 4,
+    "approvals": 8,
+    "base_files": 4,
+    "cache_repeats": 1,
+    "cache_shared_key": false,
+    "cache_worker_repeats": 1,
+    "cache_workers": 2,
+    "chunk_size": 65536,
+    "files_per_agent": 64,
+    "large_file_bytes": 262144,
+    "large_range_stride": 65537,
+    "needle_every": 4,
+    "payload_bytes": 1024,
+    "range_read_count": 8,
+    "range_size": 4096
+  },
+  "paths": {
+    "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-n83q9vrd/anfs.db",
+    "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-n83q9vrd/objs",
+    "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-n83q9vrd/replay",
+    "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-n83q9vrd"
+  },
+  "throughput": {
+    "concurrent_writes_per_s": 754.9263753263409,
+    "merge_refs_per_s": 14381.652467367932,
+    "replay_files_per_s": 1722.9934542772728
+  },
+  "timings_ms": {
+    "approve": 28.168708027806133,
+    "cache_contention": 107.61454200837761,
+    "concurrent_read_write_grep": 339.10591597668827,
+    "integrity": 139.6327079855837,
+    "large_file": 31.801585049834102,
+    "merge": 17.800457950215787,
+    "replay": 150.90016700560227,
+    "setup_checkout": 3.495790995657444,
+    "total": 867.6886250032112,
+    "worker_elapsed": [
+      257.61000002967194,
+      40.46699998434633,
+      139.33299999916926,
+      153.7512080394663
+    ],
+    "working_set_cache": 40.605165995657444
+  },
+  "working_set_cache": {
+    "cache_key": "agent-0",
+    "elapsed_ms": 40.605165995657444,
+    "enabled": true,
+    "expected_file_count": 68,
+    "file_count": 68,
+    "hits": 0,
+    "listed_cache_count": 1,
+    "misses": 1,
+    "passed": true,
+    "per_repeat_ms": 40.605165995657444,
+    "repeat_count": 1,
+    "workspace": "ws:agent-0"
+  }
+}

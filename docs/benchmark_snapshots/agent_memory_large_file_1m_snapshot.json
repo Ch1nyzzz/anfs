@@ -1,0 +1,149 @@
+{
+  "accuracy": {
+    "approvals_expected": 2,
+    "approved_refs": 2,
+    "cache_contention_passed": true,
+    "event_sequence_contiguous": true,
+    "grep_expected": 16,
+    "grep_recall": 16,
+    "integrity_issues": [],
+    "large_file_passed": true,
+    "merge_expected": 16,
+    "merge_rows": 16,
+    "passed": true,
+    "process_exitcodes_ok": true,
+    "read_expected": 16,
+    "read_recall": 16,
+    "replay_expected": 18,
+    "replay_rows": 18,
+    "worker_failures": [],
+    "worker_result_count_ok": true,
+    "working_set_cache_passed": true
+  },
+  "audit": {
+    "edge_count": 135,
+    "event_count": 57,
+    "event_kinds": {
+      "approve": 2,
+      "checkout": 2,
+      "merge_workspace": 2,
+      "policy_decision": 4,
+      "publish": 6,
+      "read_ref": 16,
+      "search": 2,
+      "write": 23
+    },
+    "ref_event_count": 51,
+    "seq_count": 57
+  },
+  "backend": "anfs",
+  "cache_contention": {
+    "elapsed_ms": 68.81204096134752,
+    "enabled": true,
+    "expected_file_count": 10,
+    "expected_hits": 0,
+    "expected_misses": 1,
+    "failures": [],
+    "file_counts": [
+      10
+    ],
+    "hits": 0,
+    "listed_contention_cache_count": 1,
+    "misses": 1,
+    "passed": true,
+    "process_exitcodes": [
+      0
+    ],
+    "repeat_count": 1,
+    "shared_key": false,
+    "total_attempts": 1,
+    "worker_count": 1,
+    "worker_elapsed": [
+      7.14595802128315
+    ],
+    "workspace": "ws:agent-0"
+  },
+  "large_file": {
+    "bytes": 1048576,
+    "cached_chunks": 16,
+    "chunk_size": 65536,
+    "derived_chunks": 16,
+    "enabled": true,
+    "expected_chunks": 16,
+    "node_id": "node:66edd2bd-8629-4862-869b-7bcae3a5c57e",
+    "passed": true,
+    "range_ok": 32,
+    "range_read_count": 32,
+    "range_size": 8192,
+    "throughput": {
+      "chunk_cache_read_rows_per_s": 88033.01870043341,
+      "chunk_derive_mb_per_s": 26.233780597706364,
+      "range_reads_per_s": 7933.719770617698
+    },
+    "timings_ms": {
+      "cache_build": 38.85008301585913,
+      "cache_read": 0.18174998695030808,
+      "derive_chunks": 38.11879100976512,
+      "range_reads": 4.033416975289583,
+      "write": 44.86241703853011
+    }
+  },
+  "parameters": {
+    "agents": 2,
+    "approvals": 2,
+    "base_files": 2,
+    "cache_repeats": 1,
+    "cache_shared_key": false,
+    "cache_worker_repeats": 1,
+    "cache_workers": 1,
+    "chunk_size": 65536,
+    "files_per_agent": 8,
+    "large_file_bytes": 1048576,
+    "large_range_stride": 65537,
+    "needle_every": 1,
+    "payload_bytes": 0,
+    "range_read_count": 32,
+    "range_size": 8192
+  },
+  "paths": {
+    "db_path": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-vz1wggqx/anfs.db",
+    "objs_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-vz1wggqx/objs",
+    "replay_dir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-vz1wggqx/replay",
+    "workdir": "/var/folders/7_/g99jg_dd4mxd_hd93qq_hwvc0000gn/T/anfs-agent-memory-bench-vz1wggqx"
+  },
+  "throughput": {
+    "concurrent_writes_per_s": 189.2715558885341,
+    "merge_refs_per_s": 6512.557866239696,
+    "replay_files_per_s": 1493.5797259816736
+  },
+  "timings_ms": {
+    "approve": 2.9077500221319497,
+    "cache_contention": 68.81204096134752,
+    "concurrent_read_write_grep": 84.53462499892339,
+    "integrity": 656.7912499886006,
+    "large_file": 126.04645802639425,
+    "merge": 2.4567919899709523,
+    "replay": 12.051582976710051,
+    "setup_checkout": 1.600624993443489,
+    "total": 970.4615829978138,
+    "worker_elapsed": [
+      5.540957965422422,
+      5.291165958624333
+    ],
+    "working_set_cache": 6.996750016696751
+  },
+  "working_set_cache": {
+    "cache_key": "agent-0",
+    "elapsed_ms": 6.996750016696751,
+    "enabled": true,
+    "expected_file_count": 10,
+    "file_count": 10,
+    "hits": 0,
+    "listed_cache_count": 1,
+    "misses": 1,
+    "passed": true,
+    "per_repeat_ms": 6.996750016696751,
+    "repeat_count": 1,
+    "workspace": "ws:agent-0"
+  }
+}
