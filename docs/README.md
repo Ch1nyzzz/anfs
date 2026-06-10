@@ -32,6 +32,9 @@ Documents:
 - [10_workload_datasets.md](10_workload_datasets.md): source-verified survey
   of public datasets/benchmarks for real agent workload validation (coding
   tasks, multi-agent merge, privacy red-teaming, long-term memory).
+- [11_paper_plan.md](11_paper_plan.md): paper thesis, claim table (each claim
+  paired with a control that fails), evaluation plan, related-work positioning
+  (DIFC lineage), and honest limitations (mechanism vs semantics).
 
 Current priority:
 
