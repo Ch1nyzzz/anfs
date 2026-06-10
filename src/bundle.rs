@@ -1194,6 +1194,152 @@ fn ensure_imported_ref_event_matches(
     Ok(())
 }
 
+
+// Row mappers shared by the history-archive, event-bundle, and run-bundle
+// collectors below; all of them select the same column order per row type.
+fn bundle_event_row(row: &rusqlite::Row<'_>) -> rusqlite::Result<BundleEvent> {
+    Ok(BundleEvent {
+        event_id: row.get(0)?,
+        source_seq: Some(row.get(1)?),
+        kind: row.get(2)?,
+        agent_id: row.get(3)?,
+        run_id: row.get(4)?,
+        tool_call_id: row.get(5)?,
+        workspace_id: row.get(6)?,
+        payload_json: row.get(7)?,
+        created_at: row.get(8)?,
+    })
+}
+
+fn bundle_event_edge_row(row: &rusqlite::Row<'_>) -> rusqlite::Result<BundleEventEdge> {
+    Ok(BundleEventEdge {
+        event_id: row.get(0)?,
+        direction: row.get(1)?,
+        node_id: row.get(2)?,
+        role: row.get(3)?,
+        logical_path: row.get(4)?,
+    })
+}
+
+fn bundle_node_row(row: &rusqlite::Row<'_>) -> rusqlite::Result<BundleNode> {
+    Ok(BundleNode {
+        node_id: row.get(0)?,
+        blob_hash: row.get(1)?,
+        kind: row.get(2)?,
+        media_type: row.get(3)?,
+        metadata_json: row.get(4)?,
+        created_at: row.get(5)?,
+    })
+}
+
+fn bundle_blob_row(row: &rusqlite::Row<'_>) -> rusqlite::Result<BundleBlob> {
+    Ok(BundleBlob {
+        hash: row.get(0)?,
+        size: row.get(1)?,
+        storage_kind: row.get(2)?,
+        object_path: None,
+    })
+}
+
+fn bundle_ref_event_row(row: &rusqlite::Row<'_>) -> rusqlite::Result<BundleRefEvent> {
+    Ok(BundleRefEvent {
+        ref_name: row.get(0)?,
+        event_id: row.get(1)?,
+        old_node_id: row.get(2)?,
+        new_node_id: row.get(3)?,
+        old_state: row.get(4)?,
+        new_state: row.get(5)?,
+    })
+}
+
+// Shared reachability CTE fragments for the bundle collectors. `?1` is the
+// root event id (event_* macros) or run id (run_* macros); `?2` is the
+// highest event sequence included in the bundle. They are macros so each
+// query is assembled at compile time with `concat!` from a single copy of
+// every fragment.
+macro_rules! event_reachable_nodes_cte {
+    () => {
+        "reachable_nodes(node_id) AS (
+            SELECT node_id
+            FROM event_edges
+            WHERE event_id = ?1
+            UNION
+            SELECT e_in.node_id
+            FROM reachable_nodes r
+            JOIN event_edges e_out
+                ON e_out.node_id = r.node_id
+               AND e_out.direction = 'output'
+            JOIN events e
+                ON e.event_id = e_out.event_id
+            JOIN event_sequence es
+                ON es.event_id = e.event_id
+               AND es.seq <= ?2
+            JOIN event_edges e_in
+                ON e_in.event_id = e_out.event_id
+               AND e_in.direction = 'input'
+        )"
+    };
+}
+
+macro_rules! event_reachable_events_cte {
+    () => {
+        "reachable_events(event_id) AS (
+            SELECT ?1
+            UNION
+            SELECT DISTINCT ee.event_id
+            FROM event_edges ee
+            JOIN event_sequence es ON es.event_id = ee.event_id AND es.seq <= ?2
+            JOIN reachable_nodes rn ON rn.node_id = ee.node_id
+        )"
+    };
+}
+
+macro_rules! run_root_events_cte {
+    () => {
+        "root_events(event_id) AS (
+            SELECT e.event_id
+            FROM events e
+            JOIN event_sequence es ON es.event_id = e.event_id
+            WHERE e.run_id = ?1 AND es.seq <= ?2
+        )"
+    };
+}
+
+macro_rules! run_reachable_nodes_cte {
+    () => {
+        "reachable_nodes(node_id) AS (
+            SELECT ee.node_id
+            FROM event_edges ee
+            JOIN root_events re ON re.event_id = ee.event_id
+            UNION
+            SELECT e_in.node_id
+            FROM reachable_nodes r
+            JOIN event_edges e_out
+                ON e_out.node_id = r.node_id
+               AND e_out.direction = 'output'
+            JOIN event_sequence es
+                ON es.event_id = e_out.event_id
+               AND es.seq <= ?2
+            JOIN event_edges e_in
+                ON e_in.event_id = e_out.event_id
+               AND e_in.direction = 'input'
+        )"
+    };
+}
+
+macro_rules! run_reachable_events_cte {
+    () => {
+        "reachable_events(event_id) AS (
+            SELECT event_id FROM root_events
+            UNION
+            SELECT DISTINCT ee.event_id
+            FROM event_edges ee
+            JOIN event_sequence es ON es.event_id = ee.event_id AND es.seq <= ?2
+            JOIN reachable_nodes rn ON rn.node_id = ee.node_id
+        )"
+    };
+}
+
 fn history_archive_events(conn: &Connection, root_seq: i64) -> AnfsResult<Vec<BundleEvent>> {
     let mut stmt = conn.prepare(
         "
@@ -1205,19 +1351,7 @@ fn history_archive_events(conn: &Connection, root_seq: i64) -> AnfsResult<Vec<Bu
         ORDER BY es.seq
         ",
     )?;
-    let rows = stmt.query_map(params![root_seq], |row| {
-        Ok(BundleEvent {
-            event_id: row.get(0)?,
-            source_seq: Some(row.get(1)?),
-            kind: row.get(2)?,
-            agent_id: row.get(3)?,
-            run_id: row.get(4)?,
-            tool_call_id: row.get(5)?,
-            workspace_id: row.get(6)?,
-            payload_json: row.get(7)?,
-            created_at: row.get(8)?,
-        })
-    })?;
+    let rows = stmt.query_map(params![root_seq], bundle_event_row)?;
     collect_rows(rows)
 }
 
@@ -1234,15 +1368,7 @@ fn history_archive_event_edges(
         ORDER BY es.seq, ee.direction, ee.role, ee.node_id
         ",
     )?;
-    let rows = stmt.query_map(params![root_seq], |row| {
-        Ok(BundleEventEdge {
-            event_id: row.get(0)?,
-            direction: row.get(1)?,
-            node_id: row.get(2)?,
-            role: row.get(3)?,
-            logical_path: row.get(4)?,
-        })
-    })?;
+    let rows = stmt.query_map(params![root_seq], bundle_event_edge_row)?;
     collect_rows(rows)
 }
 
@@ -1271,16 +1397,7 @@ fn history_archive_nodes(conn: &Connection, root_seq: i64) -> AnfsResult<Vec<Bun
         ORDER BY n.created_at, n.node_id
         ",
     )?;
-    let rows = stmt.query_map(params![root_seq], |row| {
-        Ok(BundleNode {
-            node_id: row.get(0)?,
-            blob_hash: row.get(1)?,
-            kind: row.get(2)?,
-            media_type: row.get(3)?,
-            metadata_json: row.get(4)?,
-            created_at: row.get(5)?,
-        })
-    })?;
+    let rows = stmt.query_map(params![root_seq], bundle_node_row)?;
     collect_rows(rows)
 }
 
@@ -1310,14 +1427,7 @@ fn history_archive_blobs(conn: &Connection, root_seq: i64) -> AnfsResult<Vec<Bun
         ORDER BY b.hash
         ",
     )?;
-    let rows = stmt.query_map(params![root_seq], |row| {
-        Ok(BundleBlob {
-            hash: row.get(0)?,
-            size: row.get(1)?,
-            storage_kind: row.get(2)?,
-            object_path: None,
-        })
-    })?;
+    let rows = stmt.query_map(params![root_seq], bundle_blob_row)?;
     collect_rows(rows)
 }
 
@@ -1332,49 +1442,18 @@ fn history_archive_ref_events(conn: &Connection, root_seq: i64) -> AnfsResult<Ve
         ORDER BY es.seq, re.rowid
         ",
     )?;
-    let rows = stmt.query_map(params![root_seq], |row| {
-        Ok(BundleRefEvent {
-            ref_name: row.get(0)?,
-            event_id: row.get(1)?,
-            old_node_id: row.get(2)?,
-            new_node_id: row.get(3)?,
-            old_state: row.get(4)?,
-            new_state: row.get(5)?,
-        })
-    })?;
+    let rows = stmt.query_map(params![root_seq], bundle_ref_event_row)?;
     collect_rows(rows)
 }
 
 fn bundle_events(conn: &Connection, event_id: &str, root_seq: i64) -> AnfsResult<Vec<BundleEvent>> {
-    let mut stmt = conn.prepare(
+    let mut stmt = conn.prepare(concat!(
+        "WITH RECURSIVE ",
+        event_reachable_nodes_cte!(),
+        ",
+        ",
+        event_reachable_events_cte!(),
         "
-        WITH RECURSIVE reachable_nodes(node_id) AS (
-            SELECT node_id
-            FROM event_edges
-            WHERE event_id = ?1
-            UNION
-            SELECT e_in.node_id
-            FROM reachable_nodes r
-            JOIN event_edges e_out
-                ON e_out.node_id = r.node_id
-               AND e_out.direction = 'output'
-            JOIN events e
-                ON e.event_id = e_out.event_id
-            JOIN event_sequence es
-                ON es.event_id = e.event_id
-               AND es.seq <= ?2
-            JOIN event_edges e_in
-                ON e_in.event_id = e_out.event_id
-               AND e_in.direction = 'input'
-        ),
-        reachable_events(event_id) AS (
-            SELECT ?1
-            UNION
-            SELECT DISTINCT ee.event_id
-            FROM event_edges ee
-            JOIN event_sequence es ON es.event_id = ee.event_id AND es.seq <= ?2
-            JOIN reachable_nodes rn ON rn.node_id = ee.node_id
-        )
         SELECT e.event_id, es.seq, e.kind, e.agent_id, e.run_id, e.tool_call_id,
                e.workspace_id, e.payload_json, e.created_at
         FROM events e
@@ -1382,20 +1461,8 @@ fn bundle_events(conn: &Connection, event_id: &str, root_seq: i64) -> AnfsResult
         JOIN reachable_events re ON re.event_id = e.event_id
         ORDER BY es.seq
         ",
-    )?;
-    let rows = stmt.query_map(params![event_id, root_seq], |row| {
-        Ok(BundleEvent {
-            event_id: row.get(0)?,
-            source_seq: Some(row.get(1)?),
-            kind: row.get(2)?,
-            agent_id: row.get(3)?,
-            run_id: row.get(4)?,
-            tool_call_id: row.get(5)?,
-            workspace_id: row.get(6)?,
-            payload_json: row.get(7)?,
-            created_at: row.get(8)?,
-        })
-    })?;
+    ))?;
+    let rows = stmt.query_map(params![event_id, root_seq], bundle_event_row)?;
     collect_rows(rows)
 }
 
@@ -1404,35 +1471,13 @@ fn bundle_event_edges(
     event_id: &str,
     root_seq: i64,
 ) -> AnfsResult<Vec<BundleEventEdge>> {
-    let mut stmt = conn.prepare(
+    let mut stmt = conn.prepare(concat!(
+        "WITH RECURSIVE ",
+        event_reachable_nodes_cte!(),
+        ",
+        ",
+        event_reachable_events_cte!(),
         "
-        WITH RECURSIVE reachable_nodes(node_id) AS (
-            SELECT node_id
-            FROM event_edges
-            WHERE event_id = ?1
-            UNION
-            SELECT e_in.node_id
-            FROM reachable_nodes r
-            JOIN event_edges e_out
-                ON e_out.node_id = r.node_id
-               AND e_out.direction = 'output'
-            JOIN events e
-                ON e.event_id = e_out.event_id
-            JOIN event_sequence es
-                ON es.event_id = e.event_id
-               AND es.seq <= ?2
-            JOIN event_edges e_in
-                ON e_in.event_id = e_out.event_id
-               AND e_in.direction = 'input'
-        ),
-        reachable_events(event_id) AS (
-            SELECT ?1
-            UNION
-            SELECT DISTINCT ee.event_id
-            FROM event_edges ee
-            JOIN event_sequence es ON es.event_id = ee.event_id AND es.seq <= ?2
-            JOIN reachable_nodes rn ON rn.node_id = ee.node_id
-        )
         SELECT ee.event_id, ee.direction, ee.node_id, ee.role, ee.logical_path
         FROM event_edges ee
         JOIN events e ON e.event_id = ee.event_id
@@ -1440,97 +1485,39 @@ fn bundle_event_edges(
         JOIN reachable_events re ON re.event_id = ee.event_id
         ORDER BY es.seq, ee.direction, ee.role, ee.node_id
         ",
-    )?;
-    let rows = stmt.query_map(params![event_id, root_seq], |row| {
-        Ok(BundleEventEdge {
-            event_id: row.get(0)?,
-            direction: row.get(1)?,
-            node_id: row.get(2)?,
-            role: row.get(3)?,
-            logical_path: row.get(4)?,
-        })
-    })?;
+    ))?;
+    let rows = stmt.query_map(params![event_id, root_seq], bundle_event_edge_row)?;
     collect_rows(rows)
 }
 
 fn bundle_nodes(conn: &Connection, event_id: &str, root_seq: i64) -> AnfsResult<Vec<BundleNode>> {
-    let mut stmt = conn.prepare(
+    let mut stmt = conn.prepare(concat!(
+        "WITH RECURSIVE ",
+        event_reachable_nodes_cte!(),
         "
-        WITH RECURSIVE reachable_nodes(node_id) AS (
-            SELECT node_id
-            FROM event_edges
-            WHERE event_id = ?1
-            UNION
-            SELECT e_in.node_id
-            FROM reachable_nodes r
-            JOIN event_edges e_out
-                ON e_out.node_id = r.node_id
-               AND e_out.direction = 'output'
-            JOIN events e
-                ON e.event_id = e_out.event_id
-            JOIN event_sequence es
-                ON es.event_id = e.event_id
-               AND es.seq <= ?2
-            JOIN event_edges e_in
-                ON e_in.event_id = e_out.event_id
-               AND e_in.direction = 'input'
-        )
         SELECT n.node_id, n.blob_hash, n.kind, n.media_type, n.metadata_json, n.created_at
         FROM nodes n
         JOIN reachable_nodes rn ON rn.node_id = n.node_id
         ORDER BY n.created_at, n.node_id
         ",
-    )?;
-    let rows = stmt.query_map(params![event_id, root_seq], |row| {
-        Ok(BundleNode {
-            node_id: row.get(0)?,
-            blob_hash: row.get(1)?,
-            kind: row.get(2)?,
-            media_type: row.get(3)?,
-            metadata_json: row.get(4)?,
-            created_at: row.get(5)?,
-        })
-    })?;
+    ))?;
+    let rows = stmt.query_map(params![event_id, root_seq], bundle_node_row)?;
     collect_rows(rows)
 }
 
 fn bundle_blobs(conn: &Connection, event_id: &str, root_seq: i64) -> AnfsResult<Vec<BundleBlob>> {
-    let mut stmt = conn.prepare(
+    let mut stmt = conn.prepare(concat!(
+        "WITH RECURSIVE ",
+        event_reachable_nodes_cte!(),
         "
-        WITH RECURSIVE reachable_nodes(node_id) AS (
-            SELECT node_id
-            FROM event_edges
-            WHERE event_id = ?1
-            UNION
-            SELECT e_in.node_id
-            FROM reachable_nodes r
-            JOIN event_edges e_out
-                ON e_out.node_id = r.node_id
-               AND e_out.direction = 'output'
-            JOIN events e
-                ON e.event_id = e_out.event_id
-            JOIN event_sequence es
-                ON es.event_id = e.event_id
-               AND es.seq <= ?2
-            JOIN event_edges e_in
-                ON e_in.event_id = e_out.event_id
-               AND e_in.direction = 'input'
-        )
         SELECT DISTINCT b.hash, b.size, b.storage_kind
         FROM blobs b
         JOIN nodes n ON n.blob_hash = b.hash
         JOIN reachable_nodes rn ON rn.node_id = n.node_id
         ORDER BY b.hash
         ",
-    )?;
-    let rows = stmt.query_map(params![event_id, root_seq], |row| {
-        Ok(BundleBlob {
-            hash: row.get(0)?,
-            size: row.get(1)?,
-            storage_kind: row.get(2)?,
-            object_path: None,
-        })
-    })?;
+    ))?;
+    let rows = stmt.query_map(params![event_id, root_seq], bundle_blob_row)?;
     collect_rows(rows)
 }
 
@@ -1539,35 +1526,13 @@ fn bundle_ref_events(
     event_id: &str,
     root_seq: i64,
 ) -> AnfsResult<Vec<BundleRefEvent>> {
-    let mut stmt = conn.prepare(
+    let mut stmt = conn.prepare(concat!(
+        "WITH RECURSIVE ",
+        event_reachable_nodes_cte!(),
+        ",
+        ",
+        event_reachable_events_cte!(),
         "
-        WITH RECURSIVE reachable_nodes(node_id) AS (
-            SELECT node_id
-            FROM event_edges
-            WHERE event_id = ?1
-            UNION
-            SELECT e_in.node_id
-            FROM reachable_nodes r
-            JOIN event_edges e_out
-                ON e_out.node_id = r.node_id
-               AND e_out.direction = 'output'
-            JOIN events e
-                ON e.event_id = e_out.event_id
-            JOIN event_sequence es
-                ON es.event_id = e.event_id
-               AND es.seq <= ?2
-            JOIN event_edges e_in
-                ON e_in.event_id = e_out.event_id
-               AND e_in.direction = 'input'
-        ),
-        reachable_events(event_id) AS (
-            SELECT ?1
-            UNION
-            SELECT DISTINCT ee.event_id
-            FROM event_edges ee
-            JOIN event_sequence es ON es.event_id = ee.event_id AND es.seq <= ?2
-            JOIN reachable_nodes rn ON rn.node_id = ee.node_id
-        )
         SELECT re.ref_name, re.event_id, re.old_node_id, re.new_node_id,
                re.old_state, re.new_state
         FROM ref_events re
@@ -1576,17 +1541,8 @@ fn bundle_ref_events(
         JOIN reachable_events rev ON rev.event_id = re.event_id
         ORDER BY es.seq, re.rowid
         ",
-    )?;
-    let rows = stmt.query_map(params![event_id, root_seq], |row| {
-        Ok(BundleRefEvent {
-            ref_name: row.get(0)?,
-            event_id: row.get(1)?,
-            old_node_id: row.get(2)?,
-            new_node_id: row.get(3)?,
-            old_state: row.get(4)?,
-            new_state: row.get(5)?,
-        })
-    })?;
+    ))?;
+    let rows = stmt.query_map(params![event_id, root_seq], bundle_ref_event_row)?;
     collect_rows(rows)
 }
 
@@ -1595,40 +1551,17 @@ fn run_bundle_events(
     run_id: &str,
     root_seq: i64,
 ) -> AnfsResult<Vec<BundleEvent>> {
-    let mut stmt = conn.prepare(
+    let mut stmt = conn.prepare(concat!(
+        "WITH RECURSIVE
+        ",
+        run_root_events_cte!(),
+        ",
+        ",
+        run_reachable_nodes_cte!(),
+        ",
+        ",
+        run_reachable_events_cte!(),
         "
-        WITH RECURSIVE
-        root_events(event_id) AS (
-            SELECT e.event_id
-            FROM events e
-            JOIN event_sequence es ON es.event_id = e.event_id
-            WHERE e.run_id = ?1 AND es.seq <= ?2
-        ),
-        reachable_nodes(node_id) AS (
-            SELECT ee.node_id
-            FROM event_edges ee
-            JOIN root_events re ON re.event_id = ee.event_id
-            UNION
-            SELECT e_in.node_id
-            FROM reachable_nodes r
-            JOIN event_edges e_out
-                ON e_out.node_id = r.node_id
-               AND e_out.direction = 'output'
-            JOIN event_sequence es
-                ON es.event_id = e_out.event_id
-               AND es.seq <= ?2
-            JOIN event_edges e_in
-                ON e_in.event_id = e_out.event_id
-               AND e_in.direction = 'input'
-        ),
-        reachable_events(event_id) AS (
-            SELECT event_id FROM root_events
-            UNION
-            SELECT DISTINCT ee.event_id
-            FROM event_edges ee
-            JOIN event_sequence es ON es.event_id = ee.event_id AND es.seq <= ?2
-            JOIN reachable_nodes rn ON rn.node_id = ee.node_id
-        )
         SELECT e.event_id, es.seq, e.kind, e.agent_id, e.run_id, e.tool_call_id,
                e.workspace_id, e.payload_json, e.created_at
         FROM events e
@@ -1636,20 +1569,8 @@ fn run_bundle_events(
         JOIN reachable_events re ON re.event_id = e.event_id
         ORDER BY es.seq
         ",
-    )?;
-    let rows = stmt.query_map(params![run_id, root_seq], |row| {
-        Ok(BundleEvent {
-            event_id: row.get(0)?,
-            source_seq: Some(row.get(1)?),
-            kind: row.get(2)?,
-            agent_id: row.get(3)?,
-            run_id: row.get(4)?,
-            tool_call_id: row.get(5)?,
-            workspace_id: row.get(6)?,
-            payload_json: row.get(7)?,
-            created_at: row.get(8)?,
-        })
-    })?;
+    ))?;
+    let rows = stmt.query_map(params![run_id, root_seq], bundle_event_row)?;
     collect_rows(rows)
 }
 
@@ -1658,137 +1579,64 @@ fn run_bundle_event_edges(
     run_id: &str,
     root_seq: i64,
 ) -> AnfsResult<Vec<BundleEventEdge>> {
-    let mut stmt = conn.prepare(
+    let mut stmt = conn.prepare(concat!(
+        "WITH RECURSIVE
+        ",
+        run_root_events_cte!(),
+        ",
+        ",
+        run_reachable_nodes_cte!(),
+        ",
+        ",
+        run_reachable_events_cte!(),
         "
-        WITH RECURSIVE
-        root_events(event_id) AS (
-            SELECT e.event_id
-            FROM events e
-            JOIN event_sequence es ON es.event_id = e.event_id
-            WHERE e.run_id = ?1 AND es.seq <= ?2
-        ),
-        reachable_nodes(node_id) AS (
-            SELECT ee.node_id
-            FROM event_edges ee
-            JOIN root_events re ON re.event_id = ee.event_id
-            UNION
-            SELECT e_in.node_id
-            FROM reachable_nodes r
-            JOIN event_edges e_out
-                ON e_out.node_id = r.node_id
-               AND e_out.direction = 'output'
-            JOIN event_sequence es
-                ON es.event_id = e_out.event_id
-               AND es.seq <= ?2
-            JOIN event_edges e_in
-                ON e_in.event_id = e_out.event_id
-               AND e_in.direction = 'input'
-        ),
-        reachable_events(event_id) AS (
-            SELECT event_id FROM root_events
-            UNION
-            SELECT DISTINCT ee.event_id
-            FROM event_edges ee
-            JOIN event_sequence es ON es.event_id = ee.event_id AND es.seq <= ?2
-            JOIN reachable_nodes rn ON rn.node_id = ee.node_id
-        )
         SELECT ee.event_id, ee.direction, ee.node_id, ee.role, ee.logical_path
         FROM event_edges ee
         JOIN event_sequence es ON es.event_id = ee.event_id
         JOIN reachable_events re ON re.event_id = ee.event_id
         ORDER BY es.seq, ee.direction, ee.role, ee.node_id
         ",
-    )?;
-    let rows = stmt.query_map(params![run_id, root_seq], |row| {
-        Ok(BundleEventEdge {
-            event_id: row.get(0)?,
-            direction: row.get(1)?,
-            node_id: row.get(2)?,
-            role: row.get(3)?,
-            logical_path: row.get(4)?,
-        })
-    })?;
+    ))?;
+    let rows = stmt.query_map(params![run_id, root_seq], bundle_event_edge_row)?;
     collect_rows(rows)
 }
 
 fn run_bundle_nodes(conn: &Connection, run_id: &str, root_seq: i64) -> AnfsResult<Vec<BundleNode>> {
-    let mut stmt = conn.prepare(
+    let mut stmt = conn.prepare(concat!(
+        "WITH RECURSIVE
+        ",
+        run_root_events_cte!(),
+        ",
+        ",
+        run_reachable_nodes_cte!(),
         "
-        WITH RECURSIVE reachable_nodes(node_id) AS (
-            SELECT ee.node_id
-            FROM event_edges ee
-            JOIN events e ON e.event_id = ee.event_id
-            JOIN event_sequence es ON es.event_id = e.event_id
-            WHERE e.run_id = ?1 AND es.seq <= ?2
-            UNION
-            SELECT e_in.node_id
-            FROM reachable_nodes r
-            JOIN event_edges e_out
-                ON e_out.node_id = r.node_id
-               AND e_out.direction = 'output'
-            JOIN event_sequence es
-                ON es.event_id = e_out.event_id
-               AND es.seq <= ?2
-            JOIN event_edges e_in
-                ON e_in.event_id = e_out.event_id
-               AND e_in.direction = 'input'
-        )
         SELECT n.node_id, n.blob_hash, n.kind, n.media_type, n.metadata_json, n.created_at
         FROM nodes n
         JOIN reachable_nodes rn ON rn.node_id = n.node_id
         ORDER BY n.created_at, n.node_id
         ",
-    )?;
-    let rows = stmt.query_map(params![run_id, root_seq], |row| {
-        Ok(BundleNode {
-            node_id: row.get(0)?,
-            blob_hash: row.get(1)?,
-            kind: row.get(2)?,
-            media_type: row.get(3)?,
-            metadata_json: row.get(4)?,
-            created_at: row.get(5)?,
-        })
-    })?;
+    ))?;
+    let rows = stmt.query_map(params![run_id, root_seq], bundle_node_row)?;
     collect_rows(rows)
 }
 
 fn run_bundle_blobs(conn: &Connection, run_id: &str, root_seq: i64) -> AnfsResult<Vec<BundleBlob>> {
-    let mut stmt = conn.prepare(
+    let mut stmt = conn.prepare(concat!(
+        "WITH RECURSIVE
+        ",
+        run_root_events_cte!(),
+        ",
+        ",
+        run_reachable_nodes_cte!(),
         "
-        WITH RECURSIVE reachable_nodes(node_id) AS (
-            SELECT ee.node_id
-            FROM event_edges ee
-            JOIN events e ON e.event_id = ee.event_id
-            JOIN event_sequence es ON es.event_id = e.event_id
-            WHERE e.run_id = ?1 AND es.seq <= ?2
-            UNION
-            SELECT e_in.node_id
-            FROM reachable_nodes r
-            JOIN event_edges e_out
-                ON e_out.node_id = r.node_id
-               AND e_out.direction = 'output'
-            JOIN event_sequence es
-                ON es.event_id = e_out.event_id
-               AND es.seq <= ?2
-            JOIN event_edges e_in
-                ON e_in.event_id = e_out.event_id
-               AND e_in.direction = 'input'
-        )
         SELECT DISTINCT b.hash, b.size, b.storage_kind
         FROM blobs b
         JOIN nodes n ON n.blob_hash = b.hash
         JOIN reachable_nodes rn ON rn.node_id = n.node_id
         ORDER BY b.hash
         ",
-    )?;
-    let rows = stmt.query_map(params![run_id, root_seq], |row| {
-        Ok(BundleBlob {
-            hash: row.get(0)?,
-            size: row.get(1)?,
-            storage_kind: row.get(2)?,
-            object_path: None,
-        })
-    })?;
+    ))?;
+    let rows = stmt.query_map(params![run_id, root_seq], bundle_blob_row)?;
     collect_rows(rows)
 }
 
@@ -1797,40 +1645,17 @@ fn run_bundle_ref_events(
     run_id: &str,
     root_seq: i64,
 ) -> AnfsResult<Vec<BundleRefEvent>> {
-    let mut stmt = conn.prepare(
+    let mut stmt = conn.prepare(concat!(
+        "WITH RECURSIVE
+        ",
+        run_root_events_cte!(),
+        ",
+        ",
+        run_reachable_nodes_cte!(),
+        ",
+        ",
+        run_reachable_events_cte!(),
         "
-        WITH RECURSIVE
-        root_events(event_id) AS (
-            SELECT e.event_id
-            FROM events e
-            JOIN event_sequence es ON es.event_id = e.event_id
-            WHERE e.run_id = ?1 AND es.seq <= ?2
-        ),
-        reachable_nodes(node_id) AS (
-            SELECT ee.node_id
-            FROM event_edges ee
-            JOIN root_events re ON re.event_id = ee.event_id
-            UNION
-            SELECT e_in.node_id
-            FROM reachable_nodes r
-            JOIN event_edges e_out
-                ON e_out.node_id = r.node_id
-               AND e_out.direction = 'output'
-            JOIN event_sequence es
-                ON es.event_id = e_out.event_id
-               AND es.seq <= ?2
-            JOIN event_edges e_in
-                ON e_in.event_id = e_out.event_id
-               AND e_in.direction = 'input'
-        ),
-        reachable_events(event_id) AS (
-            SELECT event_id FROM root_events
-            UNION
-            SELECT DISTINCT ee.event_id
-            FROM event_edges ee
-            JOIN event_sequence es ON es.event_id = ee.event_id AND es.seq <= ?2
-            JOIN reachable_nodes rn ON rn.node_id = ee.node_id
-        )
         SELECT re.ref_name, re.event_id, re.old_node_id, re.new_node_id,
                re.old_state, re.new_state
         FROM ref_events re
@@ -1838,16 +1663,7 @@ fn run_bundle_ref_events(
         JOIN reachable_events rev ON rev.event_id = re.event_id
         ORDER BY es.seq, re.rowid
         ",
-    )?;
-    let rows = stmt.query_map(params![run_id, root_seq], |row| {
-        Ok(BundleRefEvent {
-            ref_name: row.get(0)?,
-            event_id: row.get(1)?,
-            old_node_id: row.get(2)?,
-            new_node_id: row.get(3)?,
-            old_state: row.get(4)?,
-            new_state: row.get(5)?,
-        })
-    })?;
+    ))?;
+    let rows = stmt.query_map(params![run_id, root_seq], bundle_ref_event_row)?;
     collect_rows(rows)
 }
