@@ -49,6 +49,22 @@ document corpus as labeled fragments; drive extraction attempts with
 InjecAgent data-stealing cases + AgentDojo injection patterns; measure leak
 rate with kernel labels on vs off vs a prompt-only baseline.
 
+### Implemented: kernel-label leak differential
+
+`benchmarks/leak_redteam_benchmark.py` (proof locked in
+`tests/test_leak_redteam.py`) runs the mechanism half of this experiment
+without an LLM. A corpus of documents with sensitive fields is loaded into
+ANFS twice — once with field-level policy labels + deny rules active
+("kernel_on"), once without ("kernel_off", the plain-filesystem / vanilla-RAG
+control) — and probed across every retrieval surface (read_node,
+read_node_range, answer citation, search discovery, query discovery). A leak
+is the sensitive byte string reaching the caller. Result on the built-in
+corpus: **kernel_off leaks on 100% of content probes; kernel_on leaks on 0%**,
+integrity clean. Pass `--corpus <json>` to swap in a PrivacyLens-derived
+corpus (same schema, string fields). The prompt-only baseline (does a model
+obey "don't reveal PII") is deliberately excluded — it is model-dependent and
+is exactly the unreliable alternative ANFS replaces with a kernel guarantee.
+
 ## W4: Long-term conversational memory
 
 | Candidate | Scale | License | Scoring | Notes |
