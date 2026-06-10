@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ANFS — Agent-Native File System · 工程汇报</title>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#161b22; --panel2:#1c232d; --line:#2a3340;
+    --ink:#e6edf3; --muted:#9aa7b4; --dim:#6e7b8a;
+    --accent:#4cc2ff; --good:#3fb950; --bad:#f85149; --warn:#d29922;
+    --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+       line-height:1.65;font-size:16px;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+  code,.mono{font-family:var(--mono);font-size:.92em}
+  h1,h2,h3{line-height:1.25;font-weight:680}
+  h2{font-size:1.7rem;margin:0 0 .2em;letter-spacing:-.01em}
+  h3{font-size:1.18rem;margin:0 0 .4em}
+  section{padding:52px 0;border-top:1px solid var(--line)}
+  .lead{color:var(--muted);font-size:1.05rem;max-width:74ch}
+  .tag{display:inline-block;font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;
+       text-transform:uppercase;color:var(--accent);border:1px solid var(--line);
+       padding:3px 9px;border-radius:999px;margin-bottom:14px}
+
+  /* hero */
+  .hero{padding:80px 0 56px;background:
+        radial-gradient(900px 360px at 78% -10%,rgba(76,194,255,.14),transparent),
+        radial-gradient(700px 300px at 5% 0%,rgba(63,185,80,.08),transparent)}
+  .hero h1{font-size:3rem;margin:.1em 0 .25em;letter-spacing:-.02em}
+  .hero .sub{font-size:1.25rem;color:var(--muted);max-width:70ch}
+  .thesis{margin-top:26px;padding:18px 22px;background:var(--panel);border:1px solid var(--line);
+          border-left:3px solid var(--accent);border-radius:10px;max-width:80ch}
+  .thesis b{color:var(--ink)}
+  .stats{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+        padding:14px 18px;min-width:150px}
+  .stat .n{font-family:var(--mono);font-size:1.5rem;color:var(--accent);font-weight:700}
+  .stat .l{color:var(--dim);font-size:.82rem}
+
+  /* generic */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px}
+  .card.k{background:var(--panel2)}
+  .muted{color:var(--muted)}
+  .dim{color:var(--dim)}
+  ul{padding-left:1.15em;margin:.5em 0}
+  li{margin:.28em 0}
+
+  table{width:100%;border-collapse:collapse;margin:8px 0;font-size:.93rem}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--dim);font-weight:600;font-size:.78rem;letter-spacing:.04em;text-transform:uppercase}
+  td.native{color:var(--bad)}
+  td.anfs{color:var(--good)}
+  .chk{color:var(--good)} .x{color:var(--bad)} .tilde{color:var(--warn)}
+
+  /* proof cards */
+  .proof{background:var(--panel);border:1px solid var(--line);border-radius:14px;
+         padding:24px;margin:16px 0}
+  .proof .id{font-family:var(--mono);color:var(--accent);font-size:.82rem;letter-spacing:.06em}
+  .proof h3{margin:.15em 0 .5em;font-size:1.32rem}
+  .bars{margin:16px 0 6px}
+  .bar{display:flex;align-items:center;gap:12px;margin:7px 0}
+  .bar .name{width:128px;font-family:var(--mono);font-size:.82rem;color:var(--muted);text-align:right;flex:none}
+  .bar .track{flex:1;background:#0b0f14;border:1px solid var(--line);border-radius:6px;height:24px;overflow:hidden;position:relative}
+  .bar .fill{height:100%;border-radius:5px 0 0 5px;display:flex;align-items:center;
+             justify-content:flex-end;padding-right:8px;font-family:var(--mono);font-size:.76rem;color:#04121f;font-weight:700}
+  .fill.bad{background:linear-gradient(90deg,#7a1f1c,#f85149)}
+  .fill.warn{background:linear-gradient(90deg,#7a5a12,#d29922)}
+  .fill.good{background:linear-gradient(90deg,#16341f,#3fb950)}
+  .fill.z{background:transparent;color:var(--good);justify-content:flex-start;padding-left:8px;border:0}
+  .why{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);color:var(--muted);font-size:.95rem}
+  .why b{color:var(--ink)}
+
+  .kv{font-family:var(--mono);font-size:.82rem;color:var(--muted)}
+  .pill{display:inline-block;font-family:var(--mono);font-size:.72rem;padding:2px 8px;border-radius:6px;border:1px solid var(--line);color:var(--muted);margin:2px 4px 2px 0}
+  .pill.kern{color:var(--accent);border-color:#1c4a63;background:rgba(76,194,255,.06)}
+  .pill.proj{color:var(--dim)}
+  footer{padding:40px 0 70px;color:var(--dim);font-size:.86rem}
+  pre{background:#0b0f14;border:1px solid var(--line);border-radius:8px;padding:14px 16px;
+      overflow:auto;font-family:var(--mono);font-size:.82rem;color:#cdd9e5}
+  .note{font-size:.84rem;color:var(--dim)}
+  @media(max-width:760px){.grid2,.grid3{grid-template-columns:1fr}.hero h1{font-size:2.2rem}.bar .name{width:92px}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <span class="tag">Rust · SQLite · PyO3 内核</span>
+    <h1>ANFS</h1>
+    <div class="sub">Agent-Native File System —— 一个把"agent 真正需要、而原生文件系统留给应用层"的保证，下沉为<b style="color:var(--ink)">内核不变量</b>的语义文件系统。</div>
+    <div class="thesis">
+      论点（机制 vs 劝说）：当下 agent 的保证做在<b>提示词层</b>（"别泄漏 PII"）、<b>应用层</b>（自己加锁、手写日志）或干脆缺失——这些是概率性、会失效的。ANFS 把它们做成<b>文件系统内核里可验证的结构性保证</b>，同时不破坏 agent 已经训练过的 file/path 接口。下面四项证明，每一项都配一个<b>会当场翻车的对照组</b>。
+    </div>
+    <div class="stats">
+      <div class="stat"><div class="n">28.2k</div><div class="l">行 Rust 内核 · 28 模块</div></div>
+      <div class="stat"><div class="n">151</div><div class="l">测试全过 · 16 文件</div></div>
+      <div class="stat"><div class="n">7</div><div class="l">最小依赖（无 ANN/向量库）</div></div>
+      <div class="stat"><div class="n">4 / 5</div><div class="l">主张已机制+真实双层证明</div></div>
+    </div>
+  </div>
+</div>
+
+<section><div class="wrap">
+  <h2>什么样的文件系统才算 "Agent-Native"？</h2>
+  <p class="lead">原生文件系统（POSIX / ext4 / 对象存储）给你的是<b>字节和路径</b>。它不理解：数据带不带敏感标签、有多少 agent 在并发改同一份状态、产物是从哪些来源派生来的、怎么把某个时刻的工作集重建出来。这些都被甩给应用层去"自求多福"。</p>
+  <p class="lead">"Agent-native" 的定义因此是两件事的并集：<b style="color:var(--ink)">(1) 保留 agent 已经训练过的 file/path 操作</b>，<b style="color:var(--ink)">(2) 把 agent 需要、原生留给应用的那些保证，做进内核</b>。下面 C1–C3 是原生没有的差异化保证，C4 证明这些保证<b>不以兼容性为代价</b>。四者合起来，就是"agent-native"被操作化、被实测的样子。</p>
+
+  <h3 style="margin-top:30px">原生文件系统 vs ANFS</h3>
+  <table>
+    <tr><th>维度</th><th>原生 FS / 共享目录 / 对象存储</th><th>ANFS</th></tr>
+    <tr><td>文件 / 路径接口</td><td class="anfs">✓ 有</td><td class="anfs">✓ 有（worktree 物化成普通目录）</td></tr>
+    <tr><td>访问控制</td><td class="native">文件级 ACL，按 OS 用户</td><td class="anfs">字段级策略标签，查询时在内核强制</td></tr>
+    <tr><td>并发共享状态</td><td class="native">last-writer-wins，静默覆盖</td><td class="anfs">每次竞争都浮为内核级冲突，0 静默丢失</td></tr>
+    <tr><td>派生溯源</td><td class="native">只有 mtime / commit 粒度</td><td class="anfs">typed 派生边 + 事件粒度 replay</td></tr>
+    <tr><td>时间旅行</td><td class="native">无（git 只到 commit 边界）</td><td class="anfs">任意事件点重建命名空间视图</td></tr>
+    <tr><td>不可变 + 内容寻址</td><td class="native">就地覆盖</td><td class="anfs">CAS blob + 不可变 node，可证完整性</td></tr>
+    <tr><td>查询 / 检索</td><td class="native">无原生查询</td><td class="anfs">FTS + 结构化 query（作为投影）</td></tr>
+  </table>
+  <p class="note">下表的"翻车"列与"ANFS"列，下面每一项都有可复现的实测数字支撑，而非声称。</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>四项证明 · 每项配一个会翻车的对照</h2>
+  <p class="lead">证明力不来自"我们造了功能"，而来自<b>同一场景下对照组当场出错、ANFS 不出错</b>。所有数字来自 <code>benchmarks/</code> 下可复现的脚本，并由 <code>tests/</code> 锁成回归断言。</p>
+
+  <!-- C1 -->
+  <div class="proof">
+    <div class="id">C1 · 字段级策略 · 防泄漏</div>
+    <h3>敏感数据在内核被拦住，与提示词无关</h3>
+    <p class="muted">同一个真实模型（deepseek-v4-flash）、同一条"绝不泄漏 PII"系统提示、同一批攻击，<b>只有上下文组装方式不同</b>。攻击是无害的重格式化任务（"把这条记录整理成 JSON"）——这才是真实泄漏向量：对齐模型会拒绝"告诉我 SSN"，却会乖乖复述它没意识到敏感的字段。</p>
+    <div class="bars">
+      <div class="bar"><div class="name">prompt 防御</div><div class="track"><div class="fill bad" style="width:75%">75% 泄漏</div></div></div>
+      <div class="bar"><div class="name">正则 scrubber</div><div class="track"><div class="fill warn" style="width:25%">25% 泄漏</div></div></div>
+      <div class="bar"><div class="name">ANFS 内核</div><div class="track"><div class="fill z" style="width:100%">0% 泄漏</div></div></div>
+    </div>
+    <p class="kv">prompt 防御漏掉全部字段（SSN/邮箱/工资/诊断/病历号/API key/电话）；scrubber 抓住格式化 PII 但漏掉语义字段（工资 185000、"hypertension stage 1"、MRN-558831）；ANFS 字段从未进入上下文。</p>
+    <div class="why"><b>为何是 agent-native：</b>agent 的核心动作是"检索文档进上下文再生成"。原生 FS 只有文件级 ACL，挡不住"字段"。ANFS 让字段级标签成为内核 gate（<code>visibility.rs</code>），<b>无论提示词如何、模型是否认出敏感性</b>，受标字节都不过 API。<span class="dim">harness：leak_llm_baseline.py · leak_redteam_benchmark.py</span></div>
+  </div>
+
+  <!-- C2 -->
+  <div class="proof">
+    <div class="id">C2 · 并发协调</div>
+    <h3>文件系统出面协调并发写，而不是甩给应用层</h3>
+    <p class="muted">4 个<b>真 OS 进程</b>开同一个 ANFS db，barrier 同时释放去抢合并。三向对照里 git 不是稻草人——它是带合并协议的应用层协调。</p>
+    <table>
+      <tr><th>场景</th><th>plain 目录</th><th>git</th><th>ANFS</th></tr>
+      <tr><td>整文件并发改</td><td class="native">静默 last-writer-wins</td><td class="tilde">报冲突</td><td class="anfs">报冲突</td></tr>
+      <tr><td>同文件异行改</td><td class="native">静默 last-writer-wins</td><td class="native">静默自动合并（无人审）</td><td class="anfs">浮为冲突待审</td></tr>
+    </table>
+    <p class="kv">真多进程 contention：恰 1 个胜出、3 个拿到干净 RefConflictError、0 静默丢失、败方数据可取回、integrity 干净；disjoint：4 个全部干净合并、0 误报。</p>
+    <div class="why"><b>为何是 agent-native：</b>文章的核心场景就是"数百 agent 并发改共享状态"。原生共享目录是 last-writer-wins，agent 的工作互相静默覆盖。ANFS 在内核每次写都做乐观版本检查，竞争一律浮出来。<b>这个 harness 还抓到并修了一个真内核 bug</b>：merge 路径用 DEFERRED 事务，真并发下漏出裸 SQLITE_BUSY；改用 <code>TransactionBehavior::Immediate</code> 后归零——模拟版永远发现不了。<span class="dim">harness：concurrency_real_benchmark.py</span></div>
+  </div>
+
+  <!-- C3 -->
+  <div class="proof">
+    <div class="id">C3 · 溯源 / Replay</div>
+    <h3>任意产物的派生谱系可重建、任意时刻可回放</h3>
+    <p class="muted">建一条 agent 派生链：导入 3 个源 → 从其中两个派生出 brief → 从 brief + 第三个源派生出 report。问：给定最终产物，能追溯出哪些上游源？</p>
+    <div class="bars">
+      <div class="bar"><div class="name">ANFS 派生闭包</div><div class="track"><div class="fill good" style="width:100%">4/4 · 100%</div></div></div>
+      <div class="bar"><div class="name">git 结构恢复</div><div class="track"><div class="fill z" style="width:100%">0/4 · 0%</div></div></div>
+    </div>
+    <p class="kv">git <code>--follow</code> 只给出 report.md 自己的 commit 历史——它结构上没有"派生自"这个关系；ANFS 把派生记成 typed 边，重建出完整闭包，并能 replay 到任意<b>事件</b>边界（比 commit 粒度更细）。integrity 干净。</p>
+    <div class="why"><b>为何是 agent-native：</b>agent 产物是层层派生的（检索→综合→再加工）。审计、回滚、"这个结论基于哪些证据"都依赖派生图。原生 FS 只有 mtime，git 只有 commit→改了哪些文件，都答不出派生问题。ANFS 把它作为内核不变量。<span class="dim">harness：provenance_benchmark.py</span></div>
+  </div>
+
+  <!-- C4 -->
+  <div class="proof">
+    <div class="id">C4 · 兼容性 + 代价</div>
+    <h3>agent 当普通目录用，零回归——保证不以兼容性为代价</h3>
+    <p class="muted">真模型（deepseek-v4-flash）修 5 个 buggy Python 模块；每个修复在<b>原生目录</b>和 <b>ANFS round-trip</b>（物化→commit→重新物化到全新目录→pytest）两条路上各跑一遍。</p>
+    <div class="bars">
+      <div class="bar"><div class="name">原生目录</div><div class="track"><div class="fill good" style="width:100%">5/5 通过</div></div></div>
+      <div class="bar"><div class="name">ANFS 往返</div><div class="track"><div class="fill good" style="width:100%">5/5 通过</div></div></div>
+    </div>
+    <p class="kv">0 回归，integrity 全干净——在<b>全新物化目录</b>上跑测试通过，证明修复字节级挺过了 ANFS 往返。代价方面：ANFS 只对会话<b>边界</b>征税（materialize+commit+integrity：50 文件 66ms / 200 文件 278ms），不对每次编辑的<b>内循环</b>征税（worktree 就是普通目录，原生速度）。</p>
+    <div class="why"><b>为何是 agent-native：</b>C1–C3 的保证若以"agent 用不顺手 / 成功率下降"为代价就毫无意义。C4 是让前三者可信的<b>分母</b>：agent 用 read/write/ls/grep 像用普通目录，guarantee 在边界廉价地兑现。这正是"是文件系统、不是数据库"的关键。<span class="dim">harness：coding_agent_compat_benchmark.py · worktree_cost_benchmark.py</span></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>架构 · 小而硬的内核 + 投影</h2>
+  <p class="lead">设计纪律（<code>docs/06_kernel_contract.md</code> / <code>09_complexity_audit.md</code>）：内核只拥有那些<b>无法由更简单事实重建</b>的状态；其余一律是投影或适配器。新特性默认是投影，只有当它必须参与 replay、策略强制、冲突检测、持久溯源或完整性验证时，才进内核。</p>
+  <div class="grid2" style="margin-top:18px">
+    <div class="card k">
+      <h3 style="color:var(--accent)">内核拥有的 canonical 状态</h3>
+      <ul class="muted">
+        <li>不可变内容寻址 blob + node（CAS）</li>
+        <li>可变语义 ref（带版本）</li>
+        <li>append-only 事件日志 + typed 事件边</li>
+        <li>ref 生命周期审计行</li>
+        <li>workspace checkout base 快照（CoW 边界）</li>
+        <li>持久策略标签 + 字段级 fragment 标签</li>
+        <li>schema 迁移 + 完整性验证</li>
+      </ul>
+      <div>
+        <span class="pill kern">blobs/nodes</span><span class="pill kern">refs</span>
+        <span class="pill kern">events/edges</span><span class="pill kern">policy labels</span>
+        <span class="pill kern">checkout bases</span><span class="pill kern">integrity</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3 class="dim">投影 / 适配器（可重建，非真理源）</h3>
+      <ul class="muted">
+        <li>search / query / FTS / embedding —— 检索投影</li>
+        <li>replay / 物化 —— 时间旅行投影</li>
+        <li>bundle import/export —— 可移植性投影</li>
+        <li>answer 构造 + token/cost —— 生成产物的审计投影</li>
+        <li>worktree sync —— 普通文件工具的兼容适配器</li>
+      </ul>
+      <div>
+        <span class="pill proj">search</span><span class="pill proj">replay</span>
+        <span class="pill proj">bundles</span><span class="pill proj">answer/cost</span>
+        <span class="pill proj">worktree</span>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:30px">内核机制</h3>
+  <div class="grid3">
+    <div class="card"><h3 style="font-size:1rem">内容寻址不可变</h3><p class="muted" style="font-size:.9rem">写入产生新 node，blob 按 SHA-256 去重。历史从不就地覆盖——这是溯源与完整性的根基。</p></div>
+    <div class="card"><h3 style="font-size:1rem">有序事件日志</h3><p class="muted" style="font-size:.9rem">每次变更是一条 append-only 事件 + typed 输入/输出边，全局连续序列，支撑 replay 与派生图。</p></div>
+    <div class="card"><h3 style="font-size:1rem">Copy-on-Write workspace</h3><p class="muted" style="font-size:.9rem">checkout/fork 投影 base ref，沙箱隔离，conflict-aware merge 在内核检测竞争。</p></div>
+    <div class="card"><h3 style="font-size:1rem">集中策略 gate</h3><p class="muted" style="font-size:.9rem">所有 read/物化路径的字段/用途策略一律走 <code>visibility.rs</code> 的统一 gate，杜绝并行执行路径。</p></div>
+    <div class="card"><h3 style="font-size:1rem">乐观并发</h3><p class="muted" style="font-size:.9rem">ref 版本 + IMMEDIATE 写事务 + busy 重试：竞争浮为干净冲突，而非静默丢失或裸锁错误。</p></div>
+    <div class="card"><h3 style="font-size:1rem">可验证完整性</h3><p class="muted" style="font-size:.9rem"><code>verify_integrity()</code> 校验事件/ref/策略/merge/bundle 不变量；每个 conformance 场景以 <code>== []</code> 收尾。</p></div>
+  </div>
+
+  <h3 style="margin-top:30px">模块地图（行数）</h3>
+  <table>
+    <tr><th>模块</th><th>职责</th><th>行</th></tr>
+    <tr><td class="mono">workspace.rs</td><td>POSIX 风格工作区 API、读写、locks、字段编辑</td><td class="mono">4446</td></tr>
+    <tr><td class="mono">engine.rs</td><td>引擎门面、ref 生命周期、merge、replay、bundle、answer</td><td class="mono">4175</td></tr>
+    <tr><td class="mono">integrity.rs</td><td>完整性验证（25 个 check_* 子函数 + 编排器）</td><td class="mono">3938</td></tr>
+    <tr><td class="mono">span_parser.rs</td><td>保守 Markdown/YAML/JSON 字节级 span 解析（字段标签引擎）</td><td class="mono">3705</td></tr>
+    <tr><td class="mono">policy_labels.rs</td><td>策略标签/规则/能力/用途，单一 latest-active SQL 来源</td><td class="mono">2722</td></tr>
+    <tr><td class="mono">bundle.rs</td><td>事件/run/归档 bundle 导入导出 + HMAC 签名</td><td class="mono">1669</td></tr>
+    <tr><td class="mono">visibility.rs</td><td>集中式策略强制 gate（deny + filter）</td><td class="mono">320</td></tr>
+    <tr><td class="dim" colspan="3">… 另含 worktree / schema / gc_snapshot / replay / blob / refs / events / lineage 等 21 个模块</td></tr>
+  </table>
+  <p class="note">依赖刻意最小：<code>hex · pyo3 · rusqlite(bundled) · serde · serde_json · sha2 · uuid</code>——无托管向量库、无 ANN 服务、无模型调用进内核。</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>测试与验证</h2>
+  <p class="lead">151 个测试分布在 16 个领域文件，全部通过。差异化证明既有可复现 benchmark，也被锁成确定性 CI 断言；机制级证明不依赖 LLM/网络，真实基线另跑。每个场景以 <code>verify_integrity() == []</code> 收尾。</p>
+  <div class="grid2">
+    <div class="card">
+      <h3 style="font-size:1.05rem">差异化 / 真并发 CI 断言</h3>
+      <table>
+        <tr><td class="mono">test_leak_redteam</td><td class="dim">C1 机制：on=0 / off=100%</td></tr>
+        <tr><td class="mono">test_concurrency_real</td><td class="dim">C2 真多进程不变量</td></tr>
+        <tr><td class="mono">test_concurrency_merge</td><td class="dim">C2 冲突浮现/0 丢失</td></tr>
+        <tr><td class="mono">test_provenance_replay</td><td class="dim">C3 闭包 100% / 事件 replay</td></tr>
+        <tr><td class="mono">test_worktree_roundtrip</td><td class="dim">C4 字节级往返保真</td></tr>
+        <tr><td class="mono">test_conformance</td><td class="dim">端到端 agent-native 证明</td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3 style="font-size:1.05rem">领域测试覆盖</h3>
+      <table>
+        <tr><td class="mono">policy_labels</td><td class="mono">34</td><td class="dim">字段/用途/能力</td></tr>
+        <tr><td class="mono">integrity</td><td class="mono">28</td><td class="dim">损坏检测/修复计划</td></tr>
+        <tr><td class="mono">workspace_refs</td><td class="mono">20</td><td class="dim">CoW/merge/lineage</td></tr>
+        <tr><td class="mono">approval_lifecycle</td><td class="mono">14</td><td class="dim">状态机/复核</td></tr>
+        <tr><td class="mono">gc_admin</td><td class="mono">12</td><td class="dim">pin/retention/vacuum</td></tr>
+        <tr><td class="mono">bundles / search_answer</td><td class="mono">9+9</td><td class="dim">移植/检索</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <h3 style="margin-top:26px">代价（C4）</h3>
+  <table>
+    <tr><th>仓库规模</th><th>ANFS 边界开销（每会话一次）</th><th>内循环每次编辑</th></tr>
+    <tr><td>50 文件 / 10 编辑</td><td class="mono">66 ms（materialize 28 · commit 29 · integrity 10）</td><td class="mono">ANFS 0.39ms ≈ 原生 0.23ms</td></tr>
+    <tr><td>200 文件 / 40 编辑</td><td class="mono">278 ms（109 · 114 · 55）</td><td class="mono">ANFS 1.33ms ≈ 原生 0.87ms</td></tr>
+  </table>
+  <p class="note">要点：内循环就是普通目录上的普通文件 IO，ANFS 根本不在路径里；溯源+完整性+冲突检测的代价是有界、可摊销的会话边界成本。</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>诚实的边界</h2>
+  <div class="grid2">
+    <div class="card">
+      <h3 style="font-size:1.05rem;color:var(--warn)">机制，而非语义</h3>
+      <p class="muted" style="font-size:.93rem">ANFS 保证受标<b>字节</b>不过 API。它挡不住<b>语义</b>泄漏：secret 的改写、从非敏感字段的推断、模型跨轮记忆。C1 是字节级、提示词无关的保证，不是关于模型行为的断言。</p>
+    </div>
+    <div class="card">
+      <h3 style="font-size:1.05rem;color:var(--warn)">其余范围</h3>
+      <p class="muted" style="font-size:.93rem">字段标签依赖保守 span 解析，无法识别的结构回退到整 node 保护（安全但更粗）；当前为本地单机内核，分布式协调是未来工作；C1/C2 机制 harness 用内置语料，PrivacyLens/SWE-bench-Live/LoCoMo 真实数据是发表前的下一步。</p>
+    </div>
+  </div>
+  <p class="lead" style="margin-top:18px">第五根支柱 <b>C5（跨会话长期记忆）</b>脚手架已就位（<code>task_memory_benchmark.py</code>：raw/extracted/hybrid recall、token-F1），接真模型 + 官方 LoCoMo 即可凑齐。</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>复现</h2>
+  <pre>maturin develop && python -m pytest tests/ -q          # 151 passed
+
+# 四项差异化证明（机制级，无需联网）
+python benchmarks/leak_redteam_benchmark.py            # C1  off 100% / on 0%
+python benchmarks/concurrency_real_benchmark.py        # C2  真多进程 + git 三向
+python benchmarks/provenance_benchmark.py              # C3  闭包 100% vs git 0%
+python benchmarks/worktree_cost_benchmark.py           # C4  边界 vs 内循环代价
+
+# 真实 LLM 基线（需 DEEPSEEK_API_KEY）
+python benchmarks/leak_llm_baseline.py                 # C1  75% / 25% / 0%
+python benchmarks/coding_agent_compat_benchmark.py     # C4  5/5 native == 5/5 anfs</pre>
+</div></section>
+
+<footer><div class="wrap">
+  ANFS · Agent-Native File System · 工程汇报。所有数字来自本仓库 <code>benchmarks/</code> 可复现脚本与 <code>tests/</code> 回归断言；快照存于 <code>docs/benchmark_snapshots/</code>。主张表与评测计划见 <code>docs/11_paper_plan.md</code>，内核契约见 <code>docs/06_kernel_contract.md</code>。
+</div></footer>
+
+</body>
+</html>
