@@ -10,6 +10,83 @@ use crate::{
     PurposeCapabilityRuleRow, PurposePolicyRuleRow,
 };
 
+// The three SQL-fragment builders below are the single source of the
+// latest-active-value semantics: an event row is "active" when it carries the
+// highest event_sequence seq within its key group (and, for policy labels, no
+// later clear event exists). Every "latest event per group wins" query in this
+// crate must be assembled from these builders instead of hand-writing the
+// pattern.
+
+/// CTE body selecting the highest event sequence per `keys` group of `table`.
+/// `where_clause` is raw SQL inserted between the event_sequence join and the
+/// GROUP BY (extra JOINs and/or a WHERE; may be empty).
+pub(crate) fn latest_event_cte(
+    cte_name: &str,
+    table: &str,
+    alias: &str,
+    keys: &[&str],
+    where_clause: &str,
+) -> String {
+    let key_list = keys
+        .iter()
+        .map(|key| format!("{alias}.{key}"))
+        .collect::<Vec<_>>()
+        .join(", ");
+    format!(
+        "{cte_name} AS (
+            SELECT {key_list}, MAX(es.seq) AS seq
+            FROM {table} {alias}
+            JOIN event_sequence es ON es.event_id = {alias}.event_id
+            {where_clause}
+            GROUP BY {key_list}
+        )"
+    )
+}
+
+/// JOIN clause matching `alias` rows against the `cte_name` CTE on `keys` and seq.
+pub(crate) fn latest_event_join(
+    cte_name: &str,
+    cte_alias: &str,
+    alias: &str,
+    seq_alias: &str,
+    keys: &[&str],
+) -> String {
+    let mut conditions = keys
+        .iter()
+        .map(|key| format!("{cte_alias}.{key} = {alias}.{key}"))
+        .collect::<Vec<_>>();
+    conditions.push(format!("{cte_alias}.seq = {seq_alias}.seq"));
+    format!(
+        "JOIN {cte_name} {cte_alias} ON {}",
+        conditions.join(" AND ")
+    )
+}
+
+/// NOT EXISTS guard: row is dropped when a later clear event (value IS NULL) exists.
+pub(crate) fn policy_label_clear_guard(alias: &str, seq_alias: &str) -> String {
+    format!(
+        "NOT EXISTS (
+            SELECT 1
+            FROM policy_label_events clear
+            JOIN event_sequence clear_seq ON clear_seq.event_id = clear.event_id
+            WHERE clear.subject_type = {alias}.subject_type
+              AND clear.subject_id = {alias}.subject_id
+              AND clear.label = {alias}.label
+              AND clear.value IS NULL
+              AND clear_seq.seq > {seq_alias}.seq
+        )"
+    )
+}
+
+/// Latest-wins key columns per event table (shared across query sites).
+pub(crate) const POLICY_LABEL_EVENT_KEYS: &[&str] =
+    &["subject_type", "subject_id", "label", "value"];
+pub(crate) const POLICY_RULE_EVENT_KEYS: &[&str] = &["scope", "subject_type", "label", "value"];
+pub(crate) const POLICY_EXPRESSION_RULE_EVENT_KEYS: &[&str] =
+    &["scope", "subject_type", "expression_json"];
+pub(crate) const FRAGMENT_POLICY_LABEL_EVENT_KEYS: &[&str] =
+    &["node_id", "offset", "length", "label"];
+
 pub(crate) fn set_policy_label(
     conn: &mut Connection,
     subject_type: &str,
@@ -110,42 +187,33 @@ pub(crate) fn policy_labels(
     active_only: bool,
 ) -> AnfsResult<Vec<PolicyLabelRow>> {
     if active_only {
-        let mut stmt = conn.prepare(
+        let sql = format!(
             "
-            WITH latest_value AS (
-                SELECT ple.subject_type, ple.subject_id, ple.label, ple.value, MAX(es.seq) AS seq
-                FROM policy_label_events ple
-                JOIN event_sequence es ON es.event_id = ple.event_id
-                WHERE (?1 IS NULL OR ple.subject_type = ?1)
-                  AND (?2 IS NULL OR ple.subject_id = ?2)
-                  AND (?3 IS NULL OR ple.label = ?3)
-                  AND ple.value IS NOT NULL
-                GROUP BY ple.subject_type, ple.subject_id, ple.label, ple.value
-            )
+            WITH {latest}
             SELECT ple.subject_type, ple.subject_id, ple.label, ple.value,
                    ple.event_id, e.agent_id, ple.created_at
             FROM policy_label_events ple
             JOIN event_sequence es ON es.event_id = ple.event_id
-            JOIN latest_value l
-              ON l.subject_type = ple.subject_type
-             AND l.subject_id = ple.subject_id
-             AND l.label = ple.label
-             AND l.value = ple.value
-             AND l.seq = es.seq
+            {latest_join}
             JOIN events e ON e.event_id = ple.event_id
-            WHERE NOT EXISTS (
-                SELECT 1
-                FROM policy_label_events clear
-                JOIN event_sequence clear_seq ON clear_seq.event_id = clear.event_id
-                WHERE clear.subject_type = ple.subject_type
-                  AND clear.subject_id = ple.subject_id
-                  AND clear.label = ple.label
-                  AND clear.value IS NULL
-                  AND clear_seq.seq > es.seq
-            )
+            WHERE {clear_guard}
             ORDER BY ple.subject_type, ple.subject_id, ple.label, ple.value
             ",
-        )?;
+            latest = latest_event_cte(
+                "latest_value",
+                "policy_label_events",
+                "ple",
+                POLICY_LABEL_EVENT_KEYS,
+                "WHERE (?1 IS NULL OR ple.subject_type = ?1)
+                   AND (?2 IS NULL OR ple.subject_id = ?2)
+                   AND (?3 IS NULL OR ple.label = ?3)
+                   AND ple.value IS NOT NULL",
+            ),
+            latest_join =
+                latest_event_join("latest_value", "l", "ple", "es", POLICY_LABEL_EVENT_KEYS),
+            clear_guard = policy_label_clear_guard("ple", "es"),
+        );
+        let mut stmt = conn.prepare(&sql)?;
         let rows = stmt.query_map(params![subject_type, subject_id, label], policy_label_row)?;
         collect_policy_label_rows(rows)
     } else {
@@ -231,32 +299,30 @@ pub(crate) fn policy_rules(
     active_only: bool,
 ) -> AnfsResult<Vec<PolicyRuleRow>> {
     if active_only {
-        let mut stmt = conn.prepare(
+        let sql = format!(
             "
-            WITH latest AS (
-                SELECT pre.scope, pre.subject_type, pre.label, pre.value, MAX(es.seq) AS seq
-                FROM policy_rule_events pre
-                JOIN event_sequence es ON es.event_id = pre.event_id
-                WHERE (?1 IS NULL OR pre.scope = ?1)
-                  AND (?2 IS NULL OR pre.subject_type = ?2)
-                  AND (?3 IS NULL OR pre.label = ?3)
-                GROUP BY pre.scope, pre.subject_type, pre.label, pre.value
-            )
+            WITH {latest}
             SELECT pre.scope, pre.subject_type, pre.label, pre.value, pre.effect,
                    pre.event_id, e.agent_id, pre.created_at
             FROM policy_rule_events pre
             JOIN event_sequence es ON es.event_id = pre.event_id
-            JOIN latest l
-              ON l.scope = pre.scope
-             AND l.subject_type = pre.subject_type
-             AND l.label = pre.label
-             AND l.value = pre.value
-             AND l.seq = es.seq
+            {latest_join}
             JOIN events e ON e.event_id = pre.event_id
             WHERE pre.effect IS NOT NULL
             ORDER BY pre.scope, pre.subject_type, pre.label, pre.value
             ",
-        )?;
+            latest = latest_event_cte(
+                "latest",
+                "policy_rule_events",
+                "pre",
+                POLICY_RULE_EVENT_KEYS,
+                "WHERE (?1 IS NULL OR pre.scope = ?1)
+                   AND (?2 IS NULL OR pre.subject_type = ?2)
+                   AND (?3 IS NULL OR pre.label = ?3)",
+            ),
+            latest_join = latest_event_join("latest", "l", "pre", "es", POLICY_RULE_EVENT_KEYS),
+        );
+        let mut stmt = conn.prepare(&sql)?;
         let rows = stmt.query_map(params![scope, subject_type, label], policy_rule_row)?;
         collect_policy_rule_rows(rows)
     } else {
@@ -338,30 +404,35 @@ pub(crate) fn policy_expression_rules(
     active_only: bool,
 ) -> AnfsResult<Vec<PolicyExpressionRuleRow>> {
     if active_only {
-        let mut stmt = conn.prepare(
+        let sql = format!(
             "
-            WITH latest AS (
-                SELECT pere.scope, pere.subject_type, pere.expression_json, MAX(es.seq) AS seq
-                FROM policy_expression_rule_events pere
-                JOIN event_sequence es ON es.event_id = pere.event_id
-                WHERE (?1 IS NULL OR pere.scope = ?1)
-                  AND (?2 IS NULL OR pere.subject_type = ?2)
-                GROUP BY pere.scope, pere.subject_type, pere.expression_json
-            )
+            WITH {latest}
             SELECT pere.scope, pere.subject_type, pere.expression_json, pere.effect,
                    pere.event_id, e.agent_id, pere.created_at
             FROM policy_expression_rule_events pere
             JOIN event_sequence es ON es.event_id = pere.event_id
-            JOIN latest l
-              ON l.scope = pere.scope
-             AND l.subject_type = pere.subject_type
-             AND l.expression_json = pere.expression_json
-             AND l.seq = es.seq
+            {latest_join}
             JOIN events e ON e.event_id = pere.event_id
             WHERE pere.effect IS NOT NULL
             ORDER BY pere.scope, pere.subject_type, pere.expression_json
             ",
-        )?;
+            latest = latest_event_cte(
+                "latest",
+                "policy_expression_rule_events",
+                "pere",
+                POLICY_EXPRESSION_RULE_EVENT_KEYS,
+                "WHERE (?1 IS NULL OR pere.scope = ?1)
+                   AND (?2 IS NULL OR pere.subject_type = ?2)",
+            ),
+            latest_join = latest_event_join(
+                "latest",
+                "l",
+                "pere",
+                "es",
+                POLICY_EXPRESSION_RULE_EVENT_KEYS
+            ),
+        );
+        let mut stmt = conn.prepare(&sql)?;
         let rows = stmt.query_map(params![scope, subject_type], policy_expression_rule_row)?;
         collect_policy_expression_rule_rows(rows)
     } else {
@@ -446,32 +517,36 @@ pub(crate) fn purpose_policy_rules(
     active_only: bool,
 ) -> AnfsResult<Vec<PurposePolicyRuleRow>> {
     if active_only {
-        let mut stmt = conn.prepare(
+        let sql = format!(
             "
-            WITH latest AS (
-                SELECT ppre.purpose, ppre.subject_type, ppre.label, ppre.value, MAX(es.seq) AS seq
-                FROM purpose_policy_rule_events ppre
-                JOIN event_sequence es ON es.event_id = ppre.event_id
-                WHERE (?1 IS NULL OR ppre.purpose = ?1)
-                  AND (?2 IS NULL OR ppre.subject_type = ?2)
-                  AND (?3 IS NULL OR ppre.label = ?3)
-                GROUP BY ppre.purpose, ppre.subject_type, ppre.label, ppre.value
-            )
+            WITH {latest}
             SELECT ppre.purpose, ppre.subject_type, ppre.label, ppre.value, ppre.effect,
                    ppre.event_id, e.agent_id, ppre.created_at
             FROM purpose_policy_rule_events ppre
             JOIN event_sequence es ON es.event_id = ppre.event_id
-            JOIN latest l
-              ON l.purpose = ppre.purpose
-             AND l.subject_type = ppre.subject_type
-             AND l.label = ppre.label
-             AND l.value = ppre.value
-             AND l.seq = es.seq
+            {latest_join}
             JOIN events e ON e.event_id = ppre.event_id
             WHERE ppre.effect IS NOT NULL
             ORDER BY ppre.purpose, ppre.subject_type, ppre.label, ppre.value
             ",
-        )?;
+            latest = latest_event_cte(
+                "latest",
+                "purpose_policy_rule_events",
+                "ppre",
+                &["purpose", "subject_type", "label", "value"],
+                "WHERE (?1 IS NULL OR ppre.purpose = ?1)
+                   AND (?2 IS NULL OR ppre.subject_type = ?2)
+                   AND (?3 IS NULL OR ppre.label = ?3)",
+            ),
+            latest_join = latest_event_join(
+                "latest",
+                "l",
+                "ppre",
+                "es",
+                &["purpose", "subject_type", "label", "value"],
+            ),
+        );
+        let mut stmt = conn.prepare(&sql)?;
         let rows = stmt.query_map(
             params![purpose, subject_type, label],
             purpose_policy_rule_row,
@@ -548,29 +623,30 @@ pub(crate) fn agent_capabilities(
     active_only: bool,
 ) -> AnfsResult<Vec<AgentCapabilityRow>> {
     if active_only {
-        let mut stmt = conn.prepare(
+        let sql = format!(
             "
-            WITH latest AS (
-                SELECT ace.agent_id, ace.capability, MAX(es.seq) AS seq
-                FROM agent_capability_events ace
-                JOIN event_sequence es ON es.event_id = ace.event_id
-                WHERE (?1 IS NULL OR ace.agent_id = ?1)
-                  AND (?2 IS NULL OR ace.capability = ?2)
-                GROUP BY ace.agent_id, ace.capability
-            )
+            WITH {latest}
             SELECT ace.agent_id, ace.capability, ace.effect, ace.event_id,
                    e.agent_id, ace.created_at
             FROM agent_capability_events ace
             JOIN event_sequence es ON es.event_id = ace.event_id
-            JOIN latest l
-              ON l.agent_id = ace.agent_id
-             AND l.capability = ace.capability
-             AND l.seq = es.seq
+            {latest_join}
             JOIN events e ON e.event_id = ace.event_id
             WHERE ace.effect IS NOT NULL
             ORDER BY ace.agent_id, ace.capability
             ",
-        )?;
+            latest = latest_event_cte(
+                "latest",
+                "agent_capability_events",
+                "ace",
+                &["agent_id", "capability"],
+                "WHERE (?1 IS NULL OR ace.agent_id = ?1)
+                   AND (?2 IS NULL OR ace.capability = ?2)",
+            ),
+            latest_join =
+                latest_event_join("latest", "l", "ace", "es", &["agent_id", "capability"]),
+        );
+        let mut stmt = conn.prepare(&sql)?;
         let rows = stmt.query_map(params![agent_id, capability], agent_capability_row)?;
         collect_agent_capability_rows(rows)
     } else {
@@ -640,29 +716,30 @@ pub(crate) fn purpose_capability_rules(
     active_only: bool,
 ) -> AnfsResult<Vec<PurposeCapabilityRuleRow>> {
     if active_only {
-        let mut stmt = conn.prepare(
+        let sql = format!(
             "
-            WITH latest AS (
-                SELECT pcre.purpose, pcre.capability, MAX(es.seq) AS seq
-                FROM purpose_capability_rule_events pcre
-                JOIN event_sequence es ON es.event_id = pcre.event_id
-                WHERE (?1 IS NULL OR pcre.purpose = ?1)
-                  AND (?2 IS NULL OR pcre.capability = ?2)
-                GROUP BY pcre.purpose, pcre.capability
-            )
+            WITH {latest}
             SELECT pcre.purpose, pcre.capability, pcre.effect, pcre.event_id,
                    e.agent_id, pcre.created_at
             FROM purpose_capability_rule_events pcre
             JOIN event_sequence es ON es.event_id = pcre.event_id
-            JOIN latest l
-              ON l.purpose = pcre.purpose
-             AND l.capability = pcre.capability
-             AND l.seq = es.seq
+            {latest_join}
             JOIN events e ON e.event_id = pcre.event_id
             WHERE pcre.effect IS NOT NULL
             ORDER BY pcre.purpose, pcre.capability
             ",
-        )?;
+            latest = latest_event_cte(
+                "latest",
+                "purpose_capability_rule_events",
+                "pcre",
+                &["purpose", "capability"],
+                "WHERE (?1 IS NULL OR pcre.purpose = ?1)
+                   AND (?2 IS NULL OR pcre.capability = ?2)",
+            ),
+            latest_join =
+                latest_event_join("latest", "l", "pcre", "es", &["purpose", "capability"]),
+        );
+        let mut stmt = conn.prepare(&sql)?;
         let rows = stmt.query_map(params![purpose, capability], purpose_capability_rule_row)?;
         collect_purpose_capability_rule_rows(rows)
     } else {
@@ -732,29 +809,30 @@ pub(crate) fn operation_capability_rules(
     active_only: bool,
 ) -> AnfsResult<Vec<OperationCapabilityRuleRow>> {
     if active_only {
-        let mut stmt = conn.prepare(
+        let sql = format!(
             "
-            WITH latest AS (
-                SELECT ocre.operation, ocre.capability, MAX(es.seq) AS seq
-                FROM operation_capability_rule_events ocre
-                JOIN event_sequence es ON es.event_id = ocre.event_id
-                WHERE (?1 IS NULL OR ocre.operation = ?1)
-                  AND (?2 IS NULL OR ocre.capability = ?2)
-                GROUP BY ocre.operation, ocre.capability
-            )
+            WITH {latest}
             SELECT ocre.operation, ocre.capability, ocre.effect, ocre.event_id,
                    e.agent_id, ocre.created_at
             FROM operation_capability_rule_events ocre
             JOIN event_sequence es ON es.event_id = ocre.event_id
-            JOIN latest l
-              ON l.operation = ocre.operation
-             AND l.capability = ocre.capability
-             AND l.seq = es.seq
+            {latest_join}
             JOIN events e ON e.event_id = ocre.event_id
             WHERE ocre.effect IS NOT NULL
             ORDER BY ocre.operation, ocre.capability
             ",
-        )?;
+            latest = latest_event_cte(
+                "latest",
+                "operation_capability_rule_events",
+                "ocre",
+                &["operation", "capability"],
+                "WHERE (?1 IS NULL OR ocre.operation = ?1)
+                   AND (?2 IS NULL OR ocre.capability = ?2)",
+            ),
+            latest_join =
+                latest_event_join("latest", "l", "ocre", "es", &["operation", "capability"]),
+        );
+        let mut stmt = conn.prepare(&sql)?;
         let rows = stmt.query_map(
             params![operation, capability],
             operation_capability_rule_row,
@@ -832,34 +910,38 @@ pub(crate) fn propagate_fragment_policy_labels_between_ranges(
     validate_fragment_policy_range(conn, output_node_id, output_offset, output_length)?;
     let source_end = source_offset.saturating_add(source_length);
     let tx = conn.transaction()?;
-    let mut stmt = tx.prepare(
+    let sql = format!(
         "
-        WITH latest AS (
-            SELECT fple.node_id, fple.offset, fple.length, fple.label, MAX(es.seq) AS seq
-            FROM fragment_policy_label_events fple
-            JOIN event_sequence es ON es.event_id = fple.event_id
-            WHERE fple.node_id = ?1
-              AND fple.offset < ?3
-              AND (fple.offset + fple.length) > ?2
-            GROUP BY fple.node_id, fple.offset, fple.length, fple.label
-        ),
+        WITH {latest},
         active AS (
             SELECT fple.label, fple.value
             FROM fragment_policy_label_events fple
             JOIN event_sequence es ON es.event_id = fple.event_id
-            JOIN latest l
-              ON l.node_id = fple.node_id
-             AND l.offset = fple.offset
-             AND l.length = fple.length
-             AND l.label = fple.label
-             AND l.seq = es.seq
+            {latest_join}
             WHERE fple.value IS NOT NULL
         )
         SELECT DISTINCT label, value
         FROM active
         ORDER BY label, value
         ",
-    )?;
+        latest = latest_event_cte(
+            "latest",
+            "fragment_policy_label_events",
+            "fple",
+            FRAGMENT_POLICY_LABEL_EVENT_KEYS,
+            "WHERE fple.node_id = ?1
+               AND fple.offset < ?3
+               AND (fple.offset + fple.length) > ?2",
+        ),
+        latest_join = latest_event_join(
+            "latest",
+            "l",
+            "fple",
+            "es",
+            FRAGMENT_POLICY_LABEL_EVENT_KEYS
+        ),
+    );
+    let mut stmt = tx.prepare(&sql)?;
     let rows = stmt.query_map(params![source_node_id, source_offset, source_end], |row| {
         Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
     })?;
@@ -1053,28 +1135,32 @@ fn active_fragment_policy_label_ranges(
     conn: &Connection,
     node_id: &str,
 ) -> AnfsResult<Vec<(i64, i64, String, String)>> {
-    let mut stmt = conn.prepare(
+    let sql = format!(
         "
-        WITH latest AS (
-            SELECT fple.node_id, fple.offset, fple.length, fple.label, MAX(es.seq) AS seq
-            FROM fragment_policy_label_events fple
-            JOIN event_sequence es ON es.event_id = fple.event_id
-            WHERE fple.node_id = ?1
-            GROUP BY fple.node_id, fple.offset, fple.length, fple.label
-        )
+        WITH {latest}
         SELECT fple.offset, fple.length, fple.label, fple.value
         FROM fragment_policy_label_events fple
         JOIN event_sequence es ON es.event_id = fple.event_id
-        JOIN latest l
-          ON l.node_id = fple.node_id
-         AND l.offset = fple.offset
-         AND l.length = fple.length
-         AND l.label = fple.label
-         AND l.seq = es.seq
+        {latest_join}
         WHERE fple.value IS NOT NULL
         ORDER BY fple.offset, fple.length, fple.label
         ",
-    )?;
+        latest = latest_event_cte(
+            "latest",
+            "fragment_policy_label_events",
+            "fple",
+            FRAGMENT_POLICY_LABEL_EVENT_KEYS,
+            "WHERE fple.node_id = ?1",
+        ),
+        latest_join = latest_event_join(
+            "latest",
+            "l",
+            "fple",
+            "es",
+            FRAGMENT_POLICY_LABEL_EVENT_KEYS
+        ),
+    );
+    let mut stmt = conn.prepare(&sql)?;
     let rows = stmt.query_map(params![node_id], |row| {
         Ok((
             row.get::<_, i64>(0)?,
@@ -1197,27 +1283,14 @@ pub(crate) fn propagate_fragment_policy_labels_for_blob(
     run_id: Option<&str>,
     tool_call_id: Option<&str>,
 ) -> AnfsResult<()> {
-    let mut stmt = tx.prepare(
+    let sql = format!(
         "
-        WITH latest AS (
-            SELECT fple.node_id, fple.offset, fple.length, fple.label, MAX(es.seq) AS seq
-            FROM fragment_policy_label_events fple
-            JOIN event_sequence es ON es.event_id = fple.event_id
-            JOIN nodes n ON n.node_id = fple.node_id
-            WHERE n.blob_hash = ?1
-              AND fple.node_id <> ?2
-            GROUP BY fple.node_id, fple.offset, fple.length, fple.label
-        ),
+        WITH {latest},
         active AS (
             SELECT fple.node_id, fple.offset, fple.length, fple.label, fple.value
             FROM fragment_policy_label_events fple
             JOIN event_sequence es ON es.event_id = fple.event_id
-            JOIN latest l
-              ON l.node_id = fple.node_id
-             AND l.offset = fple.offset
-             AND l.length = fple.length
-             AND l.label = fple.label
-             AND l.seq = es.seq
+            {latest_join}
             WHERE fple.value IS NOT NULL
         ),
         ranked AS (
@@ -1233,7 +1306,24 @@ pub(crate) fn propagate_fragment_policy_labels_for_blob(
         WHERE rn = 1
         ORDER BY offset, length, label, value
         ",
-    )?;
+        latest = latest_event_cte(
+            "latest",
+            "fragment_policy_label_events",
+            "fple",
+            FRAGMENT_POLICY_LABEL_EVENT_KEYS,
+            "JOIN nodes n ON n.node_id = fple.node_id
+             WHERE n.blob_hash = ?1
+               AND fple.node_id <> ?2",
+        ),
+        latest_join = latest_event_join(
+            "latest",
+            "l",
+            "fple",
+            "es",
+            FRAGMENT_POLICY_LABEL_EVENT_KEYS
+        ),
+    );
+    let mut stmt = tx.prepare(&sql)?;
     let rows = stmt.query_map(params![blob_hash, node_id], |row| {
         Ok((
             row.get::<_, String>(0)?,
@@ -1337,39 +1427,29 @@ fn collect_active_node_policy_labels(
     source_node_id: &str,
     out: &mut Vec<(String, String, String)>,
 ) -> AnfsResult<()> {
-    let mut stmt = tx.prepare(
+    let sql = format!(
         "
-        WITH latest_value AS (
-            SELECT ple.subject_type, ple.subject_id, ple.label, ple.value, MAX(es.seq) AS seq
-            FROM policy_label_events ple
-            JOIN event_sequence es ON es.event_id = ple.event_id
-            WHERE ple.subject_type = 'node'
-              AND ple.subject_id = ?1
-              AND ple.value IS NOT NULL
-            GROUP BY ple.subject_type, ple.subject_id, ple.label, ple.value
-        )
+        WITH {latest}
         SELECT ple.label, ple.value
         FROM policy_label_events ple
         JOIN event_sequence es ON es.event_id = ple.event_id
-        JOIN latest_value l
-          ON l.subject_type = ple.subject_type
-         AND l.subject_id = ple.subject_id
-         AND l.label = ple.label
-         AND l.value = ple.value
-         AND l.seq = es.seq
-        WHERE NOT EXISTS (
-            SELECT 1
-            FROM policy_label_events clear
-            JOIN event_sequence clear_seq ON clear_seq.event_id = clear.event_id
-            WHERE clear.subject_type = ple.subject_type
-              AND clear.subject_id = ple.subject_id
-              AND clear.label = ple.label
-              AND clear.value IS NULL
-              AND clear_seq.seq > es.seq
-        )
+        {latest_join}
+        WHERE {clear_guard}
         ORDER BY ple.label, ple.value
         ",
-    )?;
+        latest = latest_event_cte(
+            "latest_value",
+            "policy_label_events",
+            "ple",
+            POLICY_LABEL_EVENT_KEYS,
+            "WHERE ple.subject_type = 'node'
+               AND ple.subject_id = ?1
+               AND ple.value IS NOT NULL",
+        ),
+        latest_join = latest_event_join("latest_value", "l", "ple", "es", POLICY_LABEL_EVENT_KEYS),
+        clear_guard = policy_label_clear_guard("ple", "es"),
+    );
+    let mut stmt = tx.prepare(&sql)?;
     let rows = stmt.query_map(params![source_node_id], |row| {
         Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
     })?;
@@ -1397,28 +1477,32 @@ fn collect_active_fragment_policy_labels_for_derived_output(
         return Ok(());
     }
 
-    let mut stmt = tx.prepare(
+    let sql = format!(
         "
-        WITH latest AS (
-            SELECT fple.node_id, fple.offset, fple.length, fple.label, MAX(es.seq) AS seq
-            FROM fragment_policy_label_events fple
-            JOIN event_sequence es ON es.event_id = fple.event_id
-            WHERE fple.node_id = ?1
-            GROUP BY fple.node_id, fple.offset, fple.length, fple.label
-        )
+        WITH {latest}
         SELECT fple.label, fple.value
         FROM fragment_policy_label_events fple
         JOIN event_sequence es ON es.event_id = fple.event_id
-        JOIN latest l
-          ON l.node_id = fple.node_id
-         AND l.offset = fple.offset
-         AND l.length = fple.length
-         AND l.label = fple.label
-         AND l.seq = es.seq
+        {latest_join}
         WHERE fple.value IS NOT NULL
         ORDER BY fple.label, fple.value
         ",
-    )?;
+        latest = latest_event_cte(
+            "latest",
+            "fragment_policy_label_events",
+            "fple",
+            FRAGMENT_POLICY_LABEL_EVENT_KEYS,
+            "WHERE fple.node_id = ?1",
+        ),
+        latest_join = latest_event_join(
+            "latest",
+            "l",
+            "fple",
+            "es",
+            FRAGMENT_POLICY_LABEL_EVENT_KEYS
+        ),
+    );
+    let mut stmt = tx.prepare(&sql)?;
     let rows = stmt.query_map(params![source_node_id], |row| {
         Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
     })?;
@@ -1502,31 +1586,35 @@ pub(crate) fn fragment_policy_labels(
     active_only: bool,
 ) -> AnfsResult<Vec<FragmentPolicyLabelRow>> {
     if active_only {
-        let mut stmt = conn.prepare(
+        let sql = format!(
             "
-            WITH latest AS (
-                SELECT fple.node_id, fple.offset, fple.length, fple.label, MAX(es.seq) AS seq
-                FROM fragment_policy_label_events fple
-                JOIN event_sequence es ON es.event_id = fple.event_id
-                WHERE (?1 IS NULL OR fple.node_id = ?1)
-                  AND (?2 IS NULL OR fple.label = ?2)
-                GROUP BY fple.node_id, fple.offset, fple.length, fple.label
-            )
+            WITH {latest}
             SELECT fple.node_id, fple.offset, fple.length, fple.label, fple.value,
                    fple.event_id, e.agent_id, fple.created_at
             FROM fragment_policy_label_events fple
             JOIN event_sequence es ON es.event_id = fple.event_id
-            JOIN latest l
-              ON l.node_id = fple.node_id
-             AND l.offset = fple.offset
-             AND l.length = fple.length
-             AND l.label = fple.label
-             AND l.seq = es.seq
+            {latest_join}
             JOIN events e ON e.event_id = fple.event_id
             WHERE fple.value IS NOT NULL
             ORDER BY fple.node_id, fple.offset, fple.length, fple.label
             ",
-        )?;
+            latest = latest_event_cte(
+                "latest",
+                "fragment_policy_label_events",
+                "fple",
+                FRAGMENT_POLICY_LABEL_EVENT_KEYS,
+                "WHERE (?1 IS NULL OR fple.node_id = ?1)
+                   AND (?2 IS NULL OR fple.label = ?2)",
+            ),
+            latest_join = latest_event_join(
+                "latest",
+                "l",
+                "fple",
+                "es",
+                FRAGMENT_POLICY_LABEL_EVENT_KEYS
+            ),
+        );
+        let mut stmt = conn.prepare(&sql)?;
         let rows = stmt.query_map(params![node_id, label], fragment_policy_label_row)?;
         collect_fragment_policy_label_rows(rows)
     } else {
@@ -1557,30 +1645,34 @@ pub(crate) fn active_fragment_policy_blocks_range(
         return Ok(false);
     }
     let end = offset.saturating_add(length);
-    let mut stmt = conn.prepare(
+    let sql = format!(
         "
-        WITH latest AS (
-            SELECT fple.node_id, fple.offset, fple.length, fple.label, MAX(es.seq) AS seq
-            FROM fragment_policy_label_events fple
-            JOIN event_sequence es ON es.event_id = fple.event_id
-            WHERE fple.node_id = ?1
-              AND fple.offset < ?3
-              AND (fple.offset + fple.length) > ?2
-            GROUP BY fple.node_id, fple.offset, fple.length, fple.label
-        )
+        WITH {latest}
         SELECT fple.label, fple.value
         FROM fragment_policy_label_events fple
         JOIN event_sequence es ON es.event_id = fple.event_id
-        JOIN latest l
-          ON l.node_id = fple.node_id
-         AND l.offset = fple.offset
-         AND l.length = fple.length
-         AND l.label = fple.label
-         AND l.seq = es.seq
+        {latest_join}
         WHERE fple.value IS NOT NULL
         ORDER BY fple.offset, fple.label
         ",
-    )?;
+        latest = latest_event_cte(
+            "latest",
+            "fragment_policy_label_events",
+            "fple",
+            FRAGMENT_POLICY_LABEL_EVENT_KEYS,
+            "WHERE fple.node_id = ?1
+               AND fple.offset < ?3
+               AND (fple.offset + fple.length) > ?2",
+        ),
+        latest_join = latest_event_join(
+            "latest",
+            "l",
+            "fple",
+            "es",
+            FRAGMENT_POLICY_LABEL_EVENT_KEYS
+        ),
+    );
+    let mut stmt = conn.prepare(&sql)?;
     let rows = stmt.query_map(params![node_id, offset, end], |row| {
         Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
     })?;
@@ -1620,32 +1712,28 @@ pub(crate) fn active_policy_rule_denies_label_value(
     label: &str,
     value: &str,
 ) -> AnfsResult<bool> {
-    let count: i64 = conn.query_row(
+    let sql = format!(
         "
-        WITH latest AS (
-            SELECT pre.scope, pre.subject_type, pre.label, pre.value, MAX(es.seq) AS seq
-            FROM policy_rule_events pre
-            JOIN event_sequence es ON es.event_id = pre.event_id
-            WHERE pre.scope = 'visibility'
-              AND pre.label = ?1
-              AND pre.subject_type IN ('*', ?2)
-              AND pre.value IN ('*', ?3)
-            GROUP BY pre.scope, pre.subject_type, pre.label, pre.value
-        )
+        WITH {latest}
         SELECT COUNT(*)
         FROM policy_rule_events pre
         JOIN event_sequence es ON es.event_id = pre.event_id
-        JOIN latest l
-          ON l.scope = pre.scope
-         AND l.subject_type = pre.subject_type
-         AND l.label = pre.label
-         AND l.value = pre.value
-         AND l.seq = es.seq
+        {latest_join}
         WHERE pre.effect = 'deny'
         ",
-        params![label, subject_type, value],
-        |row| row.get(0),
-    )?;
+        latest = latest_event_cte(
+            "latest",
+            "policy_rule_events",
+            "pre",
+            POLICY_RULE_EVENT_KEYS,
+            "WHERE pre.scope = 'visibility'
+               AND pre.label = ?1
+               AND pre.subject_type IN ('*', ?2)
+               AND pre.value IN ('*', ?3)",
+        ),
+        latest_join = latest_event_join("latest", "l", "pre", "es", POLICY_RULE_EVENT_KEYS),
+    );
+    let count: i64 = conn.query_row(&sql, params![label, subject_type, value], |row| row.get(0))?;
     Ok(count > 0)
 }
 
@@ -1663,28 +1751,33 @@ pub(crate) fn active_policy_expression_rules_block_labels(
     subject_type: &str,
     labels: &[(String, String)],
 ) -> AnfsResult<bool> {
-    let mut stmt = conn.prepare(
+    let sql = format!(
         "
-        WITH latest AS (
-            SELECT pere.scope, pere.subject_type, pere.expression_json, MAX(es.seq) AS seq
-            FROM policy_expression_rule_events pere
-            JOIN event_sequence es ON es.event_id = pere.event_id
-            WHERE pere.scope = 'visibility'
-              AND pere.subject_type IN ('*', ?1)
-            GROUP BY pere.scope, pere.subject_type, pere.expression_json
-        )
+        WITH {latest}
         SELECT pere.expression_json
         FROM policy_expression_rule_events pere
         JOIN event_sequence es ON es.event_id = pere.event_id
-        JOIN latest l
-          ON l.scope = pere.scope
-         AND l.subject_type = pere.subject_type
-         AND l.expression_json = pere.expression_json
-         AND l.seq = es.seq
+        {latest_join}
         WHERE pere.effect = 'deny'
         ORDER BY pere.subject_type, pere.expression_json
         ",
-    )?;
+        latest = latest_event_cte(
+            "latest",
+            "policy_expression_rule_events",
+            "pere",
+            POLICY_EXPRESSION_RULE_EVENT_KEYS,
+            "WHERE pere.scope = 'visibility'
+               AND pere.subject_type IN ('*', ?1)",
+        ),
+        latest_join = latest_event_join(
+            "latest",
+            "l",
+            "pere",
+            "es",
+            POLICY_EXPRESSION_RULE_EVENT_KEYS
+        ),
+    );
+    let mut stmt = conn.prepare(&sql)?;
     let rows = stmt.query_map(params![subject_type], |row| row.get::<_, String>(0))?;
     for row in rows {
         let expression_json = row?;
@@ -1735,26 +1828,32 @@ pub(crate) fn active_purpose_capability_missing(
 ) -> AnfsResult<Option<String>> {
     let purpose = validate_purpose_policy_rule_purpose(purpose)?;
     let agent_id = validate_capability_agent_id(agent_id)?;
-    let mut stmt = conn.prepare(
+    let sql = format!(
         "
-        WITH latest_rules AS (
-            SELECT pcre.purpose, pcre.capability, MAX(es.seq) AS seq
-            FROM purpose_capability_rule_events pcre
-            JOIN event_sequence es ON es.event_id = pcre.event_id
-            WHERE pcre.purpose = ?1
-            GROUP BY pcre.purpose, pcre.capability
-        )
+        WITH {latest}
         SELECT pcre.capability
         FROM purpose_capability_rule_events pcre
         JOIN event_sequence es ON es.event_id = pcre.event_id
-        JOIN latest_rules l
-          ON l.purpose = pcre.purpose
-         AND l.capability = pcre.capability
-         AND l.seq = es.seq
+        {latest_join}
         WHERE pcre.effect = 'require'
         ORDER BY pcre.capability
         ",
-    )?;
+        latest = latest_event_cte(
+            "latest_rules",
+            "purpose_capability_rule_events",
+            "pcre",
+            &["purpose", "capability"],
+            "WHERE pcre.purpose = ?1",
+        ),
+        latest_join = latest_event_join(
+            "latest_rules",
+            "l",
+            "pcre",
+            "es",
+            &["purpose", "capability"]
+        ),
+    );
+    let mut stmt = conn.prepare(&sql)?;
     let rows = stmt.query_map(params![purpose], |row| row.get::<_, String>(0))?;
     for row in rows {
         let capability = row?;
@@ -1772,26 +1871,32 @@ pub(crate) fn active_operation_capability_missing(
 ) -> AnfsResult<Option<String>> {
     let operation = validate_operation_capability_rule_operation(operation)?;
     let agent_id = validate_capability_agent_id(agent_id)?;
-    let mut stmt = conn.prepare(
+    let sql = format!(
         "
-        WITH latest_rules AS (
-            SELECT ocre.operation, ocre.capability, MAX(es.seq) AS seq
-            FROM operation_capability_rule_events ocre
-            JOIN event_sequence es ON es.event_id = ocre.event_id
-            WHERE ocre.operation = ?1
-            GROUP BY ocre.operation, ocre.capability
-        )
+        WITH {latest}
         SELECT ocre.capability
         FROM operation_capability_rule_events ocre
         JOIN event_sequence es ON es.event_id = ocre.event_id
-        JOIN latest_rules l
-          ON l.operation = ocre.operation
-         AND l.capability = ocre.capability
-         AND l.seq = es.seq
+        {latest_join}
         WHERE ocre.effect = 'require'
         ORDER BY ocre.capability
         ",
-    )?;
+        latest = latest_event_cte(
+            "latest_rules",
+            "operation_capability_rule_events",
+            "ocre",
+            &["operation", "capability"],
+            "WHERE ocre.operation = ?1",
+        ),
+        latest_join = latest_event_join(
+            "latest_rules",
+            "l",
+            "ocre",
+            "es",
+            &["operation", "capability"]
+        ),
+    );
+    let mut stmt = conn.prepare(&sql)?;
     let rows = stmt.query_map(params![operation], |row| row.get::<_, String>(0))?;
     for row in rows {
         let capability = row?;
@@ -1807,28 +1912,26 @@ fn agent_has_active_capability(
     agent_id: &str,
     capability: &str,
 ) -> AnfsResult<bool> {
-    let count: i64 = conn.query_row(
+    let sql = format!(
         "
-        WITH latest AS (
-            SELECT ace.agent_id, ace.capability, MAX(es.seq) AS seq
-            FROM agent_capability_events ace
-            JOIN event_sequence es ON es.event_id = ace.event_id
-            WHERE ace.agent_id = ?1
-              AND ace.capability = ?2
-            GROUP BY ace.agent_id, ace.capability
-        )
+        WITH {latest}
         SELECT COUNT(*)
         FROM agent_capability_events ace
         JOIN event_sequence es ON es.event_id = ace.event_id
-        JOIN latest l
-          ON l.agent_id = ace.agent_id
-         AND l.capability = ace.capability
-         AND l.seq = es.seq
+        {latest_join}
         WHERE ace.effect = 'grant'
         ",
-        params![agent_id, capability],
-        |row| row.get(0),
-    )?;
+        latest = latest_event_cte(
+            "latest",
+            "agent_capability_events",
+            "ace",
+            &["agent_id", "capability"],
+            "WHERE ace.agent_id = ?1
+               AND ace.capability = ?2",
+        ),
+        latest_join = latest_event_join("latest", "l", "ace", "es", &["agent_id", "capability"]),
+    );
+    let count: i64 = conn.query_row(&sql, params![agent_id, capability], |row| row.get(0))?;
     Ok(count > 0)
 }
 
@@ -1858,28 +1961,32 @@ fn active_purpose_policy_rules_block_node_fragments(
     purpose: &str,
     node_id: &str,
 ) -> AnfsResult<bool> {
-    let mut stmt = conn.prepare(
+    let sql = format!(
         "
-        WITH latest AS (
-            SELECT fple.node_id, fple.offset, fple.length, fple.label, MAX(es.seq) AS seq
-            FROM fragment_policy_label_events fple
-            JOIN event_sequence es ON es.event_id = fple.event_id
-            WHERE fple.node_id = ?1
-            GROUP BY fple.node_id, fple.offset, fple.length, fple.label
-        )
+        WITH {latest}
         SELECT fple.label, fple.value
         FROM fragment_policy_label_events fple
         JOIN event_sequence es ON es.event_id = fple.event_id
-        JOIN latest l
-          ON l.node_id = fple.node_id
-         AND l.offset = fple.offset
-         AND l.length = fple.length
-         AND l.label = fple.label
-         AND l.seq = es.seq
+        {latest_join}
         WHERE fple.value IS NOT NULL
         ORDER BY fple.offset, fple.label
         ",
-    )?;
+        latest = latest_event_cte(
+            "latest",
+            "fragment_policy_label_events",
+            "fple",
+            FRAGMENT_POLICY_LABEL_EVENT_KEYS,
+            "WHERE fple.node_id = ?1",
+        ),
+        latest_join = latest_event_join(
+            "latest",
+            "l",
+            "fple",
+            "es",
+            FRAGMENT_POLICY_LABEL_EVENT_KEYS
+        ),
+    );
+    let mut stmt = conn.prepare(&sql)?;
     let rows = stmt.query_map(params![node_id], |row| {
         Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
     })?;
@@ -1913,30 +2020,34 @@ fn active_purpose_policy_rules_block_node_fragment_range(
     let end = offset
         .checked_add(length)
         .ok_or_else(|| AnfsError::PolicyDenied("range offset plus length overflows".to_string()))?;
-    let mut stmt = conn.prepare(
+    let sql = format!(
         "
-        WITH latest AS (
-            SELECT fple.node_id, fple.offset, fple.length, fple.label, MAX(es.seq) AS seq
-            FROM fragment_policy_label_events fple
-            JOIN event_sequence es ON es.event_id = fple.event_id
-            WHERE fple.node_id = ?1
-              AND fple.offset < ?3
-              AND fple.offset + fple.length > ?2
-            GROUP BY fple.node_id, fple.offset, fple.length, fple.label
-        )
+        WITH {latest}
         SELECT fple.label, fple.value
         FROM fragment_policy_label_events fple
         JOIN event_sequence es ON es.event_id = fple.event_id
-        JOIN latest l
-          ON l.node_id = fple.node_id
-         AND l.offset = fple.offset
-         AND l.length = fple.length
-         AND l.label = fple.label
-         AND l.seq = es.seq
+        {latest_join}
         WHERE fple.value IS NOT NULL
         ORDER BY fple.offset, fple.label
         ",
-    )?;
+        latest = latest_event_cte(
+            "latest",
+            "fragment_policy_label_events",
+            "fple",
+            FRAGMENT_POLICY_LABEL_EVENT_KEYS,
+            "WHERE fple.node_id = ?1
+               AND fple.offset < ?3
+               AND fple.offset + fple.length > ?2",
+        ),
+        latest_join = latest_event_join(
+            "latest",
+            "l",
+            "fple",
+            "es",
+            FRAGMENT_POLICY_LABEL_EVENT_KEYS
+        ),
+    );
+    let mut stmt = conn.prepare(&sql)?;
     let rows = stmt.query_map(params![node_id, offset, end], |row| {
         Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
     })?;
@@ -1957,32 +2068,36 @@ fn active_purpose_policy_rule_denies_label_value(
     label: &str,
     value: &str,
 ) -> AnfsResult<bool> {
-    let count: i64 = conn.query_row(
+    let sql = format!(
         "
-        WITH latest AS (
-            SELECT ppre.purpose, ppre.subject_type, ppre.label, ppre.value, MAX(es.seq) AS seq
-            FROM purpose_policy_rule_events ppre
-            JOIN event_sequence es ON es.event_id = ppre.event_id
-            WHERE ppre.purpose = ?1
-              AND ppre.label = ?3
-              AND ppre.subject_type IN ('*', ?2)
-              AND ppre.value IN ('*', ?4)
-            GROUP BY ppre.purpose, ppre.subject_type, ppre.label, ppre.value
-        )
+        WITH {latest}
         SELECT COUNT(*)
         FROM purpose_policy_rule_events ppre
         JOIN event_sequence es ON es.event_id = ppre.event_id
-        JOIN latest l
-          ON l.purpose = ppre.purpose
-         AND l.subject_type = ppre.subject_type
-         AND l.label = ppre.label
-         AND l.value = ppre.value
-         AND l.seq = es.seq
+        {latest_join}
         WHERE ppre.effect = 'deny'
         ",
-        params![purpose, subject_type, label, value],
-        |row| row.get(0),
-    )?;
+        latest = latest_event_cte(
+            "latest",
+            "purpose_policy_rule_events",
+            "ppre",
+            &["purpose", "subject_type", "label", "value"],
+            "WHERE ppre.purpose = ?1
+               AND ppre.label = ?3
+               AND ppre.subject_type IN ('*', ?2)
+               AND ppre.value IN ('*', ?4)",
+        ),
+        latest_join = latest_event_join(
+            "latest",
+            "l",
+            "ppre",
+            "es",
+            &["purpose", "subject_type", "label", "value"],
+        ),
+    );
+    let count: i64 = conn.query_row(&sql, params![purpose, subject_type, label, value], |row| {
+        row.get(0)
+    })?;
     Ok(count > 0)
 }
 
@@ -2011,39 +2126,29 @@ fn active_subject_policy_label_values(
     subject_type: &str,
     subject_id: &str,
 ) -> AnfsResult<Vec<(String, String)>> {
-    let mut stmt = conn.prepare(
+    let sql = format!(
         "
-        WITH latest_value AS (
-            SELECT ple.subject_type, ple.subject_id, ple.label, ple.value, MAX(es.seq) AS seq
-            FROM policy_label_events ple
-            JOIN event_sequence es ON es.event_id = ple.event_id
-            WHERE ple.subject_type = ?1
-              AND ple.subject_id = ?2
-              AND ple.value IS NOT NULL
-            GROUP BY ple.subject_type, ple.subject_id, ple.label, ple.value
-        )
+        WITH {latest}
         SELECT ple.label, ple.value
         FROM policy_label_events ple
         JOIN event_sequence es ON es.event_id = ple.event_id
-        JOIN latest_value l
-          ON l.subject_type = ple.subject_type
-         AND l.subject_id = ple.subject_id
-         AND l.label = ple.label
-         AND l.value = ple.value
-         AND l.seq = es.seq
-        WHERE NOT EXISTS (
-            SELECT 1
-            FROM policy_label_events clear
-            JOIN event_sequence clear_seq ON clear_seq.event_id = clear.event_id
-            WHERE clear.subject_type = ple.subject_type
-              AND clear.subject_id = ple.subject_id
-              AND clear.label = ple.label
-              AND clear.value IS NULL
-              AND clear_seq.seq > es.seq
-        )
+        {latest_join}
+        WHERE {clear_guard}
         ORDER BY ple.label, ple.value
         ",
-    )?;
+        latest = latest_event_cte(
+            "latest_value",
+            "policy_label_events",
+            "ple",
+            POLICY_LABEL_EVENT_KEYS,
+            "WHERE ple.subject_type = ?1
+               AND ple.subject_id = ?2
+               AND ple.value IS NOT NULL",
+        ),
+        latest_join = latest_event_join("latest_value", "l", "ple", "es", POLICY_LABEL_EVENT_KEYS),
+        clear_guard = policy_label_clear_guard("ple", "es"),
+    );
+    let mut stmt = conn.prepare(&sql)?;
     let rows = stmt.query_map(params![subject_type, subject_id], |row| {
         Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
     })?;

@@ -3,8 +3,9 @@ use rusqlite::{params, Connection};
 use crate::{
     active_fragment_policy_blocks_node, active_fragment_policy_blocks_range,
     active_policy_expression_rules_block_subject, active_policy_rule_denies_label_value,
-    active_purpose_policy_blocks_ref_node, active_purpose_policy_blocks_ref_node_range, AnfsError,
-    AnfsResult,
+    active_purpose_policy_blocks_ref_node, active_purpose_policy_blocks_ref_node_range,
+    latest_event_cte, latest_event_join, policy_label_clear_guard, AnfsError, AnfsResult,
+    POLICY_EXPRESSION_RULE_EVENT_KEYS, POLICY_LABEL_EVENT_KEYS, POLICY_RULE_EVENT_KEYS,
 };
 
 // Centralized policy enforcement gates. Every read/materialization path that
@@ -63,8 +64,9 @@ pub(crate) fn ensure_purpose_allows_ref_node_range(
     length: i64,
     deny_message: impl FnOnce() -> String,
 ) -> AnfsResult<()> {
-    if active_purpose_policy_blocks_ref_node_range(conn, purpose, ref_name, node_id, offset, length)?
-    {
+    if active_purpose_policy_blocks_ref_node_range(
+        conn, purpose, ref_name, node_id, offset, length,
+    )? {
         return Err(AnfsError::PolicyDenied(deny_message()));
     }
     Ok(())
@@ -197,39 +199,29 @@ fn active_policy_rules_block_subject(
     subject_type: &str,
     subject_id: &str,
 ) -> AnfsResult<bool> {
-    let mut stmt = conn.prepare(
+    let sql = format!(
         "
-        WITH latest_value AS (
-            SELECT ple.subject_type, ple.subject_id, ple.label, ple.value, MAX(es.seq) AS seq
-            FROM policy_label_events ple
-            JOIN event_sequence es ON es.event_id = ple.event_id
-            WHERE ple.subject_type = ?1
-              AND ple.subject_id = ?2
-              AND ple.value IS NOT NULL
-            GROUP BY ple.subject_type, ple.subject_id, ple.label, ple.value
-        )
+        WITH {latest}
         SELECT ple.label, ple.value
         FROM policy_label_events ple
         JOIN event_sequence es ON es.event_id = ple.event_id
-        JOIN latest_value l
-          ON l.subject_type = ple.subject_type
-         AND l.subject_id = ple.subject_id
-         AND l.label = ple.label
-         AND l.value = ple.value
-         AND l.seq = es.seq
-        WHERE NOT EXISTS (
-            SELECT 1
-            FROM policy_label_events clear
-            JOIN event_sequence clear_seq ON clear_seq.event_id = clear.event_id
-            WHERE clear.subject_type = ple.subject_type
-              AND clear.subject_id = ple.subject_id
-              AND clear.label = ple.label
-              AND clear.value IS NULL
-              AND clear_seq.seq > es.seq
-        )
+        {latest_join}
+        WHERE {clear_guard}
         ORDER BY ple.label, ple.value
         ",
-    )?;
+        latest = latest_event_cte(
+            "latest_value",
+            "policy_label_events",
+            "ple",
+            POLICY_LABEL_EVENT_KEYS,
+            "WHERE ple.subject_type = ?1
+               AND ple.subject_id = ?2
+               AND ple.value IS NOT NULL",
+        ),
+        latest_join = latest_event_join("latest_value", "l", "ple", "es", POLICY_LABEL_EVENT_KEYS),
+        clear_guard = policy_label_clear_guard("ple", "es"),
+    );
+    let mut stmt = conn.prepare(&sql)?;
     let rows = stmt.query_map(params![subject_type, subject_id], |row| {
         Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
     })?;
@@ -243,54 +235,53 @@ fn active_policy_rules_block_subject(
 }
 
 fn active_visibility_deny_rule_exists(conn: &Connection) -> AnfsResult<bool> {
-    let label_rule_count: i64 = conn.query_row(
+    let label_rule_sql = format!(
         "
-        WITH latest AS (
-            SELECT pre.scope, pre.subject_type, pre.label, pre.value, MAX(es.seq) AS seq
-            FROM policy_rule_events pre
-            JOIN event_sequence es ON es.event_id = pre.event_id
-            WHERE pre.scope = 'visibility'
-            GROUP BY pre.scope, pre.subject_type, pre.label, pre.value
-        )
+        WITH {latest}
         SELECT COUNT(*)
         FROM policy_rule_events pre
         JOIN event_sequence es ON es.event_id = pre.event_id
-        JOIN latest l
-          ON l.scope = pre.scope
-         AND l.subject_type = pre.subject_type
-         AND l.label = pre.label
-         AND l.value = pre.value
-         AND l.seq = es.seq
+        {latest_join}
         WHERE pre.effect = 'deny'
         ",
-        [],
-        |row| row.get(0),
-    )?;
+        latest = latest_event_cte(
+            "latest",
+            "policy_rule_events",
+            "pre",
+            POLICY_RULE_EVENT_KEYS,
+            "WHERE pre.scope = 'visibility'",
+        ),
+        latest_join = latest_event_join("latest", "l", "pre", "es", POLICY_RULE_EVENT_KEYS),
+    );
+    let label_rule_count: i64 = conn.query_row(&label_rule_sql, [], |row| row.get(0))?;
     if label_rule_count > 0 {
         return Ok(true);
     }
-    let expression_rule_count: i64 = conn.query_row(
+    let expression_rule_sql = format!(
         "
-        WITH latest AS (
-            SELECT pere.scope, pere.subject_type, pere.expression_json, MAX(es.seq) AS seq
-            FROM policy_expression_rule_events pere
-            JOIN event_sequence es ON es.event_id = pere.event_id
-            WHERE pere.scope = 'visibility'
-            GROUP BY pere.scope, pere.subject_type, pere.expression_json
-        )
+        WITH {latest}
         SELECT COUNT(*)
         FROM policy_expression_rule_events pere
         JOIN event_sequence es ON es.event_id = pere.event_id
-        JOIN latest l
-          ON l.scope = pere.scope
-         AND l.subject_type = pere.subject_type
-         AND l.expression_json = pere.expression_json
-         AND l.seq = es.seq
+        {latest_join}
         WHERE pere.effect = 'deny'
         ",
-        [],
-        |row| row.get(0),
-    )?;
+        latest = latest_event_cte(
+            "latest",
+            "policy_expression_rule_events",
+            "pere",
+            POLICY_EXPRESSION_RULE_EVENT_KEYS,
+            "WHERE pere.scope = 'visibility'",
+        ),
+        latest_join = latest_event_join(
+            "latest",
+            "l",
+            "pere",
+            "es",
+            POLICY_EXPRESSION_RULE_EVENT_KEYS
+        ),
+    );
+    let expression_rule_count: i64 = conn.query_row(&expression_rule_sql, [], |row| row.get(0))?;
     Ok(expression_rule_count > 0)
 }
 
@@ -300,40 +291,30 @@ fn active_policy_label_exists(
     subject_id: &str,
     label: &str,
 ) -> AnfsResult<bool> {
-    let count: i64 = conn.query_row(
+    let sql = format!(
         "
-        WITH latest_value AS (
-            SELECT ple.subject_type, ple.subject_id, ple.label, ple.value, MAX(es.seq) AS seq
-            FROM policy_label_events ple
-            JOIN event_sequence es ON es.event_id = ple.event_id
-            WHERE ple.subject_type = ?1
-              AND ple.subject_id = ?2
-              AND ple.label = ?3
-              AND ple.value IS NOT NULL
-            GROUP BY ple.subject_type, ple.subject_id, ple.label, ple.value
-        )
+        WITH {latest}
         SELECT COUNT(*)
         FROM policy_label_events ple
         JOIN event_sequence es ON es.event_id = ple.event_id
-        JOIN latest_value l
-          ON l.subject_type = ple.subject_type
-         AND l.subject_id = ple.subject_id
-         AND l.label = ple.label
-         AND l.value = ple.value
-         AND l.seq = es.seq
-        WHERE NOT EXISTS (
-            SELECT 1
-            FROM policy_label_events clear
-            JOIN event_sequence clear_seq ON clear_seq.event_id = clear.event_id
-            WHERE clear.subject_type = ple.subject_type
-              AND clear.subject_id = ple.subject_id
-              AND clear.label = ple.label
-              AND clear.value IS NULL
-              AND clear_seq.seq > es.seq
-        )
+        {latest_join}
+        WHERE {clear_guard}
         ",
-        params![subject_type, subject_id, label],
-        |row| row.get(0),
-    )?;
+        latest = latest_event_cte(
+            "latest_value",
+            "policy_label_events",
+            "ple",
+            POLICY_LABEL_EVENT_KEYS,
+            "WHERE ple.subject_type = ?1
+               AND ple.subject_id = ?2
+               AND ple.label = ?3
+               AND ple.value IS NOT NULL",
+        ),
+        latest_join = latest_event_join("latest_value", "l", "ple", "es", POLICY_LABEL_EVENT_KEYS),
+        clear_guard = policy_label_clear_guard("ple", "es"),
+    );
+    let count: i64 = conn.query_row(&sql, params![subject_type, subject_id, label], |row| {
+        row.get(0)
+    })?;
     Ok(count > 0)
 }
