@@ -345,8 +345,9 @@ Operations:
 - Policy label gates are centralized in `VisibilityPolicy`.
 - Workspace working trees can be materialized to ordinary directories and
   committed back into workspace refs through `commit_worktree(...)`.
-- The Python killer demo is implemented in `tests/test_demo.py` and can run
-  without pytest via `.venv/bin/python tests/test_demo.py`.
+- The Python killer demo is implemented in `tests/test_conformance.py`
+  (historical log entries below may still say `tests/test_demo.py`, which was
+  split into per-area modules under `tests/`). Run via `python -m pytest tests/ -q`.
 
 ## Next Milestones
 

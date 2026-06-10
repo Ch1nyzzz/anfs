@@ -121,6 +121,6 @@ mapped:
 - integrity: finish every conformance scenario with `verify_integrity() == []`.
 
 The current proof lives in `docs/08_agent_native_fs_conformance.md` and
-`tests/test_demo.py`. New features should add to that proof only when they
+`tests/` (one module per requirement area; see `tests/test_conformance.py` for the conformance proof). New features should add to that proof only when they
 exercise a kernel invariant; otherwise they belong in benchmark snapshots or
 adapter-level tests.

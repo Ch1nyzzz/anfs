@@ -11,15 +11,15 @@ https://www.amplifypartners.com/blog-posts/file-systems-for-agents
 
 The primary end-to-end proof is:
 
-`tests/test_demo.py::test_agent_native_fs_conformance_preserves_kernel_invariants_with_existing_tools`
+`tests/test_conformance.py::test_agent_native_fs_conformance_preserves_kernel_invariants_with_existing_tools`
 
 The checked ordinary-filesystem sync proof is:
 
-`tests/test_demo.py::test_worktree_checked_commit_rejects_stale_materialized_base`
+`tests/test_worktree_cache.py::test_worktree_checked_commit_rejects_stale_materialized_base`
 
 The checked ordinary-filesystem contention proof is:
 
-`tests/test_demo.py::test_concurrent_checked_worktree_commits_allow_only_one_materialized_base`
+`tests/test_worktree_cache.py::test_concurrent_checked_worktree_commits_allow_only_one_materialized_base`
 
 It is intentionally a conformance scenario rather than a narrow unit test.
 

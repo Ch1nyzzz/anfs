@@ -42,4 +42,4 @@ ANFS should now focus on making the kernel smaller and harder:
 
 The current executable conformance proof is documented in
 `08_agent_native_fs_conformance.md` and implemented in
-`tests/test_demo.py::test_agent_native_fs_conformance_preserves_kernel_invariants_with_existing_tools`.
+`tests/test_conformance.py::test_agent_native_fs_conformance_preserves_kernel_invariants_with_existing_tools`.

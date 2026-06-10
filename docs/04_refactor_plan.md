@@ -89,7 +89,7 @@ Use small verified moves. After each move, run:
 cargo fmt --check
 cargo check
 uv tool run maturin develop
-.venv/bin/python tests/test_demo.py
+.venv/bin/python -m pytest tests/ -q
 ```
 
 Recommended order:
