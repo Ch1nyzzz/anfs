@@ -29,6 +29,9 @@ Documents:
 - [09_complexity_audit.md](09_complexity_audit.md): redundancy and complexity
   audit that keeps kernel state separate from projections, adapters, external
   services, and benchmarks.
+- [10_workload_datasets.md](10_workload_datasets.md): source-verified survey
+  of public datasets/benchmarks for real agent workload validation (coding
+  tasks, multi-agent merge, privacy red-teaming, long-term memory).
 
 Current priority:
 
