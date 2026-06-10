@@ -1,0 +1,18 @@
+{
+  "anfs": {
+    "true_edges": 4,
+    "recovered": 4,
+    "coverage": 1.0
+  },
+  "replay": {
+    "event_granular_early": true,
+    "full_view_late": true
+  },
+  "git": {
+    "true_edges": 4,
+    "recovered": 0,
+    "coverage": 0.0,
+    "note": "git --follow yields report.md's own commit history; no derived-from edges"
+  },
+  "integrity_clean": true
+}
