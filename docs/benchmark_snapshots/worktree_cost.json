@@ -1,0 +1,35 @@
+{
+  "trials": 5,
+  "cases": [
+    {
+      "files": 50,
+      "edits": 10,
+      "anfs": {
+        "materialize": 28.04909161059186,
+        "inner_edits": 0.3889501909725368,
+        "commit": 28.75045861583203,
+        "integrity": 9.711883391719311
+      },
+      "native": {
+        "setup": 3.2690499909222126,
+        "inner_edits": 0.2257747808471322
+      },
+      "anfs_boundary_ms": 66.5114336181432
+    },
+    {
+      "files": 200,
+      "edits": 40,
+      "anfs": {
+        "materialize": 109.50720820110291,
+        "inner_edits": 1.3297334080561996,
+        "commit": 113.70473317801952,
+        "integrity": 54.54679159447551
+      },
+      "native": {
+        "setup": 12.728308385703713,
+        "inner_edits": 0.8714581723324955
+      },
+      "anfs_boundary_ms": 277.75873297359794
+    }
+  ]
+}

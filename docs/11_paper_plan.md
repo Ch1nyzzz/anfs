@@ -27,7 +27,7 @@ realistic alternative, not a strawman.
 | C1 | Field-level policy blocks sensitive data at the kernel, prompt-independent | prompt-only "don't reveal PII"; regex/PII scrubber | no-label corpus; **real LLM (deepseek-v4-flash)** prompt-defense + scrubber arms | content leak rate across retrieval surfaces | **Done (mechanism + real baselines):** mechanism control 100% / ANFS 0%; real-LLM prompt-defense **75%**, scrubber **25%**, ANFS **0%** (same model/prompt/attacks, only context differs). *Needed: real PrivacyLens corpus.* |
 | C2 | The filesystem coordinates concurrent writers; no silent lost updates | shared dir / object store, last-writer-wins; app-level advisory locks; **git** | plain dir, **git-merge**, and **real spawned processes** racing a shared ANFS db | silently lost updates; surfaced conflicts; disjoint false-positive rate | **Done (mechanism + real parallelism + git):** deterministic control loses N-1 silently / ANFS 0; under real OS-process contention exactly one writer wins, N-1 get clean conflicts, disjoint all commit, integrity clean; three-way vs git below. |
 | C3 | Every artifact's lineage is reconstructable and replayable | git commit granularity; no field-level derivation; ad-hoc logs | git history of the same session | lineage coverage; replay fidelity; integrity | **Partial:** conformance proof exists. *Needed: framed as a claim with a git baseline + a coverage metric.* |
-| C4 | Compatibility: agents use ANFS like a normal FS with no regression | (this is the denominator, not a differentiator) | native filesystem, same task | success-rate delta (must be ~0); overhead | **Not started:** needs a real coding agent on SWE-bench-Live. |
+| C4 | Compatibility: agents use ANFS like a normal FS with no regression | (this is the denominator, not a differentiator) | native filesystem, same task | success-rate delta (must be ~0); overhead | **Done (real agent + cost):** deepseek-v4-flash fixes 5/5 bug tasks identically in native and ANFS-round-tripped arms (0 regressions, integrity clean); deterministic edit-battery round-trip is byte-faithful; boundary cost 66ms@50 files / 278ms@200 files, inner edit loop at native speed. *Larger: SWE-bench-Live.* |
 | C5 | Cross-session memory retrieval is competitive | flat files / JSONL / vector store | those baselines | recall, token cost (LoCoMo/LongMemEval) | **Partial:** task_memory_benchmark scaffold exists; needs real model + official datasets. |
 
 C1 and C2 are the strongest differentiators (control fails dramatically and
@@ -65,9 +65,11 @@ parallelism over simulation: the simulation could not have caught it.
    a PII-scrubber baseline; C2 needs a git-merge baseline and ideally real
    concurrent processes; C4 needs native-FS. The on/off control is the floor,
    not the comparison.
-2. **Cost.** Reframe `agent_memory_benchmark.py` as an overhead study: ANFS vs
-   native FS vs SQLite-store latency/throughput for the small-file agent loop.
-   Every guarantee must show its price.
+2. **Cost.** Done in part: `benchmarks/worktree_cost_benchmark.py` shows ANFS
+   taxes the session *boundary* (materialize + commit + integrity: ~66ms for 50
+   files, ~278ms for 200), not the per-edit inner loop (the worktree is an
+   ordinary directory at native speed). Still reframe `agent_memory_benchmark.py`
+   as the small-file direct-API overhead study (ANFS vs native vs SQLite-store).
 3. **Real workloads.** PrivacyLens (C1), SWE-bench-Live (C4) with a real coding
    agent through the worktree adapter, LoCoMo/LongMemEval (C5). See
    `docs/10_workload_datasets.md` for vetted sources and licenses.

@@ -1,0 +1,39 @@
+{
+  "model": "deepseek-v4-flash",
+  "tasks": 5,
+  "native_pass": 5,
+  "anfs_pass": 5,
+  "mismatches": 0,
+  "rows": [
+    {
+      "task": "off_by_one_sum",
+      "native": true,
+      "anfs": true,
+      "integrity_clean": true
+    },
+    {
+      "task": "wrong_comparison",
+      "native": true,
+      "anfs": true,
+      "integrity_clean": true
+    },
+    {
+      "task": "empty_edge_case",
+      "native": true,
+      "anfs": true,
+      "integrity_clean": true
+    },
+    {
+      "task": "string_misuse",
+      "native": true,
+      "anfs": true,
+      "integrity_clean": true
+    },
+    {
+      "task": "missing_return",
+      "native": true,
+      "anfs": true,
+      "integrity_clean": true
+    }
+  ]
+}
