@@ -1,0 +1,49 @@
+{
+  "agents": 4,
+  "real_processes": {
+    "contention": {
+      "agents": 4,
+      "merged": 1,
+      "conflicts": 3,
+      "errors": 0,
+      "error_detail": [],
+      "all_preserved": true,
+      "integrity_clean": true
+    },
+    "disjoint": {
+      "agents": 4,
+      "merged": 4,
+      "conflicts": 0,
+      "errors": 0,
+      "error_detail": [],
+      "all_preserved": true,
+      "integrity_clean": true
+    }
+  },
+  "control_comparison": {
+    "whole_file": {
+      "plain_dir": {
+        "scenario": "whole_file",
+        "behavior": "silent_last_writer_wins",
+        "a_edit_lost": true
+      },
+      "git": {
+        "scenario": "whole_file",
+        "git_behavior": "conflict_flagged"
+      },
+      "anfs": "conflict_surfaced"
+    },
+    "different_lines": {
+      "plain_dir": {
+        "scenario": "different_lines",
+        "behavior": "silent_last_writer_wins",
+        "a_edit_lost": true
+      },
+      "git": {
+        "scenario": "different_lines",
+        "git_behavior": "auto_merged_silently"
+      },
+      "anfs": "conflict_surfaced"
+    }
+  }
+}

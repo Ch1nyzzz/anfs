@@ -25,7 +25,7 @@ realistic alternative, not a strawman.
 | # | Claim | Status-quo that fails | Control in our harness | Metric | State |
 | --- | --- | --- | --- | --- | --- |
 | C1 | Field-level policy blocks sensitive data at the kernel, prompt-independent | prompt-only "don't reveal PII"; regex/PII scrubber | no-label corpus; **real LLM (deepseek-v4-flash)** prompt-defense + scrubber arms | content leak rate across retrieval surfaces | **Done (mechanism + real baselines):** mechanism control 100% / ANFS 0%; real-LLM prompt-defense **75%**, scrubber **25%**, ANFS **0%** (same model/prompt/attacks, only context differs). *Needed: real PrivacyLens corpus.* |
-| C2 | The filesystem coordinates concurrent writers; no silent lost updates | shared dir / object store, last-writer-wins; app-level advisory locks | plain shared directory, last-writer-wins | silently lost updates; surfaced conflicts; disjoint false-positive rate | **Done (mechanism):** control loses N-1 silently / ANFS 0 lost, all surfaced, disjoint clean. *Needed: real multi-process agents, git-merge baseline.* |
+| C2 | The filesystem coordinates concurrent writers; no silent lost updates | shared dir / object store, last-writer-wins; app-level advisory locks; **git** | plain dir, **git-merge**, and **real spawned processes** racing a shared ANFS db | silently lost updates; surfaced conflicts; disjoint false-positive rate | **Done (mechanism + real parallelism + git):** deterministic control loses N-1 silently / ANFS 0; under real OS-process contention exactly one writer wins, N-1 get clean conflicts, disjoint all commit, integrity clean; three-way vs git below. |
 | C3 | Every artifact's lineage is reconstructable and replayable | git commit granularity; no field-level derivation; ad-hoc logs | git history of the same session | lineage coverage; replay fidelity; integrity | **Partial:** conformance proof exists. *Needed: framed as a claim with a git baseline + a coverage metric.* |
 | C4 | Compatibility: agents use ANFS like a normal FS with no regression | (this is the denominator, not a differentiator) | native filesystem, same task | success-rate delta (must be ~0); overhead | **Not started:** needs a real coding agent on SWE-bench-Live. |
 | C5 | Cross-session memory retrieval is competitive | flat files / JSONL / vector store | those baselines | recall, token cost (LoCoMo/LongMemEval) | **Partial:** task_memory_benchmark scaffold exists; needs real model + official datasets. |
@@ -33,6 +33,31 @@ realistic alternative, not a strawman.
 C1 and C2 are the strongest differentiators (control fails dramatically and
 visibly). C4 is a baseline that makes the others credible, not a result on its
 own. Lead the paper with C1/C2.
+
+## C2: three-way control (plain dir vs git vs ANFS)
+
+git is the honest strong baseline — it is application-level coordination with a
+merge protocol, not a strawman. From `benchmarks/concurrency_real_benchmark.py`:
+
+| scenario | plain dir | git | ANFS |
+| --- | --- | --- | --- |
+| whole-file concurrent edit | silent last-writer-wins | conflict flagged | conflict surfaced |
+| same file, different lines | silent last-writer-wins | **auto-merged silently** | conflict surfaced |
+
+ANFS's delta vs git is not "git loses data" (it catches whole-file conflicts).
+It is: (1) the guarantee is enforced at the filesystem layer on every write
+with no opt-in commit/branch/merge protocol; (2) same-artifact concurrent edits
+are always surfaced for review rather than auto-merged — git silently merges
+non-overlapping hunks, which can be logically wrong. State this as a tradeoff
+(git's auto-merge is often desirable), not a slam dunk.
+
+**Bug found by the harness:** the real-process harness exposed
+`merge_workspace` surfacing a raw `SQLITE_BUSY` ("database is locked") under
+4-way contention instead of a clean `RefConflictError`, because it used a
+DEFERRED transaction (read→write upgrade busy is not covered by busy_timeout).
+Fixed by taking the write lock up front with `TransactionBehavior::Immediate`,
+matching the already-hardened ref-lifecycle paths. This is the value of real
+parallelism over simulation: the simulation could not have caught it.
 
 ## Evaluation plan
 

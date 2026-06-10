@@ -3740,7 +3740,11 @@ impl AnfsEngine {
         tool_call_id: Option<String>,
     ) -> AnfsResult<Vec<(String, String, String, Option<String>)>> {
         let mut conn = lock_conn(&self.inner)?;
-        let tx = conn.transaction()?;
+        // Acquire the write lock up front (like the ref-lifecycle paths) so
+        // concurrent mergers serialize on busy_timeout instead of hitting a
+        // raw SQLITE_BUSY on read->write upgrade; the loser then observes the
+        // advanced base and returns a clean RefConflictError.
+        let tx = conn.transaction_with_behavior(TransactionBehavior::Immediate)?;
         let conflicts = workspace_conflicts(&tx, base, workspace)?;
         if !conflicts.is_empty() {
             insert_merge_policy_decision_event(
