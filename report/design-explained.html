@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ANFS 设计详解 · 从零理解一个为 Agent 而生的文件系统</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0d0c; --surf1:#15191a; --surf2:#1b2022; --surf3:#222829; --line:#2a302f;
+    --ink:#ece7da; --muted:#9b9d93; --dim:#696d66;
+    --amber:#e8b339;   /* ANFS / 我们的设计 */
+    --teal:#5cc8b6;    /* 内核 / 概念 */
+    --red:#e5675e;     /* 传统 FS 的缺陷 */
+    --green:#84c97e;   /* 已验证 / 优点 */
+    --violet:#b69cf0;  /* 代码 / 派生 */
+    --disp:"Archivo",sans-serif;
+    --serif:"Spectral",Georgia,serif;
+    --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);
+    font-size:17px;line-height:1.74;-webkit-font-smoothing:antialiased;
+    background-image:
+      linear-gradient(rgba(92,200,182,.030) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(92,200,182,.030) 1px,transparent 1px);
+    background-size:48px 48px;
+  }
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px;display:grid;grid-template-columns:240px 1fr;gap:48px}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr;gap:0}.toc{display:none!important}}
+
+  /* ---- TOC ---- */
+  .toc{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;padding:34px 0 60px;border-right:1px solid var(--line)}
+  .toc .brand{font-family:var(--disp);font-weight:900;letter-spacing:.04em;font-size:18px;color:var(--amber);margin-bottom:4px}
+  .toc .brand small{display:block;font-family:var(--mono);font-weight:400;font-size:10.5px;letter-spacing:.18em;color:var(--dim);margin-top:6px;text-transform:uppercase}
+  .toc nav{margin-top:22px;font-family:var(--disp);font-size:12.5px}
+  .toc a{display:block;color:var(--muted);text-decoration:none;padding:5px 14px 5px 0;border-left:2px solid transparent;padding-left:12px;transition:.15s}
+  .toc a:hover{color:var(--ink);border-left-color:var(--teal)}
+  .toc a.h3{padding-left:26px;font-size:11.5px;color:var(--dim)}
+  .toc .grp{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--dim);text-transform:uppercase;margin:18px 0 6px 12px}
+
+  /* ---- content ---- */
+  main{padding:46px 0 140px;min-width:0}
+  h1{font-family:var(--disp);font-weight:900;font-size:clamp(34px,5vw,56px);line-height:1.02;letter-spacing:-.015em;margin:0 0 18px}
+  h1 .sub{display:block;font-size:clamp(15px,2vw,19px);font-weight:500;color:var(--teal);letter-spacing:0;margin-top:18px;font-family:var(--disp)}
+  h2{font-family:var(--disp);font-weight:800;font-size:30px;letter-spacing:-.01em;margin:74px 0 6px;padding-top:24px;border-top:1px solid var(--line);scroll-margin-top:24px}
+  h2 .n{font-family:var(--mono);font-size:14px;color:var(--amber);font-weight:600;margin-right:12px;vertical-align:3px}
+  h3{font-family:var(--disp);font-weight:700;font-size:21px;margin:42px 0 4px;color:var(--ink);scroll-margin-top:24px}
+  h4{font-family:var(--disp);font-weight:700;font-size:16px;margin:28px 0 4px;color:var(--teal);letter-spacing:.01em}
+  p{margin:14px 0;color:#ddd8cb}
+  .lead{font-size:20px;line-height:1.7;color:var(--ink)}
+  strong{color:#fff;font-weight:600}
+  em{color:var(--amber);font-style:normal;font-weight:500}
+  code{font-family:var(--mono);font-size:.84em;background:var(--surf2);border:1px solid var(--line);border-radius:5px;padding:1px 6px;color:var(--violet)}
+  a.inl{color:var(--teal)}
+  ul,ol{color:#ddd8cb;padding-left:24px}
+  li{margin:7px 0}
+  li::marker{color:var(--dim)}
+
+  .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.28em;color:var(--amber);text-transform:uppercase;margin-bottom:22px}
+
+  /* callouts */
+  .note{border:1px solid var(--line);border-left:3px solid var(--teal);background:var(--surf1);border-radius:8px;padding:16px 20px;margin:24px 0;font-size:15.5px}
+  .note.warn{border-left-color:var(--red)}
+  .note.key{border-left-color:var(--amber)}
+  .note .t{font-family:var(--disp);font-weight:700;font-size:13px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .note.warn .t{color:var(--red)} .note.key .t{color:var(--amber)} .note .t{color:var(--teal)}
+
+  /* code block */
+  figure.code{margin:22px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#0e1112}
+  figure.code figcaption{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:var(--surf2);padding:8px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+  figure.code figcaption .file{color:var(--violet)}
+  figure.code figcaption .role{color:var(--dim);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+  pre{margin:0;padding:16px 18px;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.62;color:#cfd6d3}
+  pre .c{color:#5e6b67}      /* comment */
+  pre .k{color:#e8b339}      /* keyword */
+  pre .s{color:#84c97e}      /* string */
+  pre .f{color:#5cc8b6}      /* fn name */
+  pre .t{color:#b69cf0}      /* type */
+  pre .n{color:#7d8682;user-select:none}  /* line no */
+  pre .hl{color:#e5675e}     /* highlight */
+
+  /* table */
+  table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14.5px}
+  th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:var(--disp);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--surf1)}
+  td{color:#d8d3c6}
+  tr:hover td{background:rgba(255,255,255,.018)}
+  .x{color:var(--red);font-weight:600}
+  .ok{color:var(--green);font-weight:600}
+  td code{font-size:12px}
+
+  /* diagram */
+  .diagram{border:1px solid var(--line);background:var(--surf1);border-radius:10px;padding:22px;margin:24px 0;font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--muted);overflow-x:auto;white-space:pre}
+  .diagram b{color:var(--amber);font-weight:600}
+  .diagram .tl{color:var(--teal)}
+  .diagram .gr{color:var(--green)}
+  .diagram .vi{color:var(--violet)}
+  .diagram .rd{color:var(--red)}
+
+  /* object cards */
+  .objgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:26px 0}
+  .obj{border:1px solid var(--line);border-radius:10px;padding:16px 18px;background:var(--surf1)}
+  .obj h5{font-family:var(--disp);font-weight:800;font-size:16px;margin:0 0 4px;color:var(--amber)}
+  .obj .tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+  .obj p{font-size:13.5px;margin:8px 0 0;color:var(--muted);line-height:1.6}
+
+  .pill{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;padding:2px 9px;border-radius:20px;border:1px solid var(--line);color:var(--muted);margin:0 4px 4px 0}
+  .pill.c{color:var(--violet);border-color:#3a3050}
+  .pill.e{color:var(--teal);border-color:#244742}
+
+  hr.soft{border:none;border-top:1px dashed var(--line);margin:40px 0}
+  .foot{margin-top:90px;padding-top:24px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11.5px;color:var(--dim);line-height:1.8}
+  .axis{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+  .axis .a{flex:1;min-width:150px;border:1px solid var(--line);border-radius:8px;padding:12px 14px;background:var(--surf1)}
+  .axis .a .h{font-family:var(--disp);font-weight:800;font-size:14px;color:var(--amber)}
+  .axis .a .d{font-size:12.5px;color:var(--muted);margin-top:4px;line-height:1.55}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ================= TOC ================= -->
+<aside class="toc">
+  <div class="brand">ANFS<small>设计详解 / Design Explained</small></div>
+  <nav>
+    <div class="grp">起点</div>
+    <a href="#intro">导言 · 一句话定义</a>
+    <a href="#why">01 · 为什么传统 FS 不够</a>
+    <a href="#mental">02 · 心智模型转变</a>
+    <div class="grp">核心数据模型</div>
+    <a href="#objects">03 · 五个核心对象</a>
+    <a href="#cas">04 · CAS 内容寻址存储</a>
+    <a href="#immutable">05 · 不可变性</a>
+    <div class="grp">操作如何发生</div>
+    <a href="#write">06 · 一次 write 发生了什么</a>
+    <a href="#events">07 · 事件溯源</a>
+    <a href="#lineage">08 · 血缘图</a>
+    <a href="#context">09 · 检索即上下文</a>
+    <div class="grp">派生与策略</div>
+    <a href="#derived">10 · 派生索引层</a>
+    <a href="#policy">11 · 字节级权限</a>
+    <div class="grp">协作与时间</div>
+    <a href="#workspace">12 · 工作区与合并</a>
+    <a href="#fork">13 · Fork 零拷贝分支</a>
+    <a href="#replay">14 · Replay 时间回放</a>
+    <a href="#worktree">15 · Worktree 双向同步</a>
+    <div class="grp">健壮与总结</div>
+    <a href="#integrity">16 · 完整性自检</a>
+    <a href="#compare">17 · 传统 vs ANFS 总表</a>
+    <a href="#principles">18 · 第一性原理与未来</a>
+    <a href="#glossary">19 · 术语表</a>
+  </nav>
+</aside>
+
+<!-- ================= MAIN ================= -->
+<main>
+
+<div class="kicker">内核设计文档 · 写给完全没接触过 ANFS 的人</div>
+<h1>ANFS
+  <span class="sub">Agent-Native File System —— 一个把"文件操作"变成"可溯源、可回放、省 token 的语义事实"的文件系统内核。</span>
+</h1>
+
+<p class="lead" id="intro">这份文档假设你<strong>从未听说过 ANFS</strong>。读完之后，你会理解：它到底是什么、为什么不能用普通文件系统、它的每一块是怎么设计的，以及它和传统文件系统在最底层有什么本质区别。文中所有代码都<strong>直接引用自仓库真实源码</strong>（标注了文件与行号），不是伪代码。</p>
+
+<div class="note key">
+  <div class="t">一句话</div>
+  传统文件系统给 agent 的只有 <code>path → bytes</code>。ANFS 给 agent 的是
+  <strong>bytes + 谁在何时为何改了它 + 它从哪些输入派生而来 + 它能不能被某个 agent 看到 + 任意历史时刻它长什么样</strong>——而且这一切对模型暴露成它最擅长的"文件 + 目录 + grep"接口。
+</div>
+
+<!-- ============================================================ -->
+<h2 id="why"><span class="n">01</span>为什么传统文件系统对 Agent 不够用</h2>
+
+<p>普通文件系统（ext4、APFS、NTFS……）是为<strong>人和长生命周期进程</strong>设计的。它的世界观是：一个路径指向一块可以随时被原地覆盖的字节。这套模型用了五十年，但当使用者换成<strong>大量并发、需要被审计、按 token 计费的 AI agent</strong> 时，四个缺陷立刻致命：</p>
+
+<table>
+  <thead><tr><th style="width:24%">Agent 真正要问的问题</th><th style="width:38%">传统文件系统的回答</th><th>后果</th></tr></thead>
+  <tbody>
+    <tr><td>这个文件<strong>为什么</strong>是现在这样？谁、哪一步、基于什么改的？</td><td class="x">无法回答。覆盖写之后旧内容和原因永久消失。</td><td>无法审计、无法复盘 agent 的决策链。</td></tr>
+    <tr><td>这个输出是<strong>从哪些输入派生</strong>的？引用了哪些证据？</td><td class="x">没有"派生"概念。文件之间没有因果边。</td><td>无法做血缘追踪、无法验证"答案是否真有依据"。</td></tr>
+    <tr><td>能不能<strong>回到</strong>三步之前那一刻的完整目录视图？</td><td class="x">需要外挂快照/git，且是粗粒度、非事件级。</td><td>无法精确回放某个事件边界的状态。</td></tr>
+    <tr><td>这段<strong>敏感字节</strong>能不能让这个 agent 看到 / 写进输出？</td><td class="x">权限只到"文件能否打开"，不到字节、不到用途。</td><td>无法做细粒度、面向数据流的策略控制。</td></tr>
+  </tbody>
+</table>
+
+<p>你可以在普通文件旁边<em>外挂</em>一个 JSONL 审计日志、一个向量索引、一个 git 仓库来打补丁。但它们彼此不一致、不在同一个事务里、随时会和真实文件漂移。ANFS 的主张是：<strong>这些能力不该是外挂，而应该是文件系统内核本身的一等公民，和"写字节"在同一个事务里原子提交。</strong></p>
+
+<div class="note">
+  <div class="t">设计哲学</div>
+  <strong>接口要 boring，底层要 agent-native。</strong> 上层永远是熟悉的 <code>read / write / ls / grep / find / mkdir</code>——因为模型对路径和文件最在行。底层却是事务化的语义内核：CAS 字节、不可变节点、可变引用、append-only 事件、血缘边、策略决策、可回放快照。
+</div>
+
+<!-- ============================================================ -->
+<h2 id="mental"><span class="n">02</span>心智模型转变：从"覆盖"到"事实 + 派生"</h2>
+
+<p>理解 ANFS 只需要先接受一个转变。传统文件系统是<strong>可变的</strong>：写就是覆盖，历史即丢失。ANFS 把世界分成两层：</p>
+
+<div class="diagram">
+<b>┌─ CANONICAL 层（事实，永不可变 / 永不丢失）──────────────────┐</b>
+<b>│</b>                                                            <b>│</b>
+<b>│</b>   <span class="tl">blobs</span>   内容寻址的字节（按 sha256 去重）                  <b>│</b>
+<b>│</b>   <span class="tl">nodes</span>   不可变的"某时刻某文件的内容快照"                 <b>│</b>
+<b>│</b>   <span class="tl">refs</span>    可变的名字 → node 映射（唯一能"变"的东西）       <b>│</b>
+<b>│</b>   <span class="tl">events</span>  append-only 操作日志（每个动作一条，带全序 seq）  <b>│</b>
+<b>│</b>   <span class="tl">edges</span>   事件 ↔ node 的输入/输出因果边（血缘）            <b>│</b>
+<b>│</b>   <span class="tl">policy</span>  append-only 的标签 / 决策                       <b>│</b>
+<b>└────────────────────────────────────────────────────────────┘</b>
+                          │  纯函数投影，可丢弃、可重建
+                          ▼
+<span class="vi">┌─ DERIVED 层（派生索引，可删可重建，绑定 blob_hash 校验）──────┐</span>
+<span class="vi">│</span>   FTS 全文索引 · chunk 分块索引 · 向量 embedding · 物化工作集  <span class="vi">│</span>
+<span class="vi">└────────────────────────────────────────────────────────────┘</span>
+</div>
+
+<p>关键直觉：<strong>"写一个文件"在 ANFS 里不是覆盖，而是产生一个<em>新的不可变 node</em>，然后把<em>可变的 ref</em> 指向它，同时记下一条<em>事件</em>和它的<em>因果边</em>。</strong> 旧 node 还在，旧 ref 指向也在 ref 历史里。于是"现在的样子"只是"全部历史事实"的一个最新切片——任何过去的切片都能精确重建。</p>
+
+<!-- ============================================================ -->
+<h2 id="objects"><span class="n">03</span>五个核心对象</h2>
+<p>整个内核只围绕五个名词运转。先建立这五个词的直觉，后面所有机制都是它们的组合。</p>
+
+<div class="objgrid">
+  <div class="obj"><div class="tag">字节层 · 不可变</div><h5>Blob</h5><p>内容寻址的原始字节。键就是内容的 <code>sha256</code>。两个相同内容的文件天然共享同一个 blob（去重）。</p></div>
+  <div class="obj"><div class="tag">语义层 · 不可变</div><h5>Node</h5><p>一个"内容快照"：指向某个 blob，外加 kind、media_type、元数据、创建时间。一旦创建永不修改。</p></div>
+  <div class="obj"><div class="tag">命名层 · 可变</div><h5>Ref</h5><p>名字 → node 的映射，<strong>系统里唯一会"变"的东西</strong>。如 <code>ws:coder/src/app.py → node:abc</code>，带 state（draft/published/approved…）。</p></div>
+  <div class="obj"><div class="tag">历史层 · append-only</div><h5>Event</h5><p>每个操作一条不可变事实：write、read_ref、search、answer、merge…… 带全局递增 seq，构成全序时间线。</p></div>
+  <div class="obj"><div class="tag">因果层 · append-only</div><h5>Edge</h5><p>事件与 node 之间的 input/output 边。它把"这个输出由哪些输入派生"显式记下来，是血缘图的边。</p></div>
+</div>
+
+<p>用一行类比对齐你已有的直觉：</p>
+<div class="diagram">
+传统:   <span class="rd">path</span> ───────────────────────► <span class="rd">bytes</span>   （就这两个，覆盖即失忆）
+
+ANFS:   <b>ref</b> ──► <b>node</b> ──► <b>blob</b>                  （命名/快照/字节 三段分离）
+         │            ▲
+         │            │ output edge
+         └──────────► <span class="tl">event</span> ◄──── input edge ──── 其他 node
+                       （谁/何时/为何 + 派生自谁）
+</div>
+
+<!-- ============================================================ -->
+<h2 id="cas"><span class="n">04</span>存储层：CAS 内容寻址（blob.rs）</h2>
+
+<p>最底层是 <em>Content-Addressed Storage</em>：字节的地址就是它自己内容的哈希。写入时按大小自动选择两种物理形态——小内容直接内联进 SQLite（省一次文件系统往返），大内容落成独立对象文件。阈值是 64 KiB：</p>
+
+<figure class="code">
+  <figcaption><span class="file">src/blob.rs : 21–32</span><span class="role">写入：按内容大小选 inline / file</span></figcaption>
+<pre><span class="n">21</span> <span class="k">pub(crate) fn</span> <span class="f">materialize_blob</span>(
+<span class="n">22</span>     objects_dir: &<span class="t">Path</span>,
+<span class="n">23</span>     hash: &<span class="t">str</span>,
+<span class="n">24</span>     content: &[<span class="t">u8</span>],
+<span class="n">25</span> ) -> <span class="t">AnfsResult</span>&lt;<span class="t">BlobStorage</span>&gt; {
+<span class="n">26</span>     <span class="k">if</span> content.len() &lt; <span class="hl">INLINE_THRESHOLD</span> {
+<span class="n">27</span>         <span class="k">return</span> Ok(<span class="t">BlobStorage</span>::Inline(content.to_vec()));
+<span class="n">28</span>     }
+<span class="n">29</span>
+<span class="n">30</span>     <span class="k">let</span> object_path = <span class="f">materialize_blob_file</span>(objects_dir, hash, content)?;
+<span class="n">31</span>     Ok(<span class="t">BlobStorage</span>::File(object_path.to_string_lossy().to_string()))
+<span class="n">32</span> }</pre>
+</figure>
+
+<figure class="code">
+  <figcaption><span class="file">src/lib.rs : 69</span><span class="role">内联阈值常量</span></figcaption>
+<pre><span class="n">69</span> <span class="k">const</span> <span class="hl">INLINE_THRESHOLD</span>: <span class="t">usize</span> = 64 * 1024;   <span class="c">// 64 KiB</span></pre>
+</figure>
+
+<p>读取时反过来：从 <code>blobs</code> 表拿到 <code>storage_kind</code>，inline 直接返回内联字节，file 则读对象文件<strong>并当场重算 sha256 比对</strong>——存储一旦损坏立刻暴露，而不是把坏数据喂给模型：</p>
+
+<figure class="code">
+  <figcaption><span class="file">src/manifest.rs : 34–57（节选 file 分支）</span><span class="role">读取：file 分支重算哈希自检</span></figcaption>
+<pre><span class="n">34</span>         <span class="s">"file"</span> => {
+<span class="n">35</span>             <span class="k">let</span> uri = storage_uri.ok_or_else(|| { <span class="c">/* … */</span> })?;
+<span class="n">38</span>             <span class="k">let</span> path = <span class="f">file_blob_path</span>(objects_dir, &uri);
+<span class="n">39</span>             <span class="k">let</span> bytes = <span class="k">match</span> fs::read(&path) { <span class="c">/* … NotFound→检查是否被 GC … */</span> };
+<span class="n">51</span>             <span class="k">let</span> actual_hash = <span class="f">sha256_hex</span>(&bytes);
+<span class="n">52</span>             <span class="k">if</span> actual_hash != hash {
+<span class="n">53</span>                 <span class="k">return</span> Err(<span class="t">AnfsError</span>::StorageCorruption(<span class="hl">format!</span>(
+<span class="n">54</span>                     <span class="s">"blob hash mismatch for {hash}: got {actual_hash}"</span>)));
+<span class="n">56</span>             }
+<span class="n">57</span>             Ok(bytes)
+<span class="n">58</span>         }</pre>
+</figure>
+
+<p><code>blobs</code> 与 <code>nodes</code> 两张 canonical 表的定义本身就编码了"node 引用 blob"的结构：</p>
+<figure class="code">
+  <figcaption><span class="file">src/schema.rs : 24–40</span><span class="role">两张事实表的 DDL</span></figcaption>
+<pre><span class="n">24</span> <span class="k">CREATE TABLE IF NOT EXISTS</span> blobs (
+<span class="n">25</span>     hash <span class="t">TEXT PRIMARY KEY</span>,            <span class="c">-- 地址 = 内容哈希</span>
+<span class="n">26</span>     size <span class="t">INTEGER NOT NULL</span>,
+<span class="n">27</span>     storage_kind <span class="t">TEXT NOT NULL</span>,        <span class="c">-- 'inline' | 'file'</span>
+<span class="n">28</span>     storage_uri <span class="t">TEXT</span>,
+<span class="n">29</span>     inline_content <span class="t">BLOB</span>
+<span class="n">30</span> );
+<span class="n">32</span> <span class="k">CREATE TABLE IF NOT EXISTS</span> nodes (
+<span class="n">33</span>     node_id <span class="t">TEXT PRIMARY KEY</span>,
+<span class="n">34</span>     blob_hash <span class="t">TEXT NOT NULL</span>,           <span class="c">-- 指向某块字节</span>
+<span class="n">35</span>     kind <span class="t">TEXT NOT NULL</span>,
+<span class="n">36</span>     media_type <span class="t">TEXT</span>,
+<span class="n">37</span>     metadata_json <span class="t">TEXT</span>,
+<span class="n">38</span>     created_at <span class="t">INTEGER NOT NULL</span>,
+<span class="n">39</span>     <span class="k">FOREIGN KEY</span>(blob_hash) <span class="k">REFERENCES</span> blobs(hash)
+<span class="n">40</span> );</pre>
+</figure>
+
+<div class="note">
+  <div class="t">为什么这样省 token / 省空间</div>
+  内容寻址意味着<strong>相同内容只存一份</strong>。一个 agent 反复保存几乎一样的草稿、或多个 workspace 引用同一份只读资源时，blob 自动去重；node/ref 只是轻量指针。
+</div>
+
+<!-- ============================================================ -->
+<h2 id="immutable"><span class="n">05</span>不可变性：用数据库触发器把"事实"焊死</h2>
+
+<p>"事实永不改写"不是靠程序员自觉，而是<strong>由 SQLite 触发器在内核层强制</strong>。任何对不可变表的 UPDATE / DELETE 都会被数据库直接 ABORT。例如 nodes 不可改、events 不可删：</p>
+
+<figure class="code">
+  <figcaption><span class="file">src/schema.rs : 440–462</span><span class="role">不可变性触发器</span></figcaption>
+<pre><span class="n">440</span> <span class="k">CREATE TRIGGER IF NOT EXISTS</span> nodes_no_update
+<span class="n">441</span> <span class="k">BEFORE UPDATE ON</span> nodes
+<span class="n">442</span> <span class="k">BEGIN</span>
+<span class="n">443</span>     <span class="k">SELECT</span> <span class="hl">RAISE(ABORT, 'nodes are immutable')</span>;
+<span class="n">444</span> <span class="k">END</span>;
+
+<span class="n">458</span> <span class="k">CREATE TRIGGER IF NOT EXISTS</span> events_no_delete
+<span class="n">459</span> <span class="k">BEFORE DELETE ON</span> events
+<span class="n">460</span> <span class="k">BEGIN</span>
+<span class="n">461</span>     <span class="k">SELECT</span> <span class="hl">RAISE(ABORT, 'events are immutable')</span>;
+<span class="n">462</span> <span class="k">END</span>;</pre>
+</figure>
+
+<p>仓库里有 <strong>26 张</strong>这样被触发器保护的 canonical 表。这条设计是后面一切"可溯源、可回放、可审计"的物理地基：如果事实能被偷偷改写，溯源就是假的。</p>
+
+<!-- ============================================================ -->
+<h2 id="write"><span class="n">06</span>一次 <code>write</code> 到底发生了什么</h2>
+
+<p>这是理解 ANFS 的"啊哈"时刻。在传统文件系统里，<code>write("a.py", bytes)</code> 就是覆盖。在 ANFS 里，一次写在<strong>同一个事务</strong>内原子地产生四样东西：</p>
+
+<ol>
+  <li><strong>新 node</strong>（指向去重后的 blob）——内容快照；</li>
+  <li><strong>一条 write 事件</strong>——谁(agent)、哪次运行(run)、哪个工具调用、哪个 workspace；</li>
+  <li><strong>output edge</strong>——这次事件"产出"了新 node；</li>
+  <li><strong>若干 input edge</strong>——若本次写派生自其他 node，记下"派生自谁"。</li>
+</ol>
+
+<figure class="code">
+  <figcaption><span class="file">src/workspace.rs : 664–685</span><span class="role">write 路径：事件 + 边 原子写入</span></figcaption>
+<pre><span class="n">664</span> <span class="k">let</span> event_id = <span class="f">new_event_id</span>();
+<span class="n">665</span> <span class="f">insert_event</span>(
+<span class="n">666</span>     tx, &event_id, event_kind,
+<span class="n">669</span>     Some(&<span class="k">self</span>.agent_id),          <span class="c">// 谁</span>
+<span class="n">670</span>     <span class="k">self</span>.run_id.as_deref(),         <span class="c">// 哪次运行</span>
+<span class="n">671</span>     tool_call_id,                  <span class="c">// 哪个工具调用</span>
+<span class="n">672</span>     Some(&<span class="k">self</span>.workspace_name),     <span class="c">// 哪个工作区</span>
+<span class="n">673</span>     Some(&event_payload),
+<span class="n">674</span> )?;
+<span class="n">675</span> <span class="k">for</span> input_node <span class="k">in</span> &derived_from_nodes {
+<span class="n">676</span>     <span class="f">insert_edge</span>(tx, &event_id, <span class="hl">"input"</span>, input_node, <span class="s">"source"</span>, None)?;
+<span class="n">677</span> }
+<span class="n">678</span> <span class="f">insert_edge</span>(
+<span class="n">679</span>     tx, &event_id, <span class="hl">"output"</span>, &node_id, <span class="s">"result"</span>,
+<span class="n">684</span>     Some(logical_path),
+<span class="n">685</span> )?;</pre>
+</figure>
+
+<p>事件和边的写入函数本身很朴素——重点不在它们复杂，而在于<strong>它们和"写字节"在同一个事务里，要么全部成功，要么全部回滚</strong>。审计永远不会和数据漂移：</p>
+
+<figure class="code">
+  <figcaption><span class="file">src/events.rs : 6–33 与 262–276</span><span class="role">事件 / 边的原子插入</span></figcaption>
+<pre><span class="n"> 6</span> <span class="k">pub(crate) fn</span> <span class="f">insert_event</span>(tx, event_id, kind, agent_id, run_id,
+<span class="n">14</span>                     tool_call_id, workspace_id, payload_json) -> <span class="t">AnfsResult</span>&lt;()&gt; {
+<span class="n">16</span>     tx.execute(
+<span class="n">17</span>         <span class="s">"INSERT INTO events
+<span class="n">18</span>          (event_id, kind, agent_id, run_id, tool_call_id,
+<span class="n">18</span>           workspace_id, payload_json, created_at)
+<span class="n">19</span>          VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)"</span>, params![ … ])?;
+<span class="n">31</span>     <span class="f">insert_event_sequence_if_missing</span>(tx, event_id)?;   <span class="c">// 分配全序 seq</span>
+<span class="n">33</span> }
+
+<span class="n">262</span> <span class="k">pub(crate) fn</span> <span class="f">insert_edge</span>(tx, event_id, direction, node_id,
+<span class="n">268</span>                    role, logical_path) -> <span class="t">AnfsResult</span>&lt;()&gt; {
+<span class="n">270</span>     tx.execute(
+<span class="n">271</span>         <span class="s">"INSERT INTO event_edges
+<span class="n">271</span>          (event_id, direction, node_id, role, logical_path)
+<span class="n">272</span>          VALUES (?1, ?2, ?3, ?4, ?5)"</span>, params![ … ])?;
+<span class="n">276</span> }</pre>
+</figure>
+
+<div class="note key">
+  <div class="t">这就是与传统 FS 的分水岭</div>
+  传统 <code>write</code> 之后，"上一版是什么、谁改的、为什么"全部消失。ANFS 的 <code>write</code> 之后，旧 node 仍在、写事件仍在、派生边仍在——<strong>覆盖被替换成了"追加一个新事实 + 移动一个指针"</strong>。
+</div>
+
+<!-- ============================================================ -->
+<h2 id="events"><span class="n">07</span>事件溯源：每个操作都是不可变事实</h2>
+
+<p>不只是写。<strong>读、搜索、回答、加锁、改权限</strong>——几乎每个有意义的动作都会落一条事件。下面是 <code>workspace.rs</code> 里真实出现的事件种类（节选），注意其中<strong>包含大量"读/检索"类事件</strong>，这正是普通文件系统从不记录的：</p>
+
+<p>
+<span class="pill e">write</span><span class="pill e">read_ref</span><span class="pill e">read_range</span><span class="pill e">write_range</span><span class="pill e">append</span><span class="pill e">truncate</span><span class="pill e">publish</span><span class="pill e">publish_manifest</span><span class="pill e">consume</span><span class="pill e">delete_ref</span><span class="pill e">link</span><span class="pill e">chmod</span><span class="pill e">chown</span><span class="pill e">utime</span><span class="pill e">acquire_lock</span><span class="pill e">release_lock</span><span class="pill e">search</span><span class="pill e">query</span><span class="pill e">answer</span>
+</p>
+
+<table>
+  <thead><tr><th>事件 kind</th><th>行号（workspace.rs）</th><th>含义</th></tr></thead>
+  <tbody>
+    <tr><td><code>write</code></td><td>595 / 1900(mkdir) / 4047(cp)</td><td>产生新 node 并移动 ref</td></tr>
+    <tr><td><code>read_ref</code> / <code>read_range</code></td><td>987 / 1085</td><td>读整文件 / 读字节范围——读也被审计</td></tr>
+    <tr><td><code>search</code></td><td>2668(grep/find) / 2807(全文)</td><td>检索，结果 node 作为 input 边记录</td></tr>
+    <tr><td><code>query</code></td><td>2926</td><td>结构化查询，记录条件与命中</td></tr>
+    <tr><td><code>answer</code></td><td>3088</td><td>生成答案，引用证据 node、记 token 账</td></tr>
+    <tr><td><code>delete_ref</code></td><td>4340(rm) / 4088(mv 删除段)</td><td>删除是"移指针 + 记事件"，node 不消失</td></tr>
+  </tbody>
+</table>
+
+<p>每条事件带一个由 <code>event_sequence</code> 分配的<strong>全局递增 seq</strong>。这个全序非常关键：它让"回放到第 N 个事件那一刻"成为一次确定性查询（见 §14）。</p>
+
+<!-- ============================================================ -->
+<h2 id="lineage"><span class="n">08</span>血缘图：输出从哪些输入派生</h2>
+
+<p>因为每个事件都带 input/output 边，整个系统天然是一张<strong>因果图</strong>：node 经由事件连到其他 node。"血缘"就是在这张图上做<strong>递归遍历</strong>。下面是顺着 input 边向上游追溯祖先的真实 SQL（递归 CTE）：</p>
+
+<figure class="code">
+  <figcaption><span class="file">src/lineage.rs（祖先方向递归 CTE 节选）</span><span class="role">血缘 = 在因果图上递归</span></figcaption>
+<pre><span class="c">-- 从某个 node 出发，沿"该 node 是某事件的 output"</span>
+<span class="c">-- 再跳到"同一事件的 input node"，即它的上游来源</span>
+<span class="k">WITH RECURSIVE</span> lineage(node_id) <span class="k">AS</span> ( … )
+<span class="k">FROM</span> lineage l
+<span class="k">JOIN</span> event_edges e_out
+     <span class="k">ON</span> e_out.node_id = l.node_id <span class="k">AND</span> e_out.direction = <span class="s">'output'</span>
+<span class="k">JOIN</span> event_edges e_in
+     <span class="k">ON</span> e_in.event_id = e_out.event_id <span class="k">AND</span> e_in.direction = <span class="s">'input'</span>;</pre>
+</figure>
+
+<p>这套机制最漂亮的应用是 <code>answer</code>。当 agent 产出一个答案，它的引用证据被记成 input 边（role 形如 <code>answer_citation:0</code>），答案 node 是 output 边。于是事后可以<strong>精确回答"这个结论引用了哪些来源、来源又派生自哪些原始资料"</strong>——一条可验证的证据链，而不是模型的自说自话。</p>
+
+<div class="diagram">
+<span class="gr">answer node</span> ◄──output── <b>answer 事件</b> ──input──► 证据 node A (<span class="tl">answer_citation:0</span>)
+                                  ├──input──► 证据 node B (<span class="tl">answer_citation:1</span>)
+                                  └─ 证据 node 各自又是更早 write/search 事件的 output …
+                                     <span class="vi">（沿 input 边递归下去 = 完整血缘）</span>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="context"><span class="n">09</span>检索即上下文：把"模型看了什么"也变成事实</h2>
+
+<p>这是 ANFS 区别于"普通向量库 / RAG sidecar"的核心。当 agent 调用 <code>search</code> / <code>query</code> / <code>answer</code>，命中的 node 会作为 input 边写进事件，payload 里还记录 <strong>token 估算与成本</strong>。换句话说，<em>"模型在做这个决定时到底看了哪些字节、花了多少 token"本身就是一条可审计、可回放的事实。</em></p>
+
+<table>
+  <thead><tr><th>能力</th><th>普通文件 + 向量库</th><th>ANFS</th></tr></thead>
+  <tbody>
+    <tr><td>检索能召回相关内容</td><td class="ok">✓</td><td class="ok">✓</td></tr>
+    <tr><td>检索动作被记录为事件</td><td class="x">✗ 检索无痕</td><td class="ok">✓ search/query 事件</td></tr>
+    <tr><td>命中结果与后续答案的因果绑定</td><td class="x">✗</td><td class="ok">✓ input 边 + retrieval_event_ids</td></tr>
+    <tr><td>看到的字节是否触发敏感策略</td><td class="x">✗</td><td class="ok">✓ 字节级 label 过滤（§11）</td></tr>
+    <tr><td>token / 成本可审计</td><td class="x">✗</td><td class="ok">✓ answer_token_accounting</td></tr>
+  </tbody>
+</table>
+
+<div class="note key">
+  <div class="t">省 token 的正确姿势</div>
+  ANFS 的省 token 不是"压缩文本"，而是<strong>让 agent 先用结构化查询定位，再只取必要片段</strong>，并且把"取了什么"记账。普通 codegraph 也能省 token，但它丢了审计与血缘；ANFS 的省 token 动作本身可溯源、受策略约束——<strong>这是同时满足"省 token"和"可溯源"两条第一性原理的关键。</strong>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="derived"><span class="n">10</span>派生索引层：可丢弃、可重建、绑哈希校验</h2>
+
+<p>FTS 全文索引、chunk 分块、向量 embedding、物化工作集——这些都是 DERIVED 层。它们的设计纪律是：<strong>是 canonical 字节的纯函数投影</strong>，可以随时删掉再重建，且每行都绑定 <code>blob_hash</code> 用于校验。例如 chunk 索引表把分块的 offset/size/sha256 与源 blob 的 hash、size 一起存，任何漂移都能被发现：</p>
+
+<table>
+  <thead><tr><th>派生表</th><th>粒度</th><th>可重建校验字段</th></tr></thead>
+  <tbody>
+    <tr><td><code>node_fts</code></td><td>整 node 文本</td><td>从 node 内容重建</td></tr>
+    <tr><td><code>node_chunk_index</code></td><td>固定字节分块</td><td><code>blob_hash, blob_size, sha256</code></td></tr>
+    <tr><td><code>node_embeddings</code></td><td>整 node 向量</td><td><code>model, norm</code>（缺 model_version，已知技术债）</td></tr>
+    <tr><td><code>materialized_working_sets</code></td><td>整个命名空间快照</td><td><code>manifest_hash</code></td></tr>
+  </tbody>
+</table>
+
+<p>重建入口 <code>rebuild_derived_indexes()</code>（manifest.rs）会清空并重算这些索引——因为它们不是事实，丢了也能从 canonical 层恢复。这条"事实 / 派生"分层正是<strong>健壮性</strong>的来源：派生层损坏不影响数据真相，重建即可。</p>
+
+<!-- ============================================================ -->
+<h2 id="policy"><span class="n">11</span>字节级权限：不止"能否打开文件"</h2>
+
+<p>传统权限只能回答"这个用户能否打开这个文件"。Agent 需要更细的问题："这<strong>一段</strong>敏感字节，能不能让这个 agent 看到、能不能写进输出？" ANFS 用 <em>fragment policy label</em> 给文件的<strong>任意字节范围</strong>打标签：</p>
+
+<figure class="code">
+  <figcaption><span class="file">src/policy_labels.rs : 862–873</span><span class="role">给 (node, offset, length) 字节范围打 label</span></figcaption>
+<pre><span class="n">862</span> <span class="k">pub(crate) fn</span> <span class="f">set_fragment_policy_label</span>(
+<span class="n">863</span>     conn: &<span class="k">mut</span> <span class="t">Connection</span>,
+<span class="n">864</span>     node_id: &<span class="t">str</span>,
+<span class="n">865</span>     <span class="hl">offset: i64</span>,        <span class="c">// 字节起点</span>
+<span class="n">866</span>     <span class="hl">length: i64</span>,        <span class="c">// 字节长度</span>
+<span class="n">867</span>     label: &<span class="t">str</span>,         <span class="c">// 如 "pii"</span>
+<span class="n">868</span>     value: Option&lt;&<span class="t">str</span>&gt;,
+<span class="n">869</span>     agent_id: &<span class="t">str</span>, run_id: …, tool_call_id: …,
+<span class="n">872</span> ) -> <span class="t">AnfsResult</span>&lt;()&gt; {
+<span class="n">873</span>     <span class="f">validate_fragment_policy_range</span>(conn, node_id, offset, length)?;
+       <span class="c">// … 作为 append-only 的 policy 事件落库（同样可审计）</span></pre>
+</figure>
+
+<p>读取 / 搜索 / 回答 / 导出时，可见性层会检查这些 label：带禁用 label 的<strong>字节范围或整个 node 直接被屏蔽</strong>，连进不进上下文都由内核裁决：</p>
+
+<figure class="code">
+  <figcaption><span class="file">src/visibility.rs : 81–88, 177–194</span><span class="role">按 label 屏蔽字节范围 / node</span></figcaption>
+<pre><span class="n"> 81</span> <span class="k">pub(crate) fn</span> <span class="f">node_range_hidden</span>(
+<span class="n"> 82</span>     conn: &<span class="t">Connection</span>, node_id: &<span class="t">str</span>, offset: <span class="t">i64</span>, length: <span class="t">i64</span>,
+<span class="n"> 86</span> ) -> <span class="t">AnfsResult</span>&lt;<span class="t">bool</span>&gt; {
+<span class="n"> 87</span>     <span class="f">active_fragment_policy_blocks_range</span>(conn, node_id, offset, length)
+<span class="n"> 88</span> }
+
+<span class="n">184</span>     <span class="k">for</span> label <span class="k">in</span> policy.label_excludes() {
+<span class="n">185</span>         <span class="k">if</span> <span class="f">active_policy_label_exists</span>(conn, <span class="s">"ref"</span>,  ref_name, label)?
+<span class="n">186</span>             || <span class="f">active_policy_label_exists</span>(conn, <span class="s">"node"</span>, node_id,  label)? {
+<span class="n">188</span>             <span class="k">return</span> Ok(<span class="hl">true</span>);   <span class="c">// 命中禁用 label → 屏蔽</span>
+<span class="n">189</span>         }
+<span class="n">190</span>     }</pre>
+</figure>
+
+<p>策略分三个层级：<strong>ref 级</strong>（这个名字）、<strong>node 级</strong>（这块内容）、<strong>fragment 级</strong>（内容里的某段字节）。而且因为标签本身也是 append-only 事件，"谁在何时给哪段字节打了什么标签"同样可审计、可回放。</p>
+
+<!-- ============================================================ -->
+<h2 id="workspace"><span class="n">12</span>工作区隔离与三方合并</h2>
+
+<p>多个 agent 并发工作时，各自有独立命名空间（如 <code>ws:agent-7/...</code>），写操作是<strong>写时复制（copy-on-write）的 ref 更新</strong>，互不干扰。要把一个 workspace 的改动并回共享主干时，ANFS 做的是 git 式<strong>三方对比</strong>：比较 ① checkout 时的基线快照、② 主干当前状态、③ workspace 状态——只有"双方都改了且改得不一样"才算冲突，且冲突在<strong>动共享内存之前</strong>就被检出：</p>
+
+<figure class="code">
+  <figcaption><span class="file">src/workspace_ops.rs : 114–129</span><span class="role">三方对比冲突检测</span></figcaption>
+<pre><span class="n">114</span> <span class="k">let mut</span> conflicts = Vec::new();
+<span class="n">115</span> <span class="k">for</span> path <span class="k">in</span> paths.keys() {
+<span class="n">116</span>     <span class="k">let</span> checkout_node  = checkout_base.get(path).cloned();   <span class="c">// ① 基线</span>
+<span class="n">117</span>     <span class="k">let</span> current_node   = current_base.get(path).cloned();    <span class="c">// ② 主干现状</span>
+<span class="n">118</span>     <span class="k">let</span> workspace_node = <span class="k">match</span> workspace_nodes.get(path) {     <span class="c">// ③ 工作区</span>
+<span class="n">119</span>         Some((_, state)) <span class="k">if</span> state == <span class="s">"deleted"</span> => None,
+<span class="n">120</span>         Some((node_id, _)) => Some(node_id.clone()),
+<span class="n">121</span>         None => checkout_node.clone(),
+<span class="n">122</span>     };
+<span class="n">124</span>     <span class="k">let</span> workspace_changed = workspace_node != checkout_node;
+<span class="n">125</span>     <span class="k">let</span> base_changed      = current_node   != checkout_node;
+<span class="n">126</span>     <span class="k">if</span> <span class="hl">workspace_changed && base_changed && workspace_node != current_node</span> {
+<span class="n">127</span>         conflicts.push((path.clone(), checkout_node, current_node, workspace_node));
+<span class="n">128</span>     }
+<span class="n">129</span> }</pre>
+</figure>
+
+<p>非冲突的改动可以原子合并；冲突被明确报出而不是悄悄覆盖。整个 event_sequence 提供全序，让并发也有确定的审计与回放。</p>
+
+<!-- ============================================================ -->
+<h2 id="fork"><span class="n">13</span>Fork：基于不可变 node 的零拷贝分支</h2>
+
+<p>因为 node 不可变，"分支"几乎免费：新 workspace 的 ref 直接指向<strong>同一批 node</strong>，不复制任何字节，再用 typed fork edge 把源与目标视图连起来（既是分支，也是血缘）：</p>
+
+<figure class="code">
+  <figcaption><span class="file">src/fork.rs : 57–90（节选）</span><span class="role">新 ref 指向同一 node + fork 边</span></figcaption>
+<pre><span class="n">57</span> tx.execute(
+<span class="n">58</span>     <span class="s">"INSERT INTO refs
+<span class="n">59</span>      (ref_name, node_id, ref_kind, state, ref_version, updated_at)
+<span class="n">60</span>      VALUES (?1, ?2, 'workspace', 'draft', 1, ?3)"</span>,
+<span class="n">61</span>     params![target_ref, <span class="hl">node_id</span>, now_millis()],   <span class="c">// 指向同一个 node，零拷贝</span>
+<span class="n">62</span> )?;
+<span class="n">75</span> <span class="f">insert_edge</span>(tx, event_id, <span class="s">"input"</span>,  &node_id, &format!(<span class="s">"fork_source:{idx}"</span>), …)?;
+<span class="n">83</span> <span class="f">insert_edge</span>(tx, event_id, <span class="s">"output"</span>, &node_id, &format!(<span class="s">"fork_workspace_view:{idx}"</span>), …)?;</pre>
+</figure>
+
+<!-- ============================================================ -->
+<h2 id="replay"><span class="n">14</span>Replay：回放到任意事件边界</h2>
+
+<p>既然每个 ref 变更都带 seq，"第 N 个事件那一刻的目录视图"就是一次确定性查询：取每个 ref 在 <code>seq ≤ N</code> 范围内的<strong>最后一次</strong>变更（用窗口函数 <code>ROW_NUMBER</code> 取 rank=1），即得当时的完整视图。这就是<strong>事件级时间旅行</strong>，比文件系统快照精细得多：</p>
+
+<figure class="code">
+  <figcaption><span class="file">src/replay.rs : 38–61（核心 CTE）</span><span class="role">回放某个事件边界的 ref 视图</span></figcaption>
+<pre><span class="n">38</span> <span class="k">WITH</span> ranked <span class="k">AS</span> (
+<span class="n">40</span>   <span class="k">SELECT</span> re.ref_name, re.new_node_id, re.new_state, re.event_id, e.created_at,
+<span class="n">45</span>     <span class="hl">ROW_NUMBER() OVER (
+<span class="n">46</span>       PARTITION BY re.ref_name
+<span class="n">47</span>       ORDER BY es.seq DESC, re.rowid DESC) AS rank</span>
+<span class="n">49</span>   <span class="k">FROM</span> ref_events re
+<span class="n">50</span>   <span class="k">JOIN</span> events e          <span class="k">ON</span> e.event_id = re.event_id
+<span class="n">51</span>   <span class="k">JOIN</span> event_sequence es <span class="k">ON</span> es.event_id = e.event_id
+<span class="n">52</span>   <span class="k">WHERE</span> <span class="hl">es.seq &lt;= ?1</span>          <span class="c">-- 只看目标事件之前</span>
+<span class="n">53</span> )
+<span class="n">55</span> <span class="k">SELECT</span> ref_name, new_node_id, new_state, event_id, created_at
+<span class="n">56</span> <span class="k">FROM</span> ranked
+<span class="n">57</span> <span class="k">WHERE</span> <span class="hl">rank = 1</span>             <span class="c">-- 每个 ref 取那一刻的最后状态</span>
+<span class="n">58</span>   <span class="k">AND</span> new_node_id <span class="k">IS NOT NULL</span>;</pre>
+</figure>
+
+<div class="note">
+  <div class="t">为什么传统 FS 做不到</div>
+  普通文件系统覆盖写后旧字节已不存在；要"回到过去"只能靠外挂的整盘快照或 git，且粒度是提交/快照点，不是"第 N 次操作"。ANFS 因为<strong>从不丢弃事实</strong>，任意事件边界都能用一条查询重建——这是不可变 + 全序 seq 的直接红利。
+</div>
+
+<!-- ============================================================ -->
+<h2 id="worktree"><span class="n">15</span>Worktree：与真实工作目录双向同步</h2>
+
+<p>agent 有时需要把内容<strong>物化成真实磁盘目录</strong>（比如让一个真实的编码工具/编译器去操作），再把改动<strong>提交回内核</strong>。这就是 worktree（<code>src/worktree.rs</code>）：把 workspace 的 ref 视图导出成普通目录，外部进程随便改，之后扫描目录把变更作为新一批 node + 事件提交回来。</p>
+<p>为了保持内核的纯净，这个适配器是<strong>保守的</strong>：拒绝符号链接、特殊文件、含反斜杠的相对路径，以及保留的 <code>.anfs-worktree-manifest.json</code> 路径——任何不能被干净映射回 canonical 模型的东西都被挡在门外，而不是污染事实层。它既兼容真实工具链，又守住了"边界清晰"。</p>
+
+<!-- ============================================================ -->
+<h2 id="integrity"><span class="n">16</span>完整性自检：把不变量变成可执行检查</h2>
+
+<p>所有这些不变量（哈希匹配、事件序号连续、ref 指向存在的 node、派生索引与源一致、策略边引用存在……）都不是口头承诺，而是 <code>verify_integrity()</code> 里<strong>25 项可执行检查</strong>。这是"健壮"这条第一性原理的兜底：</p>
+
+<figure class="code">
+  <figcaption><span class="file">src/integrity.rs : 15–45（检查清单）</span><span class="role">25 项不变量自检</span></figcaption>
+<pre><span class="n">15</span> <span class="k">pub(crate) fn</span> <span class="f">verify_integrity</span>(conn, objects_dir) -> <span class="t">AnfsResult</span>&lt;Vec&lt;<span class="t">String</span>&gt;&gt; {
+<span class="n">18</span>   <span class="f">check_schema_and_event_log</span>(…)?;     <span class="c">// schema 版本 / FK / event_seq 连续</span>
+<span class="n">19</span>   <span class="f">check_ref_view_checkpoints</span>(…)?;     <span class="c">// 回放校验点 checksum</span>
+<span class="n">20</span>   <span class="f">check_event_edge_shapes</span>(…)?;        <span class="c">// 边的 direction 合法</span>
+<span class="n">28</span>   <span class="f">check_blobs</span>(…)?;                     <span class="c">// blob hash / size 匹配，文件存在</span>
+<span class="n">29</span>   <span class="f">check_chunk_indexes</span>(…)?;            <span class="c">// 分块索引一致</span>
+<span class="n">31</span>   <span class="f">check_fts</span>(…)?;  <span class="f">check_embeddings</span>(…)?; <span class="c">// 派生索引一致</span>
+<span class="n">35</span>   <span class="f">check_ref_event_linkage</span>(…)?;        <span class="c">// ref 事件指向正确的 node</span>
+<span class="n">40</span>   <span class="f">check_policy_labels</span>(…)?;            <span class="c">// 策略边引用的 ref/node 存在</span>
+<span class="n">44</span>   Ok(issues)   <span class="c">// 返回所有发现的问题（空 = 健康）</span>
+<span class="n">45</span> }</pre>
+</figure>
+
+<p>举一个具体检查：事件序号<strong>必须从 1 连续到 count</strong>，断号即数据异常——这保证了血缘和回放赖以成立的全序没有空洞：</p>
+<figure class="code">
+  <figcaption><span class="file">src/integrity.rs : 92–101</span><span class="role">event_seq 连续性</span></figcaption>
+<pre><span class="n">92</span>  <span class="k">if</span> event_count != sequence_count {
+<span class="n">93</span>      issues.push(format!(<span class="s">"event_sequence count mismatch: …"</span>));
+<span class="n">96</span>  }
+<span class="n">97</span>  <span class="k">if</span> sequence_count &gt; 0 && (min_sequence != Some(1)
+<span class="n">98</span>          || max_sequence != Some(sequence_count)) {
+<span class="n">99</span>      issues.push(format!(<span class="s">"event_sequence is not contiguous: …"</span>));
+<span class="n">101</span> }</pre>
+</figure>
+
+<!-- ============================================================ -->
+<h2 id="compare"><span class="n">17</span>传统文件系统 vs ANFS：总对比</h2>
+
+<table>
+  <thead><tr><th style="width:22%">维度</th><th style="width:39%">传统文件系统</th><th>ANFS</th></tr></thead>
+  <tbody>
+    <tr><td>核心模型</td><td><code>path → bytes</code>，可变覆盖</td><td><code>ref → node → blob</code> + event + edge，事实不可变</td></tr>
+    <tr><td>写语义</td><td class="x">原地覆盖，旧内容消失</td><td class="ok">新 node + 移指针 + 记事件，历史全保留</td></tr>
+    <tr><td>历史 / 回放</td><td class="x">无，需外挂快照</td><td class="ok">事件级时间旅行（任意 seq 边界）</td></tr>
+    <tr><td>血缘 / 因果</td><td class="x">无</td><td class="ok">input/output 边构成因果图，可递归追溯</td></tr>
+    <tr><td>读 / 检索审计</td><td class="x">不记录读</td><td class="ok">read/search/query/answer 皆为事件</td></tr>
+    <tr><td>权限粒度</td><td class="x">文件级（能否打开）</td><td class="ok">ref / node / 字节范围 三级 label</td></tr>
+    <tr><td>去重</td><td class="x">通常无</td><td class="ok">内容寻址天然去重</td></tr>
+    <tr><td>并发合并</td><td class="x">最后写赢，无冲突检测</td><td class="ok">三方对比，冲突前置检出</td></tr>
+    <tr><td>完整性</td><td class="x">依赖 fsck，无语义不变量</td><td class="ok">25 项语义不变量可执行自检</td></tr>
+    <tr><td>token / 成本</td><td class="x">无概念</td><td class="ok">检索/答案带 token 账与成本估算</td></tr>
+    <tr><td>给模型的接口</td><td>read/write/ls/grep</td><td class="ok">同样 boring 的接口，底层却语义化</td></tr>
+  </tbody>
+</table>
+
+<!-- ============================================================ -->
+<h2 id="principles"><span class="n">18</span>第一性原理与未来方向</h2>
+<p>ANFS 的一切设计都回到五条第一性原理。文档至此，你应该能看出每条原理是由哪些机制兑现的：</p>
+
+<div class="axis">
+  <div class="a"><div class="h">方便 Agent</div><div class="d">接口永远是 read/write/ls/grep/find，底层复杂度对模型透明（§01、§17）。</div></div>
+  <div class="a"><div class="h">可溯源</div><div class="d">事实不可变 + 事件 + 血缘边 + 检索即事件 + 回放（§05–09、§14）。</div></div>
+  <div class="a"><div class="h">更省 token</div><div class="d">内容寻址去重 + 结构化定位后只取必要片段 + token 记账（§04、§09）。</div></div>
+  <div class="a"><div class="h">Robust</div><div class="d">派生层可重建、绑哈希、不污染事实 + 25 项不变量自检（§10、§16）。</div></div>
+  <div class="a"><div class="h">结构清晰</div><div class="d">canonical / derived / context 三层分明，适配器保守守边界（§02、§15）。</div></div>
+</div>
+
+<h3>下一步：让文件系统原生"理解代码结构"</h3>
+<p>目前 ANFS 已经能把 Markdown / JSON / YAML 解析成带字节范围的层级 span。下一步是把同样的"派生投影"模式推广到<strong>代码</strong>：用 tree-sitter 把 Rust / Python 解析成持久的 <code>code_symbols</code>（函数/结构体/方法）与 <code>code_edges</code>（defines / imports / calls），同样绑定 <code>blob_hash + parser_version</code> 以保证可重建。最终提供一个 <code>context_pack(task, token_budget)</code> 入口：</p>
+<ul>
+  <li>agent 不再读整文件，而是先查 outline → 按 symbol 取片段；</li>
+  <li>跨文件的 <code>calls</code> 边只在 workspace 组合层 resolve，<strong>绝不把组合状态写回事实层</strong>，守住"结构清晰"；</li>
+  <li><code>context_pack</code> 同时写一条 <code>code_context_query</code> 事件——于是"省 token"这个动作本身也可溯源、受策略约束。</li>
+</ul>
+<p>这正是 ANFS 相对普通 codegraph 的差异：<strong>普通 codegraph 只省 token；ANFS-native codegraph 在省 token 的同时保留审计、血缘与权限。</strong></p>
+
+<!-- ============================================================ -->
+<h2 id="glossary"><span class="n">19</span>术语表</h2>
+<table>
+  <tbody>
+    <tr><td><strong>CAS</strong></td><td>Content-Addressed Storage，内容寻址存储，字节的地址即其哈希。</td></tr>
+    <tr><td><strong>Blob</strong></td><td>不可变的原始字节，按 sha256 去重。</td></tr>
+    <tr><td><strong>Node</strong></td><td>不可变的内容快照，指向一个 blob。</td></tr>
+    <tr><td><strong>Ref</strong></td><td>可变的名字→node 映射，系统中唯一会变的东西。</td></tr>
+    <tr><td><strong>Event</strong></td><td>append-only 的操作事实，带全局递增 seq。</td></tr>
+    <tr><td><strong>Edge</strong></td><td>事件↔node 的 input/output 因果边，构成血缘图。</td></tr>
+    <tr><td><strong>Canonical 层</strong></td><td>不可变事实（blob/node/ref/event/edge/policy）。</td></tr>
+    <tr><td><strong>Derived 层</strong></td><td>派生索引（FTS/chunk/embedding），可丢可重建。</td></tr>
+    <tr><td><strong>Fragment label</strong></td><td>打在文件某字节范围上的策略标签。</td></tr>
+    <tr><td><strong>Workspace</strong></td><td>每个 agent 独立的命名空间，写时复制隔离。</td></tr>
+    <tr><td><strong>Replay</strong></td><td>用 seq 重建任意历史事件边界的目录视图。</td></tr>
+    <tr><td><strong>Worktree</strong></td><td>把 ref 视图物化成真实磁盘目录并可提交回内核的适配器。</td></tr>
+  </tbody>
+</table>
+
+<div class="foot">
+  ANFS — Agent-Native File System · 设计详解<br>
+  本文档所有代码片段直接引用自仓库源码（src/blob.rs, manifest.rs, schema.rs, events.rs, workspace.rs,
+  workspace_ops.rs, fork.rs, replay.rs, policy_labels.rs, visibility.rs, integrity.rs, lineage.rs）。<br>
+  片段为聚焦展示而节选/省略中间行，行号对应真实源文件。
+</div>
+
+</main>
+</div>
+</body>
+</html>
