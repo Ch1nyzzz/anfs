@@ -699,7 +699,6 @@ if __name__ == "__main__":
     test_persistent_node_chunk_cache_is_rebuildable_and_verified()
     test_workspace_delete_is_logical_ref_state()
     test_checkout_projects_base_refs_copy_on_write()
-    test_fork_workspace_copies_draft_refs_with_typed_lineage_edges()
     test_workspace_branch_names_are_validated_at_public_boundaries()
     test_integrity_verifier_detects_checkout_base_snapshot_mismatch()
     test_integrity_verifier_clean_and_missing_file_blob()

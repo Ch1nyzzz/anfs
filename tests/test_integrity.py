@@ -1209,7 +1209,6 @@ def test_integrity_verifier_detects_workspace_event_edge_shape_mismatch():
         bad_checkout = "event:bad-checkout"
         bad_archive = "event:bad-archive"
         bad_snapshot = "event:bad-snapshot"
-        bad_fork = "event:bad-fork"
         with sqlite3.connect(db_path) as conn:
             next_seq = conn.execute("SELECT MAX(seq) + 1 FROM event_sequence").fetchone()[0]
             malformed_events = [
@@ -1220,12 +1219,6 @@ def test_integrity_verifier_detects_workspace_event_edge_shape_mismatch():
                     "snapshot_namespace",
                     '{"prefix":"resource:repo/main@v1","snapshot_ref":"resource:snapshot@v1","child_count":1}',
                     next_seq + 2,
-                ),
-                (
-                    bad_fork,
-                    "fork_workspace",
-                    '{"source_workspace":"ws:source","target_workspace":"ws:forked"}',
-                    next_seq + 3,
                 ),
             ]
             for event_id, kind, payload, seq in malformed_events:
@@ -1263,16 +1256,6 @@ def test_integrity_verifier_detects_workspace_event_edge_shape_mismatch():
         )
         assert any(
             f"snapshot_namespace event {bad_snapshot} must have exactly one output snapshot_manifest edge; found 0"
-            in issue
-            for issue in issues
-        )
-        assert any(
-            f"fork_workspace event {bad_fork} must have at least one input fork_source edge; found 0"
-            in issue
-            for issue in issues
-        )
-        assert any(
-            f"fork_workspace event {bad_fork} must have at least one output fork_workspace_view edge; found 0"
             in issue
             for issue in issues
         )

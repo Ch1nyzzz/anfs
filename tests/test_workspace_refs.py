@@ -193,65 +193,6 @@ def test_checkout_projects_base_refs_copy_on_write():
             assert checkout_edges >= 4
 
 
-def test_fork_workspace_copies_draft_refs_with_typed_lineage_edges():
-    with tempfile.TemporaryDirectory() as tmpdir:
-        db_path = os.path.join(tmpdir, "anfs.db")
-        objs_dir = os.path.join(tmpdir, "objs")
-
-        fs = anfs_core.AnfsEngine(db_path, objs_dir)
-        alpha = fs.open_workspace("ws:alpha", "alpha_agent", run_id="run:alpha")
-        node_a = alpha.write("src/a.md", b"alpha a v1", [])
-        node_b = alpha.write("src/b.md", b"alpha b v1", [])
-
-        beta = fs.fork_workspace(
-            "ws:alpha",
-            "ws:beta",
-            "beta_agent",
-            run_id="run:fork",
-            tool_call_id="tc_fork",
-        )
-        assert bytes(beta.read("src/a.md")) == b"alpha a v1"
-        assert bytes(beta.read("src/b.md")) == b"alpha b v1"
-
-        alpha.write("src/a.md", b"alpha a v2", [])
-        beta.write("src/b.md", b"beta b v2", [])
-        assert bytes(alpha.read("src/a.md")) == b"alpha a v2"
-        assert bytes(alpha.read("src/b.md")) == b"alpha b v1"
-        assert bytes(beta.read("src/a.md")) == b"alpha a v1"
-        assert bytes(beta.read("src/b.md")) == b"beta b v2"
-
-        fork_event = fs.event(fs.events(kind="fork_workspace", run_id="run:fork")[0][1])
-        assert fork_event[1] == "fork_workspace"
-        assert fork_event[2] == "beta_agent"
-        assert fork_event[4] == "tc_fork"
-        assert fork_event[5] == "ws:beta"
-        assert json.loads(fork_event[6]) == {
-            "source_workspace": "ws:alpha",
-            "target_workspace": "ws:beta",
-        }
-        assert {
-            (direction, node_id, logical_path)
-            for direction, node_id, _role, logical_path in fork_event[8]
-        } == {
-            ("input", node_a, "ws:alpha/src/a.md"),
-            ("input", node_b, "ws:alpha/src/b.md"),
-            ("output", node_a, "ws:beta/src/a.md"),
-            ("output", node_b, "ws:beta/src/b.md"),
-        }
-        assert fs.verify_integrity() == []
-
-        try:
-            fs.fork_workspace("ws:alpha", "ws:beta", "beta_agent")
-            assert False, "forking into an existing workspace ref should conflict"
-        except anfs_core.RefConflictError:
-            pass
-        try:
-            fs.fork_workspace("ws:alpha", "ws:alpha", "alpha_agent")
-            assert False, "fork source and target must differ"
-        except anfs_core.PolicyDeniedError:
-            pass
-
-
 def test_workspace_branch_names_are_validated_at_public_boundaries():
     with tempfile.TemporaryDirectory() as tmpdir:
         db_path = os.path.join(tmpdir, "anfs.db")
@@ -261,9 +202,6 @@ def test_workspace_branch_names_are_validated_at_public_boundaries():
         fs = anfs_core.AnfsEngine(db_path, objs_dir)
         alpha = fs.open_workspace("ws:alpha-1", "alpha_agent")
         alpha.write("src/a.md", b"alpha", [])
-
-        valid = fs.fork_workspace("ws:alpha-1", "ws:beta_2", "beta_agent")
-        assert bytes(valid.read("src/a.md")) == b"alpha"
 
         invalid_names = [
             "",
@@ -293,18 +231,6 @@ def test_workspace_branch_names_are_validated_at_public_boundaries():
         except anfs_core.PolicyDeniedError as exc:
             assert "unsafe workspace name ws:bad/name" in str(exc)
         assert fs.events(kind="checkout", tool_call_id="tc_bad_checkout_branch") == []
-
-        try:
-            fs.fork_workspace(
-                "ws:alpha-1",
-                "ws:bad/name",
-                "bad_agent",
-                tool_call_id="tc_bad_fork_branch",
-            )
-            assert False, "fork should reject unsafe target workspace names"
-        except anfs_core.PolicyDeniedError as exc:
-            assert "unsafe workspace name ws:bad/name" in str(exc)
-        assert fs.events(kind="fork_workspace", tool_call_id="tc_bad_fork_branch") == []
 
         try:
             fs.materialize_workspace("ws:bad/name", worktree_dir)
