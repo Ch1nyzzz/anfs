@@ -151,6 +151,52 @@ def test_context_pack_respects_budget(anfs_engine):
     assert small_tokens <= big_tokens
 
 
+def test_context_pack_records_audit_event(anfs_paths, anfs_engine):
+    import sqlite3
+
+    db_path, _ = anfs_paths
+    fs = anfs_engine
+    ws = fs.open_workspace("ws:coder", "coder_agent")
+    b_node = ws.write("b.rs", b"pub fn helper() -> i64 { 1 }\n", [])
+    a_node = ws.write("a.rs", b"pub fn run() -> i64 { helper() }\n", [])
+    fs.index_node_fragments(a_node, "tree-sitter-rust")
+    fs.index_node_fragments(b_node, "tree-sitter-rust")
+
+    # without identity: pure read, no event recorded
+    con = sqlite3.connect(db_path)
+    before = con.execute(
+        "SELECT COUNT(*) FROM events WHERE kind='code_context_query'"
+    ).fetchone()[0]
+    fs.context_pack("helper", 10_000)
+    after_noid = con.execute(
+        "SELECT COUNT(*) FROM events WHERE kind='code_context_query'"
+    ).fetchone()[0]
+    assert after_noid == before  # no identity -> no audit event
+
+    # with identity: a code_context_query event + input edges to packed nodes
+    items, _tokens = fs.context_pack("helper", 10_000, "coder_agent", "run-1")
+    ev = con.execute(
+        "SELECT event_id, agent_id, payload_json FROM events "
+        "WHERE kind='code_context_query' ORDER BY rowid DESC LIMIT 1"
+    ).fetchone()
+    assert ev is not None
+    event_id, agent_id, payload = ev
+    assert agent_id == "coder_agent"
+    assert '"seed":"helper"' in payload.replace(" ", "")
+    edge_nodes = {
+        r[0]
+        for r in con.execute(
+            "SELECT node_id FROM event_edges WHERE event_id=? AND direction='input'",
+            (event_id,),
+        ).fetchall()
+    }
+    packed_nodes = {it[0] for it in items}
+    assert edge_nodes == packed_nodes  # input edges == nodes the model saw
+    con.close()
+
+    assert fs.verify_integrity() == []  # new event kind keeps integrity clean
+
+
 def test_fragments_do_not_break_integrity(anfs_engine):
     fs = anfs_engine
     ws = fs.open_workspace("ws:writer", "writer_agent")

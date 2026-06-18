@@ -11,9 +11,10 @@ use std::path::Path;
 
 use rusqlite::{params, Connection, OptionalExtension};
 
+use crate::events::{insert_edge, insert_event};
 use crate::manifest::{json_field_spans, markdown_section_spans, read_node_bytes};
 use crate::visibility::node_range_hidden;
-use crate::{now_millis, sha256_hex, AnfsError, AnfsResult};
+use crate::{new_event_id, now_millis, sha256_hex, AnfsError, AnfsResult};
 
 /// Bumped when a parser's output shape changes so stale rows can be detected.
 const PARSER_VERSION: &str = "1";
@@ -384,10 +385,13 @@ fn estimate_tokens(byte_len: usize) -> i64 {
 /// `token_budget`. Policy-hidden byte ranges are never included
 /// (`node_range_hidden`). Returns the packed items and the total token estimate.
 pub(crate) fn context_pack(
-    conn: &Connection,
+    conn: &mut Connection,
     objects_dir: &Path,
     seed_name: &str,
     token_budget: i64,
+    agent_id: Option<&str>,
+    run_id: Option<&str>,
+    tool_call_id: Option<&str>,
 ) -> AnfsResult<(Vec<ContextItemRow>, i64)> {
     // Working set: the definition(s) of seed_name, then its callers' fragments.
     let mut targets: Vec<(String, String, Option<String>, String, i64, i64)> = Vec::new();
@@ -463,6 +467,52 @@ pub(crate) fn context_pack(
             break;
         }
     }
+
+    // ANFS-native differentiator: when an agent identity is supplied, the
+    // context request itself becomes an auditable event with input edges to the
+    // packed nodes — so "what did the model see, and how many tokens" is
+    // replayable, exactly like search/query/answer.
+    if let Some(agent_id) = agent_id {
+        let mut node_seen = std::collections::HashSet::new();
+        let mut context_nodes: Vec<String> = Vec::new();
+        for item in &packed {
+            if node_seen.insert(item.0.clone()) {
+                context_nodes.push(item.0.clone());
+            }
+        }
+        let payload = serde_json::json!({
+            "seed": seed_name,
+            "token_budget": token_budget,
+            "token_estimate": tokens,
+            "item_count": packed.len(),
+            "nodes": context_nodes,
+        })
+        .to_string();
+        let event_id = new_event_id();
+        let tx = conn.transaction()?;
+        insert_event(
+            &tx,
+            &event_id,
+            "code_context_query",
+            Some(agent_id),
+            run_id,
+            tool_call_id,
+            None,
+            Some(&payload),
+        )?;
+        for (index, node_id) in context_nodes.iter().enumerate() {
+            insert_edge(
+                &tx,
+                &event_id,
+                "input",
+                node_id,
+                &format!("context_node:{index}"),
+                None,
+            )?;
+        }
+        tx.commit()?;
+    }
+
     Ok((packed, tokens))
 }
 

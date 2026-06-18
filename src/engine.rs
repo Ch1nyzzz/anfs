@@ -308,13 +308,30 @@ impl AnfsEngine {
     /// callers, greedily packed under `token_budget`, policy-hidden ranges
     /// excluded. Returns `(items, token_estimate)` where each item is
     /// `(node_id, fragment_id, name, kind, byte_start, byte_end, source)`.
+    ///
+    /// When `agent_id` is supplied, the request is recorded as a
+    /// `code_context_query` event with input edges to the packed nodes, so the
+    /// retrieval is auditable and replayable.
+    #[pyo3(signature = (seed_name, token_budget, agent_id=None, run_id=None, tool_call_id=None))]
     fn context_pack(
         &self,
         seed_name: &str,
         token_budget: i64,
+        agent_id: Option<String>,
+        run_id: Option<String>,
+        tool_call_id: Option<String>,
     ) -> PyResult<(Vec<ContextItemRow>, i64)> {
-        let conn = lock_conn(&self.inner)?;
-        context_pack(&conn, &self.inner.objects_dir, seed_name, token_budget).map_err(PyErr::from)
+        let mut conn = lock_conn(&self.inner)?;
+        context_pack(
+            &mut conn,
+            &self.inner.objects_dir,
+            seed_name,
+            token_budget,
+            agent_id.as_deref(),
+            run_id.as_deref(),
+            tool_call_id.as_deref(),
+        )
+        .map_err(PyErr::from)
     }
 
     fn manifest_children(&self, node_id: &str) -> PyResult<Vec<(String, String)>> {
