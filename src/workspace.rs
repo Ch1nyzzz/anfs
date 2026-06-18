@@ -3018,13 +3018,6 @@ fn resolve_destination_path_for_existing_directory(
     }
 }
 
-fn estimated_token_count(byte_count: i64) -> i64 {
-    if byte_count <= 0 {
-        0
-    } else {
-        (byte_count + 3) / 4
-    }
-}
 
 fn is_explicit_ref(path: &str) -> bool {
     path.starts_with("ws:")

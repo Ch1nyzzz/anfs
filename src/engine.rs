@@ -1,6 +1,6 @@
 use pyo3::prelude::*;
 use pyo3::types::PyBytes;
-use rusqlite::{params, Connection, OptionalExtension, TransactionBehavior};
+use rusqlite::{params, Connection, TransactionBehavior};
 use serde_json::json;
 use std::collections::HashSet;
 use std::fs;
@@ -9,7 +9,7 @@ use std::sync::{Arc, Mutex};
 
 use crate::query::query_refs;
 use crate::{
-    ensure_node_fragments_visible, Inner, now_millis, active_operation_capability_missing, agent_capabilities,
+    ensure_node_fragments_visible, Inner, active_operation_capability_missing, agent_capabilities,
     AgentCapabilityRow, AnfsEngine, AnfsError, AnfsResult,
     apply_schema_migrations, ArchivalReadinessRow,
     auto_propagate_fragment_policy_labels_by_exact_match,
@@ -48,7 +48,7 @@ use crate::{
     set_fragment_policy_label, set_node_chunk_embedding, set_node_embedding,
     set_operation_capability_rule, set_policy_expression_rule, set_policy_label,
     set_policy_rule, set_purpose_capability_rule, set_purpose_policy_rule, set_retention_policy,
-    sha256_hex, snapshot_namespace, start_run, target_has_producer_agent, TokenCostProfileRow,
+    sha256_hex, snapshot_namespace, start_run, target_has_producer_agent,
     unpin_gc_root, update_ref_node, update_ref_state, VacuumDatabaseResult,
     validate_state_transition, validate_workspace_name, vector_search, vector_search_chunks,
     VectorSearchRow, verify_history_archive_bundle, verify_integrity,
@@ -2905,164 +2905,6 @@ impl AnfsEngine {
         event_record(&conn, event_id)
     }
 
-    fn set_token_cost_profile_impl(
-        &self,
-        model: &str,
-        input_price_micros_per_million_tokens: i64,
-        output_price_micros_per_million_tokens: i64,
-        prompt_overhead_tokens: i64,
-        agent_id: &str,
-        run_id: Option<String>,
-        tool_call_id: Option<String>,
-    ) -> AnfsResult<String> {
-        let model = validate_token_cost_model(model)?;
-        validate_nonnegative_i64(
-            input_price_micros_per_million_tokens,
-            "input_price_micros_per_million_tokens",
-        )?;
-        validate_nonnegative_i64(
-            output_price_micros_per_million_tokens,
-            "output_price_micros_per_million_tokens",
-        )?;
-        validate_nonnegative_i64(prompt_overhead_tokens, "prompt_overhead_tokens")?;
-
-        with_sqlite_busy_retry(|| {
-            let mut conn = lock_conn(&self.inner)?;
-            let tx = conn.transaction()?;
-            let event_id = new_event_id();
-            let payload = json!({
-                "model": model,
-                "estimator": "ceil_bytes_div_4",
-                "input_price_micros_per_million_tokens": input_price_micros_per_million_tokens,
-                "output_price_micros_per_million_tokens": output_price_micros_per_million_tokens,
-                "prompt_overhead_tokens": prompt_overhead_tokens,
-            })
-            .to_string();
-            insert_event(
-                &tx,
-                &event_id,
-                "set_token_cost_profile",
-                Some(agent_id),
-                run_id.as_deref(),
-                tool_call_id.as_deref(),
-                None,
-                Some(&payload),
-            )?;
-            tx.execute(
-                "INSERT INTO token_cost_profile_events
-                 (model, estimator, input_price_micros_per_million_tokens,
-                  output_price_micros_per_million_tokens, prompt_overhead_tokens,
-                  event_id, agent_id, created_at)
-                 VALUES (?1, 'ceil_bytes_div_4', ?2, ?3, ?4, ?5, ?6, ?7)",
-                params![
-                    model,
-                    input_price_micros_per_million_tokens,
-                    output_price_micros_per_million_tokens,
-                    prompt_overhead_tokens,
-                    event_id,
-                    agent_id,
-                    now_millis()
-                ],
-            )?;
-            tx.commit()?;
-            Ok(event_id)
-        })
-    }
-
-    fn token_cost_profiles_impl(&self, active_only: bool) -> AnfsResult<Vec<TokenCostProfileRow>> {
-        let conn = lock_conn(&self.inner)?;
-        let sql = if active_only {
-            "
-            SELECT p.model,
-                   p.estimator,
-                   p.input_price_micros_per_million_tokens,
-                   p.output_price_micros_per_million_tokens,
-                   p.prompt_overhead_tokens,
-                   p.event_id,
-                   p.agent_id,
-                   p.created_at
-            FROM token_cost_profile_events p
-            JOIN event_sequence es ON es.event_id = p.event_id
-            WHERE NOT EXISTS (
-                SELECT 1
-                FROM token_cost_profile_events newer
-                JOIN event_sequence newer_es ON newer_es.event_id = newer.event_id
-                WHERE newer.model = p.model
-                  AND newer_es.seq > es.seq
-            )
-            ORDER BY p.model
-            "
-        } else {
-            "
-            SELECT p.model,
-                   p.estimator,
-                   p.input_price_micros_per_million_tokens,
-                   p.output_price_micros_per_million_tokens,
-                   p.prompt_overhead_tokens,
-                   p.event_id,
-                   p.agent_id,
-                   p.created_at
-            FROM token_cost_profile_events p
-            JOIN event_sequence es ON es.event_id = p.event_id
-            ORDER BY p.model, es.seq
-            "
-        };
-        let mut stmt = conn.prepare(sql)?;
-        let rows = stmt.query_map([], |row| {
-            Ok((
-                row.get::<_, String>(0)?,
-                row.get::<_, String>(1)?,
-                row.get::<_, i64>(2)?,
-                row.get::<_, i64>(3)?,
-                row.get::<_, i64>(4)?,
-                row.get::<_, String>(5)?,
-                row.get::<_, Option<String>>(6)?,
-                row.get::<_, i64>(7)?,
-            ))
-        })?;
-        let mut profiles = Vec::new();
-        for row in rows {
-            profiles.push(row?);
-        }
-        Ok(profiles)
-    }
-
-    fn active_token_cost_profile(&self, model: &str) -> AnfsResult<Option<TokenCostProfileRow>> {
-        let conn = lock_conn(&self.inner)?;
-        conn.query_row(
-            "
-            SELECT p.model,
-                   p.estimator,
-                   p.input_price_micros_per_million_tokens,
-                   p.output_price_micros_per_million_tokens,
-                   p.prompt_overhead_tokens,
-                   p.event_id,
-                   p.agent_id,
-                   p.created_at
-            FROM token_cost_profile_events p
-            JOIN event_sequence es ON es.event_id = p.event_id
-            WHERE p.model = ?1
-            ORDER BY es.seq DESC
-            LIMIT 1
-            ",
-            params![model],
-            |row| {
-                Ok((
-                    row.get::<_, String>(0)?,
-                    row.get::<_, String>(1)?,
-                    row.get::<_, i64>(2)?,
-                    row.get::<_, i64>(3)?,
-                    row.get::<_, i64>(4)?,
-                    row.get::<_, String>(5)?,
-                    row.get::<_, Option<String>>(6)?,
-                    row.get::<_, i64>(7)?,
-                ))
-            },
-        )
-        .optional()
-        .map_err(AnfsError::from)
-    }
-
     fn events_impl(
         &self,
         after_seq: i64,
@@ -3625,56 +3467,6 @@ impl AnfsEngine {
     }
 }
 
-fn token_accounting_i64(
-    token_accounting: &serde_json::Value,
-    answer_event_id: &str,
-    field: &str,
-) -> AnfsResult<i64> {
-    token_accounting
-        .get(field)
-        .and_then(|value| value.as_i64())
-        .ok_or_else(|| {
-            AnfsError::StorageCorruption(format!(
-                "answer event {answer_event_id} has invalid token_accounting.{field}"
-            ))
-        })
-}
-
-fn validate_token_cost_model(model: &str) -> AnfsResult<&str> {
-    let model = model.trim();
-    if model.is_empty() {
-        return Err(AnfsError::PolicyDenied(
-            "token cost profile model must not be empty".to_string(),
-        ));
-    }
-    Ok(model)
-}
-
-fn validate_nonnegative_i64(value: i64, field: &str) -> AnfsResult<()> {
-    if value < 0 {
-        return Err(AnfsError::PolicyDenied(format!(
-            "{field} must be nonnegative"
-        )));
-    }
-    Ok(())
-}
-
-fn cost_micros_per_million(tokens: i64, price_micros_per_million: i64) -> AnfsResult<i64> {
-    validate_nonnegative_i64(tokens, "tokens")?;
-    validate_nonnegative_i64(price_micros_per_million, "price_micros_per_million_tokens")?;
-    let numerator = (tokens as i128)
-        .checked_mul(price_micros_per_million as i128)
-        .and_then(|value| value.checked_add(999_999))
-        .ok_or_else(|| AnfsError::PolicyDenied("token cost estimate overflowed".to_string()))?;
-    let cost = numerator / 1_000_000;
-    if cost > i64::MAX as i128 {
-        return Err(AnfsError::PolicyDenied(
-            "token cost estimate overflowed i64".to_string(),
-        ));
-    }
-    Ok(cost as i64)
-}
-
 fn classify_repair_issue(issue: &str) -> (String, String, String) {
     if issue.contains("node_fts")
         || issue.contains("node_chunk_index")
@@ -3744,40 +3536,6 @@ fn sqlite_i64(conn: &Connection, pragma: &str) -> AnfsResult<i64> {
 }
 
 
-
-fn longest_common_exact_bytes(left: &[u8], right: &[u8]) -> usize {
-    let max_len = left.len().min(right.len());
-    let mut low = 0_usize;
-    let mut high = max_len;
-    while low < high {
-        let mid = (low + high).div_ceil(2);
-        if has_common_exact_window(left, right, mid) {
-            low = mid;
-        } else {
-            high = mid - 1;
-        }
-    }
-    low
-}
-
-fn has_common_exact_window(left: &[u8], right: &[u8], len: usize) -> bool {
-    if len == 0 {
-        return true;
-    }
-    if left.len() < len || right.len() < len {
-        return false;
-    }
-    let (shorter, longer) = if left.len() <= right.len() {
-        (left, right)
-    } else {
-        (right, left)
-    };
-    let mut windows = std::collections::HashSet::new();
-    for window in shorter.windows(len) {
-        windows.insert(window);
-    }
-    longer.windows(len).any(|window| windows.contains(window))
-}
 
 fn require_operation_capability(
     conn: &Connection,
