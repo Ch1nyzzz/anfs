@@ -10,8 +10,7 @@ use std::sync::{Arc, Mutex};
 use crate::query::query_refs;
 use crate::{
     ensure_node_fragments_visible, Inner, now_millis, active_operation_capability_missing, agent_capabilities,
-    AgentCapabilityRow, AnfsEngine, AnfsError, AnfsResult, AnswerCostEstimateRow,
-    AnswerEvidenceCoverageRow, AnswerQuoteSupportRow, AnswerTokenAccountingRow,
+    AgentCapabilityRow, AnfsEngine, AnfsError, AnfsResult,
     apply_schema_migrations, ArchivalReadinessRow,
     auto_propagate_fragment_policy_labels_by_exact_match,
     auto_propagate_fragment_policy_labels_by_normalized_json,
@@ -1153,75 +1152,6 @@ impl AnfsEngine {
 
     fn event(&self, event_id: &str) -> PyResult<EventRecord> {
         self.event_impl(event_id).map_err(PyErr::from)
-    }
-
-    fn answer_evidence_coverage(
-        &self,
-        answer_event_id: &str,
-    ) -> PyResult<Vec<AnswerEvidenceCoverageRow>> {
-        self.answer_evidence_coverage_impl(answer_event_id)
-            .map_err(PyErr::from)
-    }
-
-    fn answer_token_accounting(&self, answer_event_id: &str) -> PyResult<AnswerTokenAccountingRow> {
-        self.answer_token_accounting_impl(answer_event_id)
-            .map_err(PyErr::from)
-    }
-
-    #[pyo3(signature = (
-        model,
-        input_price_micros_per_million_tokens,
-        output_price_micros_per_million_tokens,
-        prompt_overhead_tokens=0,
-        agent_id="cost_profile_agent",
-        run_id=None,
-        tool_call_id=None
-    ))]
-    fn set_token_cost_profile(
-        &self,
-        model: &str,
-        input_price_micros_per_million_tokens: i64,
-        output_price_micros_per_million_tokens: i64,
-        prompt_overhead_tokens: i64,
-        agent_id: &str,
-        run_id: Option<String>,
-        tool_call_id: Option<String>,
-    ) -> PyResult<String> {
-        self.set_token_cost_profile_impl(
-            model,
-            input_price_micros_per_million_tokens,
-            output_price_micros_per_million_tokens,
-            prompt_overhead_tokens,
-            agent_id,
-            run_id,
-            tool_call_id,
-        )
-        .map_err(PyErr::from)
-    }
-
-    #[pyo3(signature = (active_only=true))]
-    fn token_cost_profiles(&self, active_only: bool) -> PyResult<Vec<TokenCostProfileRow>> {
-        self.token_cost_profiles_impl(active_only)
-            .map_err(PyErr::from)
-    }
-
-    fn answer_cost_estimate(
-        &self,
-        answer_event_id: &str,
-        model: &str,
-    ) -> PyResult<AnswerCostEstimateRow> {
-        self.answer_cost_estimate_impl(answer_event_id, model)
-            .map_err(PyErr::from)
-    }
-
-    #[pyo3(signature = (answer_event_id, min_quote_bytes=16))]
-    fn answer_quote_support(
-        &self,
-        answer_event_id: &str,
-        min_quote_bytes: i64,
-    ) -> PyResult<Vec<AnswerQuoteSupportRow>> {
-        self.answer_quote_support_impl(answer_event_id, min_quote_bytes)
-            .map_err(PyErr::from)
     }
 
     #[pyo3(signature = (after_seq=0, limit=100, kind=None, agent_id=None, workspace_id=None, run_id=None, created_after_ms=None, created_before_ms=None, payload_contains=None, tool_call_id=None))]
@@ -3034,177 +2964,6 @@ impl AnfsEngine {
         event_record(&conn, event_id)
     }
 
-    fn answer_evidence_coverage_impl(
-        &self,
-        answer_event_id: &str,
-    ) -> AnfsResult<Vec<AnswerEvidenceCoverageRow>> {
-        let conn = lock_conn(&self.inner)?;
-        let event: Option<(String, Option<String>)> = conn
-            .query_row(
-                "SELECT kind, payload_json FROM events WHERE event_id = ?1",
-                params![answer_event_id],
-                |row| Ok((row.get(0)?, row.get(1)?)),
-            )
-            .optional()?;
-        let (kind, payload_json) =
-            event.ok_or_else(|| AnfsError::EventNotFound(answer_event_id.to_string()))?;
-        if kind != "answer" {
-            return Err(AnfsError::PolicyDenied(format!(
-                "event {answer_event_id} must be answer; found {kind}"
-            )));
-        }
-
-        let payload_json = payload_json.ok_or_else(|| {
-            AnfsError::StorageCorruption(format!(
-                "answer event {answer_event_id} has missing payload"
-            ))
-        })?;
-        let payload: serde_json::Value = serde_json::from_str(&payload_json).map_err(|err| {
-            AnfsError::StorageCorruption(format!(
-                "answer event {answer_event_id} has invalid payload JSON: {err}"
-            ))
-        })?;
-        let retrieval_event_ids = payload
-            .get("retrieval_event_ids")
-            .and_then(|value| value.as_array())
-            .ok_or_else(|| {
-                AnfsError::StorageCorruption(format!(
-                    "answer event {answer_event_id} has missing retrieval_event_ids array"
-                ))
-            })?;
-        let retrieval_event_ids: Vec<String> = retrieval_event_ids
-            .iter()
-            .map(|value| {
-                value.as_str().map(ToString::to_string).ok_or_else(|| {
-                    AnfsError::StorageCorruption(format!(
-                        "answer event {answer_event_id} has non-string retrieval_event_id"
-                    ))
-                })
-            })
-            .collect::<AnfsResult<_>>()?;
-
-        let mut stmt = conn.prepare(
-            "
-            SELECT ee.logical_path, ee.node_id
-            FROM event_edges ee
-            WHERE ee.event_id = ?1
-              AND ee.direction = 'input'
-              AND ee.role LIKE 'answer_citation:%'
-            ORDER BY CAST(substr(ee.role, 17) AS INTEGER)
-            ",
-        )?;
-        let rows = stmt.query_map(params![answer_event_id], |row| {
-            Ok((row.get::<_, Option<String>>(0)?, row.get::<_, String>(1)?))
-        })?;
-
-        let mut coverage = Vec::new();
-        for row in rows {
-            let (citation_ref, citation_node_id) = row?;
-            let citation_ref = citation_ref.ok_or_else(|| {
-                AnfsError::StorageCorruption(format!(
-                    "answer event {answer_event_id} has citation edge without logical_path"
-                ))
-            })?;
-            let mut covering_event_count = 0_i64;
-            for retrieval_event_id in &retrieval_event_ids {
-                covering_event_count += conn.query_row(
-                    "
-                    SELECT COUNT(*)
-                    FROM event_edges ee
-                    WHERE ee.event_id = ?1
-                      AND ee.direction = 'input'
-                      AND (ee.role LIKE 'query_result:%' OR ee.role LIKE 'search_result:%')
-                      AND ee.node_id = ?2
-                      AND ee.logical_path = ?3
-                    ",
-                    params![retrieval_event_id, citation_node_id, citation_ref],
-                    |row| row.get::<_, i64>(0),
-                )?;
-            }
-            coverage.push((
-                citation_ref,
-                citation_node_id,
-                covering_event_count > 0,
-                covering_event_count,
-            ));
-        }
-        Ok(coverage)
-    }
-
-    fn answer_token_accounting_impl(
-        &self,
-        answer_event_id: &str,
-    ) -> AnfsResult<AnswerTokenAccountingRow> {
-        let conn = lock_conn(&self.inner)?;
-        let event: Option<(String, Option<String>)> = conn
-            .query_row(
-                "SELECT kind, payload_json FROM events WHERE event_id = ?1",
-                params![answer_event_id],
-                |row| Ok((row.get(0)?, row.get(1)?)),
-            )
-            .optional()?;
-        let (kind, payload_json) =
-            event.ok_or_else(|| AnfsError::EventNotFound(answer_event_id.to_string()))?;
-        if kind != "answer" {
-            return Err(AnfsError::PolicyDenied(format!(
-                "event {answer_event_id} must be answer; found {kind}"
-            )));
-        }
-
-        let payload_json = payload_json.ok_or_else(|| {
-            AnfsError::StorageCorruption(format!(
-                "answer event {answer_event_id} has missing payload"
-            ))
-        })?;
-        let payload: serde_json::Value = serde_json::from_str(&payload_json).map_err(|err| {
-            AnfsError::StorageCorruption(format!(
-                "answer event {answer_event_id} has invalid payload JSON: {err}"
-            ))
-        })?;
-        let token_accounting = payload.get("token_accounting").ok_or_else(|| {
-            AnfsError::StorageCorruption(format!(
-                "answer event {answer_event_id} has missing token_accounting"
-            ))
-        })?;
-        let schema = token_accounting
-            .get("schema")
-            .and_then(|value| value.as_str())
-            .ok_or_else(|| {
-                AnfsError::StorageCorruption(format!(
-                    "answer event {answer_event_id} has invalid token_accounting.schema"
-                ))
-            })?
-            .to_string();
-        let estimator = token_accounting
-            .get("estimator")
-            .and_then(|value| value.as_str())
-            .ok_or_else(|| {
-                AnfsError::StorageCorruption(format!(
-                    "answer event {answer_event_id} has invalid token_accounting.estimator"
-                ))
-            })?
-            .to_string();
-        let answer_tokens =
-            token_accounting_i64(token_accounting, answer_event_id, "answer_tokens")?;
-        let citation_tokens =
-            token_accounting_i64(token_accounting, answer_event_id, "citation_tokens")?;
-        let total_tokens = token_accounting_i64(token_accounting, answer_event_id, "total_tokens")?;
-        let citation_count =
-            token_accounting_i64(token_accounting, answer_event_id, "citation_count")?;
-        let retrieval_event_count =
-            token_accounting_i64(token_accounting, answer_event_id, "retrieval_event_count")?;
-
-        Ok((
-            schema,
-            estimator,
-            answer_tokens,
-            citation_tokens,
-            total_tokens,
-            citation_count,
-            retrieval_event_count,
-        ))
-    }
-
     fn set_token_cost_profile_impl(
         &self,
         model: &str,
@@ -3327,66 +3086,6 @@ impl AnfsEngine {
         Ok(profiles)
     }
 
-    fn answer_cost_estimate_impl(
-        &self,
-        answer_event_id: &str,
-        model: &str,
-    ) -> AnfsResult<AnswerCostEstimateRow> {
-        let model = validate_token_cost_model(model)?;
-        let (
-            _schema,
-            estimator,
-            answer_tokens,
-            citation_tokens,
-            _total_tokens,
-            _citation_count,
-            _retrieval_event_count,
-        ) = self.answer_token_accounting_impl(answer_event_id)?;
-        let profile = self.active_token_cost_profile(model)?.ok_or_else(|| {
-            AnfsError::PolicyDenied(format!("no token cost profile for model {model}"))
-        })?;
-        let (
-            _profile_model,
-            profile_estimator,
-            input_price_micros_per_million_tokens,
-            output_price_micros_per_million_tokens,
-            prompt_overhead_tokens,
-            profile_event_id,
-            _agent_id,
-            _created_at,
-        ) = profile;
-        if profile_estimator != estimator {
-            return Err(AnfsError::PolicyDenied(format!(
-                "token cost profile estimator {profile_estimator} does not match answer estimator {estimator}"
-            )));
-        }
-
-        let input_tokens = citation_tokens + prompt_overhead_tokens;
-        let output_tokens = answer_tokens;
-        let total_tokens = input_tokens + output_tokens;
-        let input_cost_micros =
-            cost_micros_per_million(input_tokens, input_price_micros_per_million_tokens)?;
-        let output_cost_micros =
-            cost_micros_per_million(output_tokens, output_price_micros_per_million_tokens)?;
-        let total_cost_micros = input_cost_micros
-            .checked_add(output_cost_micros)
-            .ok_or_else(|| {
-                AnfsError::PolicyDenied("token cost estimate overflowed i64".to_string())
-            })?;
-
-        Ok((
-            model.to_string(),
-            estimator,
-            input_tokens,
-            output_tokens,
-            total_tokens,
-            input_cost_micros,
-            output_cost_micros,
-            total_cost_micros,
-            profile_event_id,
-        ))
-    }
-
     fn active_token_cost_profile(&self, model: &str) -> AnfsResult<Option<TokenCostProfileRow>> {
         let conn = lock_conn(&self.inner)?;
         conn.query_row(
@@ -3421,63 +3120,6 @@ impl AnfsEngine {
         )
         .optional()
         .map_err(AnfsError::from)
-    }
-
-    fn answer_quote_support_impl(
-        &self,
-        answer_event_id: &str,
-        min_quote_bytes: i64,
-    ) -> AnfsResult<Vec<AnswerQuoteSupportRow>> {
-        if min_quote_bytes <= 0 {
-            return Err(AnfsError::PolicyDenied(
-                "min_quote_bytes must be positive".to_string(),
-            ));
-        }
-        let conn = lock_conn(&self.inner)?;
-        ensure_answer_event(&conn, answer_event_id)?;
-
-        let answer_output_nodes = answer_event_output_nodes(&conn, answer_event_id)?;
-        if answer_output_nodes.len() != 1 {
-            return Err(AnfsError::StorageCorruption(format!(
-                "answer event {answer_event_id} must have exactly one output result edge; found {}",
-                answer_output_nodes.len()
-            )));
-        }
-        let answer_bytes =
-            read_node_bytes(&conn, &self.inner.objects_dir, &answer_output_nodes[0])?;
-
-        let mut stmt = conn.prepare(
-            "
-            SELECT ee.logical_path, ee.node_id
-            FROM event_edges ee
-            WHERE ee.event_id = ?1
-              AND ee.direction = 'input'
-              AND ee.role LIKE 'answer_citation:%'
-            ORDER BY CAST(substr(ee.role, 17) AS INTEGER)
-            ",
-        )?;
-        let rows = stmt.query_map(params![answer_event_id], |row| {
-            Ok((row.get::<_, Option<String>>(0)?, row.get::<_, String>(1)?))
-        })?;
-        let mut support_rows = Vec::new();
-        for row in rows {
-            let (citation_ref, citation_node_id) = row?;
-            let citation_ref = citation_ref.ok_or_else(|| {
-                AnfsError::StorageCorruption(format!(
-                    "answer event {answer_event_id} has citation edge without logical_path"
-                ))
-            })?;
-            let citation_bytes =
-                read_node_bytes(&conn, &self.inner.objects_dir, &citation_node_id)?;
-            let longest = longest_common_exact_bytes(&answer_bytes, &citation_bytes) as i64;
-            support_rows.push((
-                citation_ref,
-                citation_node_id,
-                longest >= min_quote_bytes,
-                longest,
-            ));
-        }
-        Ok(support_rows)
     }
 
     fn events_impl(
@@ -4160,41 +3802,7 @@ fn sqlite_i64(conn: &Connection, pragma: &str) -> AnfsResult<i64> {
         .map_err(AnfsError::from)
 }
 
-fn ensure_answer_event(conn: &Connection, answer_event_id: &str) -> AnfsResult<()> {
-    let kind: Option<String> = conn
-        .query_row(
-            "SELECT kind FROM events WHERE event_id = ?1",
-            params![answer_event_id],
-            |row| row.get(0),
-        )
-        .optional()?;
-    let kind = kind.ok_or_else(|| AnfsError::EventNotFound(answer_event_id.to_string()))?;
-    if kind != "answer" {
-        return Err(AnfsError::PolicyDenied(format!(
-            "event {answer_event_id} must be answer; found {kind}"
-        )));
-    }
-    Ok(())
-}
 
-fn answer_event_output_nodes(conn: &Connection, answer_event_id: &str) -> AnfsResult<Vec<String>> {
-    let mut stmt = conn.prepare(
-        "
-        SELECT ee.node_id
-        FROM event_edges ee
-        WHERE ee.event_id = ?1
-          AND ee.direction = 'output'
-          AND ee.role = 'result'
-        ORDER BY ee.node_id
-        ",
-    )?;
-    let rows = stmt.query_map(params![answer_event_id], |row| row.get::<_, String>(0))?;
-    let mut node_ids = Vec::new();
-    for row in rows {
-        node_ids.push(row?);
-    }
-    Ok(node_ids)
-}
 
 fn longest_common_exact_bytes(left: &[u8], right: &[u8]) -> usize {
     let max_len = left.len().min(right.len());

@@ -117,11 +117,7 @@ pub(crate) type JsonFieldSpanRow = (String, i64, i64, String);
 pub(crate) type MarkdownFieldSpanRow = (String, i64, i64, String);
 pub(crate) type MarkdownFieldValueRow = (String, String, String);
 pub(crate) type MarkdownSectionSpanRow = (String, i64, i64, String);
-pub(crate) type AnswerEvidenceCoverageRow = (String, String, bool, i64);
-pub(crate) type AnswerTokenAccountingRow = (String, String, i64, i64, i64, i64, i64);
 pub(crate) type TokenCostProfileRow = (String, String, i64, i64, i64, String, Option<String>, i64);
-pub(crate) type AnswerCostEstimateRow = (String, String, i64, i64, i64, i64, i64, i64, String);
-pub(crate) type AnswerQuoteSupportRow = (String, String, bool, i64);
 pub(crate) type EventListRow = (
     i64,
     String,
