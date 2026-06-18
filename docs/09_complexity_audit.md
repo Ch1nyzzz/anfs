@@ -93,6 +93,54 @@ agent-native proof:
    `require_ref` (refs.rs), `upsert_workspace_path_metadata` (workspace.rs),
    and the single `with_sqlite_busy_retry` in `common.rs`. Reuse them instead
    of reintroducing inline variants.
+8. Add canonical chunked storage for large file blobs. The current
+   `node_chunks(...)`, `node_chunk_index`, chunk embeddings, and range reads are
+   derived projections over one canonical node blob, so a small edit to a large
+   file still creates a new whole-file blob. A future design should store large
+   files as manifest nodes over content-addressed chunk blobs, reuse unchanged
+   chunks across agent edits, preserve node/blob integrity checks, and keep the
+   existing chunk indexes rebuildable rather than turning them into a second
+   source of truth.
+9. Remove domain-specific kernel methods such as `Workspace.answer(...)` and
+   answer-specific integrity semantics. The kernel should expose the smallest
+   robust universal model: immutable nodes/blobs, refs, events, and typed
+   input/output edges. Coding, test, build, report, retrieval, and answer-like
+   workflows should all be represented by the same generic event/edge
+   primitives, not by specialized methods or upper-layer helper APIs that
+   preserve redundant concepts.
+10. Make agent workspace isolation a kernel invariant rather than an optional
+    caller convention. Writes should be allowed only in owner-bound isolated
+    draft workspaces, shared/published refs should be reachable only through
+    controlled publish/merge transitions, and stale or non-owner writers should
+    fail instead of racing on the same mutable workspace refs. Re-evaluate and
+    likely remove the public `fork_workspace(...)` API: branch creation should
+    be folded into one minimal workspace/run creation path, with any internal
+    zero-copy ref snapshotting treated as implementation detail rather than a
+    separate agent-facing concept.
+11. Unify every file format under one model: a node is bytes, and the *only*
+    format-specific component is a parser. Generalize the existing
+    Markdown/YAML/JSON span parser and any future code parser (e.g.
+    tree-sitter) into a single contract `parser(blob_bytes) -> (fragments,
+    edges)`, where a `fragment` is a named, kinded byte range over an existing
+    node (a projection, never a new blob) and an `edge` is a typed, directional
+    relation with byte-range evidence. Store all fragments in one generic table
+    and all edges in one generic table; write query, `context_pack`, audit,
+    policy (`*_hidden`), and replay *once* against fragments/edges so they never
+    learn the format. A "symbol" is just a code fragment; `defines`/`imports`/
+    `calls` are the same typed edges, isomorphic to the existing multi-edge
+    fan-out of `event_edges` (one event → many input edges). This extends
+    backlog item 9: coding, docs, config, and retrieval structure all reduce to
+    the same fragment/edge primitives. Determinism rule: never store a
+    probability/`confidence`; when a name resolves to several targets, record
+    the *complete* candidate set as multiple edges under the same evidence (one
+    row = unique, many rows = ambiguous-list-all, zero rows = external).
+    Cross-file name resolution happens only at the workspace-composition layer
+    (match against `defines` edges over active nodes) and is never written back
+    into a `blob_hash`-keyed derived table. Native-ness test: adding a new
+    language must mean writing one parser and changing nothing else.
+    Complexity rule: fragments/edges are rebuildable derived projections bound
+    to `(node_id, blob_hash, parser, parser_version)`, never a second source of
+    truth.
 
 ## Test Design
 
