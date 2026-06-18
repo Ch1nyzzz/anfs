@@ -643,7 +643,7 @@ fn check_lifecycle_event_edges(conn: &Connection, issues: &mut Vec<String>) -> A
     Ok(())
 }
 
-// Verifies checkout/fork_workspace/archive_ref/snapshot_namespace edge shapes and workspace base ref snapshots.
+// Verifies checkout/archive_ref/snapshot_namespace edge shapes and workspace base ref snapshots.
 fn check_workspace_event_edges(conn: &Connection, issues: &mut Vec<String>) -> AnfsResult<()> {
     let mut workspace_edge_shape_stmt = conn.prepare(
         "
@@ -652,14 +652,12 @@ fn check_workspace_event_edges(conn: &Connection, issues: &mut Vec<String>) -> A
                e.payload_json,
                SUM(CASE WHEN ee.direction = 'input' AND ee.role LIKE 'base_source:%' THEN 1 ELSE 0 END) AS base_source_inputs,
                SUM(CASE WHEN ee.direction = 'output' AND ee.role LIKE 'workspace_view:%' THEN 1 ELSE 0 END) AS workspace_view_outputs,
-               SUM(CASE WHEN ee.direction = 'input' AND ee.role LIKE 'fork_source:%' THEN 1 ELSE 0 END) AS fork_source_inputs,
-               SUM(CASE WHEN ee.direction = 'output' AND ee.role LIKE 'fork_workspace_view:%' THEN 1 ELSE 0 END) AS fork_workspace_view_outputs,
                SUM(CASE WHEN ee.direction = 'input' AND ee.role = 'archived_ref' THEN 1 ELSE 0 END) AS archived_ref_inputs,
                SUM(CASE WHEN ee.direction = 'input' AND ee.role LIKE 'snapshot_child:%' THEN 1 ELSE 0 END) AS snapshot_child_inputs,
                SUM(CASE WHEN ee.direction = 'output' AND ee.role = 'snapshot_manifest' THEN 1 ELSE 0 END) AS snapshot_manifest_outputs
         FROM events e
         LEFT JOIN event_edges ee ON ee.event_id = e.event_id
-        WHERE e.kind IN ('checkout', 'fork_workspace', 'archive_ref', 'snapshot_namespace')
+        WHERE e.kind IN ('checkout', 'archive_ref', 'snapshot_namespace')
         GROUP BY e.event_id, e.kind, e.payload_json
         ORDER BY e.event_id
         ",
@@ -674,8 +672,6 @@ fn check_workspace_event_edges(conn: &Connection, issues: &mut Vec<String>) -> A
             row.get::<_, i64>(5)?,
             row.get::<_, i64>(6)?,
             row.get::<_, i64>(7)?,
-            row.get::<_, i64>(8)?,
-            row.get::<_, i64>(9)?,
         ))
     })?;
     for row in workspace_edge_shape_rows {
@@ -685,8 +681,6 @@ fn check_workspace_event_edges(conn: &Connection, issues: &mut Vec<String>) -> A
             payload_json,
             base_source_inputs,
             workspace_view_outputs,
-            fork_source_inputs,
-            fork_workspace_view_outputs,
             archived_ref_inputs,
             snapshot_child_inputs,
             snapshot_manifest_outputs,
@@ -707,18 +701,6 @@ fn check_workspace_event_edges(conn: &Connection, issues: &mut Vec<String>) -> A
                             "checkout event {event_id} with base must have at least one output workspace_view edge; found {workspace_view_outputs}"
                         ));
                     }
-                }
-            }
-            "fork_workspace" => {
-                if fork_source_inputs < 1 {
-                    issues.push(format!(
-                        "fork_workspace event {event_id} must have at least one input fork_source edge; found {fork_source_inputs}"
-                    ));
-                }
-                if fork_workspace_view_outputs < 1 {
-                    issues.push(format!(
-                        "fork_workspace event {event_id} must have at least one output fork_workspace_view edge; found {fork_workspace_view_outputs}"
-                    ));
                 }
             }
             "archive_ref" => {
@@ -2027,8 +2009,7 @@ fn check_ref_event_linkage(conn: &Connection, issues: &mut Vec<String>) -> AnfsR
             'link',
             'archive_ref',
             'snapshot_namespace',
-            'checkout',
-            'fork_workspace'
+            'checkout'
         )
         ORDER BY re.ref_name, re.event_id
         ",
@@ -2254,18 +2235,6 @@ fn check_ref_event_linkage(conn: &Connection, issues: &mut Vec<String>) -> AnfsR
                     &new_node_id,
                     "output",
                     "workspace_view:%",
-                    true,
-                )?;
-            }
-            "fork_workspace" => {
-                push_ref_event_edge_issue_if_missing(
-                    conn,
-                    issues,
-                    &event_id,
-                    &ref_name,
-                    &new_node_id,
-                    "output",
-                    "fork_workspace_view:%",
                     true,
                 )?;
             }

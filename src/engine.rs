@@ -21,7 +21,7 @@ use crate::{
     collect_garbage, commit_worktree, CompactionPlanRow, create_ref_view_checkpoint,
     DerivedIndexRepairResult, ensure_node_exists, event_list, event_record, EventListRow,
     EventRecord, export_event_bundle, export_history_archive, export_run_bundle,
-    ExportBundleResult, fetch_ref, fetch_run, finish_run, fork_workspace_refs,
+    ExportBundleResult, fetch_ref, fetch_run, finish_run,
     fragment_policy_labels, FragmentPolicyLabelRow, gc_candidates, gc_pins, gc_roots, GcPinRow,
     GcResultRow, import_event_bundle, ImportBundleResult, infer_ref_kind, init_db,
     InlineBlobCompactionResult, insert_edge, insert_event, insert_merge_policy_decision_event,
@@ -89,25 +89,6 @@ impl AnfsEngine {
     ) -> PyResult<Workspace> {
         self.checkout_impl(base, workspace, agent_id, run_id, tool_call_id)
             .map_err(PyErr::from)
-    }
-
-    #[pyo3(signature = (source_workspace, target_workspace, agent_id, run_id=None, tool_call_id=None))]
-    fn fork_workspace(
-        &self,
-        source_workspace: String,
-        target_workspace: String,
-        agent_id: String,
-        run_id: Option<String>,
-        tool_call_id: Option<String>,
-    ) -> PyResult<Workspace> {
-        self.fork_workspace_impl(
-            source_workspace,
-            target_workspace,
-            agent_id,
-            run_id,
-            tool_call_id,
-        )
-        .map_err(PyErr::from)
     }
 
     #[pyo3(signature = (workspace, agent_id, run_id=None))]
@@ -1594,45 +1575,6 @@ impl AnfsEngine {
         Ok(Workspace {
             inner: self.inner.clone(),
             workspace_name: workspace,
-            agent_id,
-            run_id,
-        })
-    }
-
-    fn fork_workspace_impl(
-        &self,
-        source_workspace: String,
-        target_workspace: String,
-        agent_id: String,
-        run_id: Option<String>,
-        tool_call_id: Option<String>,
-    ) -> AnfsResult<Workspace> {
-        let source_workspace = validate_workspace_name(&source_workspace)?;
-        let target_workspace = validate_workspace_name(&target_workspace)?;
-        let mut conn = lock_conn(&self.inner)?;
-        let tx = conn.transaction()?;
-        let event_id = new_event_id();
-        let payload = json!({
-            "source_workspace": source_workspace,
-            "target_workspace": target_workspace,
-        })
-        .to_string();
-        insert_event(
-            &tx,
-            &event_id,
-            "fork_workspace",
-            Some(&agent_id),
-            run_id.as_deref(),
-            tool_call_id.as_deref(),
-            Some(&target_workspace),
-            Some(&payload),
-        )?;
-        fork_workspace_refs(&tx, &source_workspace, &target_workspace, &event_id)?;
-        tx.commit()?;
-
-        Ok(Workspace {
-            inner: self.inner.clone(),
-            workspace_name: target_workspace,
             agent_id,
             run_id,
         })
