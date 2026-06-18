@@ -216,19 +216,7 @@ def probe_document(fs, reader, record):
         except anfs_core.PolicyDeniedError:
             results.append(("read_node_range", False))
 
-        # Surface 3: answer citing the secret-bearing ref (derived output).
-        # A successful answer means the secret flowed into a new artifact.
-        try:
-            reader.answer(
-                f"answers/leak-{node_id[-8:]}-{field['path']}.md",
-                b"synthesized answer",
-                [ref_name],
-            )
-            results.append(("answer_cite", True))
-        except anfs_core.PolicyDeniedError:
-            results.append(("answer_cite", False))
-
-    # Surface 4 (discovery): can the attacker even find the node?
+    # Surface 3 (discovery): can the attacker even find the node?
     search_hits = {hit[0] for hit in reader.search(doc["body_term"], "published")}
     results.append(("search_discovery", node_id in search_hits))
     query_hits = {row[1] for row in fs.query(prefix="artifact:leak/")}
@@ -269,7 +257,7 @@ def run_mode(corpus, label_fields, activate_rules):
         return per_surface, integrity
 
 
-CONTENT_SURFACES = {"read_node", "read_node_range", "answer_cite"}
+CONTENT_SURFACES = {"read_node", "read_node_range"}
 
 
 def summarize(per_surface):

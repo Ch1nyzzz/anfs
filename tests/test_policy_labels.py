@@ -441,11 +441,8 @@ def test_policy_registry_interprets_label_values_for_visibility():
         reader = fs.open_workspace("ws:reader", "reader_agent")
         search = reader.search("report", "published")
         assert search == [(public_node, "public [report]")]
-        try:
-            reader.answer("answer.md", b"answer", ["artifact:restricted@v1"])
-            assert False, "policy registry deny rule should block restricted citation"
-        except anfs_core.PolicyDeniedError:
-            pass
+        # (answer-citation deny path removed with the answer API; the search
+        # visibility assertion above already proves the restricted ref is gated.)
 
         fs.clear_policy_rule(
             "sensitivity",
@@ -1384,12 +1381,8 @@ def test_fragment_policy_labels_gate_ranges_and_whole_node_projection():
         except anfs_core.PolicyDeniedError:
             pass
         assert fs.query(prefix="artifact:doc") == []
-        reader = fs.open_workspace("ws:reader", "reader_agent")
-        try:
-            reader.answer("answer.md", b"answer", ["artifact:doc@v1"])
-            assert False, "answer citation should be blocked by denied fragment"
-        except anfs_core.PolicyDeniedError:
-            pass
+        # (answer-citation deny path removed with the answer API; the read_ref
+        # block above already proves the denied fragment gates access.)
 
         fs.set_fragment_policy_label(
             node_id,
@@ -2155,56 +2148,6 @@ def test_auto_attribution_propagates_normalized_json_array_and_object_values():
         assert fs.verify_integrity() == []
 
 
-def test_answer_outputs_inherit_citation_fragment_policy_labels():
-    with tempfile.TemporaryDirectory() as tmpdir:
-        db_path = os.path.join(tmpdir, "anfs.db")
-        objs_dir = os.path.join(tmpdir, "objs")
-
-        fs = anfs_core.AnfsEngine(db_path, objs_dir)
-        writer = fs.open_workspace("ws:writer", "writer_agent")
-        content = b'{"customer":{"name":"Ada","ssn":"123-45-6789"}}'
-        source_node = writer.write("profile.json", content, [])
-        writer.publish("profile.json", "artifact:profile@v1")
-        fs.set_json_field_policy_label(
-            source_node,
-            "$.customer.ssn",
-            "pii",
-            "true",
-            "policy_agent",
-        )
-
-        reader = fs.open_workspace("ws:reader", "reader_agent")
-        answer = b"Ada is the customer."
-        answer_node = reader.answer(
-            "answers/profile.md",
-            answer,
-            ["artifact:profile@v1"],
-        )
-        assert fs.fragment_policy_labels(node_id=answer_node)[0][0:5] == (
-            answer_node,
-            0,
-            len(answer),
-            "pii",
-            "true",
-        )
-
-        fs.set_policy_rule(
-            "pii",
-            value="true",
-            effect="deny",
-            scope="visibility",
-            subject_type="fragment",
-            agent_id="policy_agent",
-        )
-        try:
-            fs.read_node(answer_node)
-            assert False, "answer should inherit citation fragment denial"
-        except anfs_core.PolicyDeniedError:
-            pass
-        assert fs.query(prefix="ws:reader/answers") == []
-        assert fs.verify_integrity() == []
-
-
 def test_search_policy_label_excludes_filter_context_results():
     with tempfile.TemporaryDirectory() as tmpdir:
         db_path = os.path.join(tmpdir, "anfs.db")
@@ -2268,189 +2211,6 @@ def test_search_policy_label_excludes_filter_context_results():
             pass
         else:
             raise AssertionError("empty search policy label excludes should be rejected")
-
-
-def test_workspace_answer_records_citations_and_enforces_policy_labels():
-    with tempfile.TemporaryDirectory() as tmpdir:
-        db_path = os.path.join(tmpdir, "anfs.db")
-        objs_dir = os.path.join(tmpdir, "objs")
-
-        fs = anfs_core.AnfsEngine(db_path, objs_dir)
-        writer = fs.open_workspace("ws:writer", "writer_agent")
-        source_node = writer.write("source.md", b"answer evidence marker", [])
-        writer.publish("source.md", "artifact:evidence@v1")
-        other_node = writer.write("other.md", b"unretrieved evidence", [])
-        writer.publish("other.md", "artifact:other@v1")
-
-        reader = fs.open_workspace("ws:reader", "reader_agent", run_id="run:answer")
-        retrieved = reader.query(
-            prefix="artifact:",
-            text="answer",
-            state="published",
-            tool_call_id="tc_answer_query",
-        )
-        assert [row[0] for row in retrieved] == ["artifact:evidence@v1"]
-        retrieval_event_id = fs.events(kind="query")[0][1]
-        answer_content = b"Final answer quotes answer evidence marker."
-        answer_node = reader.answer(
-            "answers/final.md",
-            answer_content,
-            ["artifact:evidence@v1"],
-            tool_call_id="tc_answer",
-            policy_label_excludes=["sensitivity"],
-            retrieval_event_ids=[retrieval_event_id],
-        )
-        assert bytes(reader.read("answers/final.md")) == answer_content
-
-        answer_event = fs.event(fs.events(kind="answer")[0][1])
-        payload = json.loads(answer_event[6])
-        estimate_tokens = lambda value: (len(value) + 3) // 4
-        expected_answer_tokens = estimate_tokens(answer_content)
-        expected_citation_tokens = estimate_tokens(b"answer evidence marker")
-        expected_token_accounting = {
-            "schema": "anfs.token_accounting.estimate.v1",
-            "estimator": "ceil_bytes_div_4",
-            "answer_tokens": expected_answer_tokens,
-            "citation_tokens": expected_citation_tokens,
-            "total_tokens": expected_answer_tokens + expected_citation_tokens,
-            "citation_count": 1,
-            "retrieval_event_count": 1,
-        }
-        assert payload["logical_path"] == "answers/final.md"
-        assert payload["policy_label_excludes"] == ["sensitivity"]
-        assert payload["retrieval_event_ids"] == [retrieval_event_id]
-        assert payload["citation_count"] == 1
-        assert payload["token_accounting"] == expected_token_accounting
-        assert payload["citations"] == [
-            {
-                "ref_name": "artifact:evidence@v1",
-                "node_id": source_node,
-                "state": "published",
-                "ref_version": 1,
-            }
-        ]
-        assert answer_event[2] == "reader_agent"
-        assert answer_event[3] == "run:answer"
-        assert answer_event[4] == "tc_answer"
-        assert answer_event[8] == [
-            ("input", source_node, "answer_citation:0", "artifact:evidence@v1"),
-            ("output", answer_node, "result", "answers/final.md"),
-        ]
-        assert fs.answer_evidence_coverage(answer_event[0]) == [
-            ("artifact:evidence@v1", source_node, True, 1)
-        ]
-        assert fs.answer_token_accounting(answer_event[0]) == (
-            "anfs.token_accounting.estimate.v1",
-            "ceil_bytes_div_4",
-            expected_answer_tokens,
-            expected_citation_tokens,
-            expected_answer_tokens + expected_citation_tokens,
-            1,
-            1,
-        )
-        assert fs.answer_quote_support(answer_event[0], min_quote_bytes=16) == [
-            ("artifact:evidence@v1", source_node, True, len(b"answer evidence marker"))
-        ]
-
-        with sqlite3.connect(db_path) as conn:
-            node_kind, metadata_json = conn.execute(
-                "SELECT kind, metadata_json FROM nodes WHERE node_id = ?",
-                (answer_node,),
-            ).fetchone()
-        assert node_kind == "answer"
-        metadata = json.loads(metadata_json)
-        assert metadata["schema"] == "anfs.answer_node.v1"
-        assert metadata["retrieval_event_ids"] == [retrieval_event_id]
-        assert metadata["token_accounting"] == expected_token_accounting
-        assert fs.verify_integrity() == []
-
-        no_retrieval_content = b"Answer cites evidence without linking retrieval context."
-        reader.answer(
-            "answers/no-retrieval.md",
-            no_retrieval_content,
-            ["artifact:evidence@v1"],
-            tool_call_id="tc_answer_no_retrieval",
-        )
-        no_retrieval_event_id = fs.events(tool_call_id="tc_answer_no_retrieval")[0][1]
-        assert fs.answer_evidence_coverage(no_retrieval_event_id) == [
-            ("artifact:evidence@v1", source_node, False, 0)
-        ]
-        no_retrieval_answer_tokens = estimate_tokens(no_retrieval_content)
-        assert fs.answer_token_accounting(no_retrieval_event_id) == (
-            "anfs.token_accounting.estimate.v1",
-            "ceil_bytes_div_4",
-            no_retrieval_answer_tokens,
-            expected_citation_tokens,
-            no_retrieval_answer_tokens + expected_citation_tokens,
-            1,
-            0,
-        )
-        no_quote_support = fs.answer_quote_support(no_retrieval_event_id, min_quote_bytes=16)
-        assert no_quote_support[0][0:3] == ("artifact:evidence@v1", source_node, False)
-        assert no_quote_support[0][3] < 16
-        try:
-            fs.answer_quote_support(no_retrieval_event_id, min_quote_bytes=0)
-            assert False, "non-positive quote support threshold should be rejected"
-        except anfs_core.PolicyDeniedError:
-            pass
-
-        try:
-            reader.answer(
-                "answers/uncovered.md",
-                b"uncovered answer",
-                ["artifact:other@v1"],
-                retrieval_event_ids=[retrieval_event_id],
-            )
-            assert False, "answer should reject citations not covered by retrieval events"
-        except anfs_core.PolicyDeniedError:
-            pass
-        assert other_node is not None
-
-        fs.set_policy_label(
-            "node",
-            source_node,
-            "sensitivity",
-            "pii",
-            "policy_agent",
-        )
-        try:
-            reader.answer(
-                "answers/blocked.md",
-                b"blocked answer",
-                ["artifact:evidence@v1"],
-                policy_label_excludes=["sensitivity"],
-            )
-            assert False, "answer should reject excluded citation labels"
-        except anfs_core.PolicyDeniedError:
-            pass
-
-        draft_node = writer.write("draft.md", b"private draft", [])
-        try:
-            reader.answer(
-                "answers/draft.md",
-                b"blocked draft answer",
-                ["ws:writer/draft.md"],
-            )
-            assert False, "answer should reject unreadable cross-workspace drafts"
-        except anfs_core.PolicyDeniedError:
-            pass
-        assert draft_node is not None
-
-        fs.set_policy_label("node", source_node, "sensitivity", None, "policy_agent")
-        try:
-            reader.answer("answers/empty.md", b"empty", [])
-            assert False, "answer citations should be required"
-        except anfs_core.PolicyDeniedError:
-            pass
-        try:
-            reader.answer(
-                "answers/duplicate.md",
-                b"duplicate",
-                ["artifact:evidence@v1", "artifact:evidence@v1"],
-            )
-            assert False, "duplicate answer citations should be rejected"
-        except anfs_core.PolicyDeniedError:
-            pass
 
 
 def test_integrity_verifier_detects_policy_label_event_mismatch():

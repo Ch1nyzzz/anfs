@@ -395,21 +395,19 @@ def run_anfs(args, root):
                 evidences[0],
                 question.get("expected_answers", [question["expected_answer"]]),
             )
-            answer_node = reader.answer(
+            # The answer API was removed; a cited answer is now a generic write
+            # whose derived_from edges record the evidence lineage.
+            del ref_name
+            derived_node = reader.write(
                 f"answers/{question['question_id']}.md",
                 answer.encode("utf-8"),
-                [ref_name],
-                tool_call_id=f"tc_answer_{question['question_id']}",
-                retrieval_event_ids=[query_event_id] if query_event_id else None,
-            )
-            del answer_node
-            answer_events = fs.events(
-                kind="answer",
+                derived_from_nodes=[rows[0][1]],
                 tool_call_id=f"tc_answer_{question['question_id']}",
             )
-            answer_event_id = answer_events[0][1] if answer_events else None
-            coverage = fs.answer_evidence_coverage(answer_event_id)
-            if coverage and all(row[2] for row in coverage):
+            del derived_node
+            # answer_evidence_coverage was removed with the answer API; use the
+            # retrieval hit as the coverage proxy.
+            if hit:
                 covered_answers += 1
         expected_answers = question.get("expected_answers", [question["expected_answer"]])
         answer_f1 = best_token_f1(answer, expected_answers)
