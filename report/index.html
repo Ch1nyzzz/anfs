@@ -496,8 +496,8 @@ if exists("patch.diff"): consume()<br>
 <!-- ============ CODE-GRAPH STUDY ============ -->
 <section><div class="wrap">
   <div class="sec-no">§10 · Code-Graph Study</div>
-  <h2 class="title">代码图检索：在 codegraph 自己的 7 个 repo 上，对照编译器 oracle</h2>
-  <p class="sub">同 <span class="mono">codegraph</span> 的 7 个开源仓库、每仓一道架构题。把"哪些位置调用了符号 X"这个结构查询，用 <b class="g">ANFS callers/call_graph（一次索引查询）</b> 对比 <b>无工具 agent 的 grep</b>，双方都对<b>各语言编译器级 oracle</b> 打分（rust-analyzer · scip-python · scip-typescript · scip-go · scip-java；Swift 无 SCIP 索引器，用 sourcekit-lsp 自建）。不挑题、不靠我们自己定对错。</p>
+  <h2 class="title">原生代码图：在公开多语言基准上对照编译器 oracle 验证</h2>
+  <p class="sub">代码图是 ANFS 从不可变 node 派生出的<b>原生投影</b>（symbol=指向字节范围的 fragment，calls 边带调用点证据，<span class="mono">call_graph</span>/<span class="mono">context_pack</span> 落审计事件）。为验证它在真实大仓上成立，跑一个公开基准——7 个开源仓库、6 语言、每仓一道架构题（即 <span class="mono">codegraph</span> 用的那套，这里只当中立共享测试集借用）。把"哪些位置调用了符号 X"用 <b class="g">ANFS callers/call_graph（一次查询）</b> 对比<b>无工具 agent 的 grep</b>，双方都对<b>各语言编译器级 oracle</b> 打分（rust-analyzer · scip-python · scip-typescript · scip-go · scip-java；Swift 无 SCIP 索引器，用 sourcekit-lsp 自建）。不挑题、不自己定对错。</p>
 
   <h3 class="disp" style="font-size:1.25rem;margin:34px 0 8px">准确性（对编译器 oracle，确定性，无 LLM）</h3>
   <table style="width:100%;border-collapse:collapse;font-size:.86rem;font-family:var(--mono)">
