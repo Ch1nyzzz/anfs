@@ -14,6 +14,8 @@ rusqlite = { version = "0.31", features = ["bundled"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 sha2 = "0.10"
+tree-sitter = "0.22"
+tree-sitter-rust = "0.21"
 uuid = { version = "1", features = ["v4"] }
 
 [lints.rust]

@@ -62,6 +62,33 @@ def test_unknown_parser_rejected(anfs_engine):
         raise AssertionError("expected unknown-parser rejection")
 
 
+def test_rust_fragments_extract_symbols(anfs_engine):
+    fs = anfs_engine
+    ws = fs.open_workspace("ws:coder", "coder_agent")
+    src = (
+        b"use std::fmt;\n\n"
+        b"pub struct Point { x: i64, y: i64 }\n\n"
+        b"pub fn add(a: i64, b: i64) -> i64 { a + b }\n\n"
+        b"impl Point {\n"
+        b"    pub fn norm(&self) -> i64 { self.x + self.y }\n"
+        b"}\n"
+    )
+    node = ws.write("lib.rs", src, [])
+    frag_count, edge_count = fs.index_node_fragments(node, "tree-sitter-rust")
+    assert frag_count > 0
+    assert edge_count == 0
+
+    by_kind = {}
+    for _fid, kind, name, _path, start, end in fs.node_fragments(node):
+        by_kind.setdefault(kind, set()).add(name)
+        assert src[start:end]  # span slices to real bytes
+
+    assert "add" in by_kind.get("function", set())
+    assert "norm" in by_kind.get("function", set())  # method inside impl block
+    assert "Point" in by_kind.get("struct", set())
+    assert by_kind.get("import")  # use std::fmt;
+
+
 def test_fragments_do_not_break_integrity(anfs_engine):
     fs = anfs_engine
     ws = fs.open_workspace("ws:writer", "writer_agent")

@@ -11,7 +11,7 @@ use std::path::Path;
 
 use rusqlite::{params, Connection, OptionalExtension};
 
-use crate::manifest::{json_field_spans, markdown_section_spans};
+use crate::manifest::{json_field_spans, markdown_section_spans, read_node_bytes};
 use crate::{now_millis, sha256_hex, AnfsError, AnfsResult};
 
 /// Bumped when a parser's output shape changes so stale rows can be detected.
@@ -44,6 +44,15 @@ fn run_parser(
     match parser {
         "span-markdown" => markdown_section_spans(conn, objects_dir, node_id),
         "span-json" => json_field_spans(conn, objects_dir, node_id),
+        "tree-sitter-rust" => {
+            let bytes = read_node_bytes(conn, objects_dir, node_id)?;
+            let text = std::str::from_utf8(&bytes).map_err(|err| {
+                AnfsError::PolicyDenied(format!(
+                    "node {node_id} is not valid utf-8 Rust source: {err}"
+                ))
+            })?;
+            parse_rust(text)
+        }
         other => Err(AnfsError::PolicyDenied(format!(
             "unknown fragment parser {other}"
         ))),
@@ -54,7 +63,90 @@ fn parser_language(parser: &str) -> Option<&'static str> {
     match parser {
         "span-markdown" => Some("markdown"),
         "span-json" => Some("json"),
+        "tree-sitter-rust" => Some("rust"),
         _ => None,
+    }
+}
+
+/// Extract top-level (and impl/trait/mod member) Rust symbols as fragments.
+/// Edges (calls/imports) come in a later slice; this slice yields the outline.
+fn parse_rust(text: &str) -> AnfsResult<Vec<SpanRow>> {
+    let mut parser = tree_sitter::Parser::new();
+    parser
+        .set_language(&tree_sitter_rust::language())
+        .map_err(|err| {
+            AnfsError::StorageCorruption(format!("tree-sitter rust init failed: {err}"))
+        })?;
+    let tree = parser
+        .parse(text, None)
+        .ok_or_else(|| AnfsError::PolicyDenied("failed to parse Rust source".to_string()))?;
+    let mut spans = Vec::new();
+    collect_rust_symbols(tree.root_node(), text.as_bytes(), &mut spans);
+    Ok(spans)
+}
+
+fn node_text(node: tree_sitter::Node, src: &[u8]) -> Option<String> {
+    src.get(node.start_byte()..node.end_byte())
+        .and_then(|bytes| std::str::from_utf8(bytes).ok())
+        .map(|text| text.to_string())
+}
+
+fn rust_node_name(node: tree_sitter::Node, src: &[u8]) -> Option<String> {
+    if let Some(name) = node.child_by_field_name("name") {
+        return node_text(name, src);
+    }
+    match node.kind() {
+        "impl_item" => node
+            .child_by_field_name("type")
+            .and_then(|n| node_text(n, src)),
+        "use_declaration" => node
+            .child_by_field_name("argument")
+            .and_then(|n| node_text(n, src)),
+        _ => None,
+    }
+}
+
+fn rust_kind(kind: &str) -> Option<&'static str> {
+    match kind {
+        "function_item" => Some("function"),
+        "struct_item" => Some("struct"),
+        "enum_item" => Some("enum"),
+        "trait_item" => Some("trait"),
+        "mod_item" => Some("module"),
+        "const_item" => Some("const"),
+        "static_item" => Some("static"),
+        "type_item" => Some("type"),
+        "macro_definition" => Some("macro"),
+        "impl_item" => Some("impl"),
+        "use_declaration" => Some("import"),
+        _ => None,
+    }
+}
+
+fn collect_rust_symbols(node: tree_sitter::Node, src: &[u8], out: &mut Vec<SpanRow>) {
+    let mut cursor = node.walk();
+    for child in node.named_children(&mut cursor) {
+        let kind = child.kind();
+        // declaration_list (impl/trait/mod body) is a container: recurse, no row.
+        if kind == "declaration_list" {
+            collect_rust_symbols(child, src, out);
+            continue;
+        }
+        if let Some(frag_kind) = rust_kind(kind) {
+            let name = rust_node_name(child, src);
+            let path = name.clone().unwrap_or_else(|| frag_kind.to_string());
+            out.push((
+                path,
+                child.start_byte() as i64,
+                (child.end_byte() - child.start_byte()) as i64,
+                frag_kind.to_string(),
+            ));
+            // Recurse into containers to capture methods / associated items,
+            // but not into function bodies (avoids local-fn noise).
+            if matches!(kind, "impl_item" | "mod_item" | "trait_item") {
+                collect_rust_symbols(child, src, out);
+            }
+        }
     }
 }
 
