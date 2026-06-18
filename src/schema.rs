@@ -422,6 +422,71 @@ pub(crate) fn init_db(conn: &Connection) -> AnfsResult<()> {
             body
         );
 
+        -- Derived structural projection over node bytes (rebuildable).
+        -- One parser per format turns blob bytes into (fragments, edges); every
+        -- downstream consumer (query/context/audit/policy/replay) stays
+        -- format-blind. Bound to (node_id, blob_hash, parser, parser_version)
+        -- so staleness is detectable and rebuilds are incremental.
+        CREATE TABLE IF NOT EXISTS fragment_index_runs (
+            node_id TEXT NOT NULL,
+            parser TEXT NOT NULL,
+            blob_hash TEXT NOT NULL,
+            parser_version TEXT NOT NULL,
+            language TEXT,
+            fragment_count INTEGER NOT NULL,
+            edge_count INTEGER NOT NULL,
+            status TEXT NOT NULL,
+            indexed_at INTEGER NOT NULL,
+            PRIMARY KEY (node_id, parser),
+            FOREIGN KEY(node_id) REFERENCES nodes(node_id),
+            FOREIGN KEY(blob_hash) REFERENCES blobs(hash)
+        );
+
+        -- A fragment is a named, kinded byte range over one node's blob (a
+        -- projection, never a new blob). A code symbol is just a code
+        -- fragment; a Markdown heading is a doc fragment. A defines relation is
+        -- not stored as an edge: node_id already encodes which node defines it.
+        CREATE TABLE IF NOT EXISTS fragments (
+            fragment_id TEXT PRIMARY KEY,
+            node_id TEXT NOT NULL,
+            blob_hash TEXT NOT NULL,
+            parser TEXT NOT NULL,
+            parser_version TEXT NOT NULL,
+            kind TEXT NOT NULL,
+            name TEXT,
+            path TEXT,
+            byte_start INTEGER NOT NULL,
+            byte_end INTEGER NOT NULL,
+            parent_fragment_id TEXT,
+            FOREIGN KEY(node_id) REFERENCES nodes(node_id),
+            FOREIGN KEY(blob_hash) REFERENCES blobs(hash)
+        );
+
+        CREATE INDEX IF NOT EXISTS fragments_by_node ON fragments(node_id);
+        CREATE INDEX IF NOT EXISTS fragments_by_name ON fragments(name);
+
+        -- A typed directional relation between fragments, isomorphic to the
+        -- multi-edge fan-out of event_edges. The parser records one edge per
+        -- name reference at a site (dst_name + evidence), leaving
+        -- dst_fragment_id NULL; cross-node resolution to the complete candidate
+        -- set happens at the workspace-composition layer (match dst_name
+        -- against fragments over active nodes) and is never written back here.
+        -- No confidence/probability: row-count is the deterministic status.
+        CREATE TABLE IF NOT EXISTS fragment_edges (
+            src_fragment_id TEXT NOT NULL,
+            edge_kind TEXT NOT NULL,
+            dst_name TEXT NOT NULL,
+            dst_fragment_id TEXT,
+            evidence_node_id TEXT NOT NULL,
+            evidence_start INTEGER NOT NULL,
+            evidence_end INTEGER NOT NULL,
+            PRIMARY KEY (src_fragment_id, edge_kind, dst_name, evidence_start),
+            FOREIGN KEY(src_fragment_id) REFERENCES fragments(fragment_id),
+            FOREIGN KEY(evidence_node_id) REFERENCES nodes(node_id)
+        );
+
+        CREATE INDEX IF NOT EXISTS fragment_edges_by_dst_name ON fragment_edges(dst_name);
+
         DROP TRIGGER IF EXISTS blobs_no_update;
 
         CREATE TRIGGER IF NOT EXISTS blobs_no_update
