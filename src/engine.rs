@@ -22,7 +22,8 @@ use crate::{
     DerivedIndexRepairResult, ensure_node_exists, event_list, event_record, EventListRow,
     EventRecord, export_event_bundle, export_history_archive, export_run_bundle,
     ExportBundleResult, fetch_ref, fetch_run, finish_run, fork_workspace_refs,
-    fragment_policy_labels, FragmentPolicyLabelRow, gc_candidates, gc_pins, gc_roots, GcPinRow,
+    fragment_policy_labels, FragmentPolicyLabelRow, FragmentRow, gc_candidates, gc_pins, gc_roots,
+    GcPinRow, index_node_fragments, node_fragments,
     GcResultRow, import_event_bundle, ImportBundleResult, infer_ref_kind, init_db,
     InlineBlobCompactionResult, insert_edge, insert_event, insert_merge_policy_decision_event,
     insert_new_ref, insert_policy_decision_event, json_field_span, json_field_spans,
@@ -276,6 +277,22 @@ impl AnfsEngine {
     fn markdown_section_spans(&self, node_id: &str) -> PyResult<Vec<MarkdownSectionSpanRow>> {
         let conn = lock_conn(&self.inner)?;
         markdown_section_spans(&conn, &self.inner.objects_dir, node_id).map_err(PyErr::from)
+    }
+
+    /// Parse a node into the generic `fragments` table with the named parser
+    /// (`span-markdown` | `span-json`). Idempotent/incremental; returns
+    /// `(fragment_count, edge_count)`.
+    fn index_node_fragments(&self, node_id: &str, parser: &str) -> PyResult<(i64, i64)> {
+        let mut conn = lock_conn(&self.inner)?;
+        index_node_fragments(&mut conn, &self.inner.objects_dir, node_id, parser)
+            .map_err(PyErr::from)
+    }
+
+    /// Outline of a node: its fragments as
+    /// `(fragment_id, kind, name, path, byte_start, byte_end)`.
+    fn node_fragments(&self, node_id: &str) -> PyResult<Vec<FragmentRow>> {
+        let conn = lock_conn(&self.inner)?;
+        node_fragments(&conn, node_id).map_err(PyErr::from)
     }
 
     fn manifest_children(&self, node_id: &str) -> PyResult<Vec<(String, String)>> {
