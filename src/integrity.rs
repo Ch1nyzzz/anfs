@@ -30,6 +30,7 @@ pub(crate) fn verify_integrity(conn: &Connection, objects_dir: &Path) -> AnfsRes
     check_working_sets(conn, objects_dir, &mut issues)?;
     check_fts(conn, objects_dir, &mut issues)?;
     check_embeddings(conn, &mut issues)?;
+    check_fragments(conn, &mut issues)?;
     check_manifests(conn, objects_dir, &mut issues)?;
     check_ref_states_and_transitions(conn, &mut issues)?;
     check_ref_event_linkage(conn, &mut issues)?;
@@ -1554,6 +1555,98 @@ fn check_fts(conn: &Connection, objects_dir: &Path, issues: &mut Vec<String>) ->
 }
 
 // Verifies node and chunk embedding rows (vectors, dimensions, norms).
+fn check_fragments(conn: &Connection, issues: &mut Vec<String>) -> AnfsResult<()> {
+    // fragments: node exists, blob_hash matches the node's current blob (not
+    // stale), and the byte span is well formed.
+    let mut fragment_stmt = conn.prepare(
+        "SELECT f.fragment_id, f.node_id, f.blob_hash, f.byte_start, f.byte_end, n.blob_hash
+         FROM fragments f
+         LEFT JOIN nodes n ON n.node_id = f.node_id
+         ORDER BY f.fragment_id",
+    )?;
+    let fragment_rows = fragment_stmt.query_map([], |row| {
+        Ok((
+            row.get::<_, String>(0)?,
+            row.get::<_, String>(1)?,
+            row.get::<_, String>(2)?,
+            row.get::<_, i64>(3)?,
+            row.get::<_, i64>(4)?,
+            row.get::<_, Option<String>>(5)?,
+        ))
+    })?;
+    for row in fragment_rows {
+        let (fragment_id, node_id, blob_hash, byte_start, byte_end, node_blob) = row?;
+        match node_blob {
+            None => issues.push(format!(
+                "fragments row {fragment_id} references missing node {node_id}"
+            )),
+            Some(current) if current != blob_hash => issues.push(format!(
+                "fragments row {fragment_id} is stale: blob_hash {blob_hash} != node {node_id} blob {current}"
+            )),
+            _ => {}
+        }
+        if byte_start < 0 || byte_end < byte_start {
+            issues.push(format!(
+                "fragments row {fragment_id} has invalid span {byte_start}..{byte_end}"
+            ));
+        }
+    }
+
+    // fragment_index_runs: node must exist.
+    let mut run_stmt = conn.prepare(
+        "SELECT r.node_id, r.parser, n.node_id
+         FROM fragment_index_runs r
+         LEFT JOIN nodes n ON n.node_id = r.node_id",
+    )?;
+    let run_rows = run_stmt.query_map([], |row| {
+        Ok((
+            row.get::<_, String>(0)?,
+            row.get::<_, String>(1)?,
+            row.get::<_, Option<String>>(2)?,
+        ))
+    })?;
+    for row in run_rows {
+        let (node_id, parser, linked) = row?;
+        if linked.is_none() {
+            issues.push(format!(
+                "fragment_index_runs row references missing node {node_id} (parser {parser})"
+            ));
+        }
+    }
+
+    // fragment_edges: source fragment and evidence node must exist.
+    let mut edge_stmt = conn.prepare(
+        "SELECT e.src_fragment_id, e.dst_name, e.evidence_node_id, f.fragment_id, n.node_id
+         FROM fragment_edges e
+         LEFT JOIN fragments f ON f.fragment_id = e.src_fragment_id
+         LEFT JOIN nodes n ON n.node_id = e.evidence_node_id",
+    )?;
+    let edge_rows = edge_stmt.query_map([], |row| {
+        Ok((
+            row.get::<_, String>(0)?,
+            row.get::<_, String>(1)?,
+            row.get::<_, String>(2)?,
+            row.get::<_, Option<String>>(3)?,
+            row.get::<_, Option<String>>(4)?,
+        ))
+    })?;
+    for row in edge_rows {
+        let (src_fragment_id, dst_name, evidence_node_id, src_exists, node_exists) = row?;
+        if src_exists.is_none() {
+            issues.push(format!(
+                "fragment_edges row references missing src fragment {src_fragment_id} (dst {dst_name})"
+            ));
+        }
+        if node_exists.is_none() {
+            issues.push(format!(
+                "fragment_edges row references missing evidence node {evidence_node_id}"
+            ));
+        }
+    }
+
+    Ok(())
+}
+
 fn check_embeddings(conn: &Connection, issues: &mut Vec<String>) -> AnfsResult<()> {
     let mut embedding_stmt = conn.prepare(
         "

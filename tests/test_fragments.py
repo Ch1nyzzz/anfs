@@ -154,6 +154,9 @@ def test_context_pack_respects_budget(anfs_engine):
 def test_fragments_do_not_break_integrity(anfs_engine):
     fs = anfs_engine
     ws = fs.open_workspace("ws:writer", "writer_agent")
-    node_id = ws.write("note.md", b"# H\n\ntext\n", [])
-    fs.index_node_fragments(node_id, "span-markdown")
+    md = ws.write("note.md", b"# H\n\ntext\n", [])
+    fs.index_node_fragments(md, "span-markdown")
+    # rust indexing also populates fragment_edges; integrity must cover both.
+    rs = ws.write("lib.rs", b"pub fn a() { b() }\npub fn b() {}\n", [])
+    fs.index_node_fragments(rs, "tree-sitter-rust")
     assert fs.verify_integrity() == []
