@@ -89,6 +89,31 @@ def test_rust_fragments_extract_symbols(anfs_engine):
     assert by_kind.get("import")  # use std::fmt;
 
 
+def test_cross_file_callers_resolved(anfs_engine):
+    fs = anfs_engine
+    ws = fs.open_workspace("ws:coder", "coder_agent")
+    # helper defined in b.rs; run() in a.rs calls it twice.
+    b_node = ws.write("b.rs", b"pub fn helper() -> i64 { 42 }\n", [])
+    a_node = ws.write("a.rs", b"pub fn run() -> i64 { helper() + helper() }\n", [])
+    _frags, edges = fs.index_node_fragments(a_node, "tree-sitter-rust")
+    fs.index_node_fragments(b_node, "tree-sitter-rust")
+    assert edges == 2  # two call sites recorded as name references
+
+    callers = fs.fragment_callers("helper")
+    assert len(callers) == 2  # exact candidate set, no probability
+    assert all(row[2] == "run" for row in callers)  # src_name
+    assert all(row[1] == "function" for row in callers)  # src_kind
+    assert {row[3] for row in callers} == {a_node}  # resolved to a.rs's node
+
+
+def test_callers_empty_for_unknown_name(anfs_engine):
+    fs = anfs_engine
+    ws = fs.open_workspace("ws:coder", "coder_agent")
+    node = ws.write("c.rs", b"pub fn lone() {}\n", [])
+    fs.index_node_fragments(node, "tree-sitter-rust")
+    assert fs.fragment_callers("does_not_exist") == []
+
+
 def test_fragments_do_not_break_integrity(anfs_engine):
     fs = anfs_engine
     ws = fs.open_workspace("ws:writer", "writer_agent")

@@ -20,8 +20,16 @@ const PARSER_VERSION: &str = "1";
 /// (path, byte_offset, byte_length, kind) — the shape every span parser emits.
 type SpanRow = (String, i64, i64, String);
 
+/// (src_path, src_start, src_end, edge_kind, dst_name, evidence_start, evidence_end).
+/// The parser records one edge per name reference at a site; cross-node
+/// resolution to the candidate set happens at query time, never written back.
+type EdgeRow = (String, i64, i64, String, String, i64, i64);
+
 /// (fragment_id, kind, name, path, byte_start, byte_end) — outline row.
 pub(crate) type FragmentRow = (String, String, Option<String>, String, i64, i64);
+
+/// (src_fragment_id, src_kind, src_name, src_node_id, evidence_start, evidence_end).
+pub(crate) type CallerRow = (String, String, Option<String>, String, i64, i64);
 
 fn node_blob_hash(conn: &Connection, node_id: &str) -> AnfsResult<String> {
     conn.query_row(
@@ -40,10 +48,10 @@ fn run_parser(
     objects_dir: &Path,
     node_id: &str,
     parser: &str,
-) -> AnfsResult<Vec<SpanRow>> {
+) -> AnfsResult<(Vec<SpanRow>, Vec<EdgeRow>)> {
     match parser {
-        "span-markdown" => markdown_section_spans(conn, objects_dir, node_id),
-        "span-json" => json_field_spans(conn, objects_dir, node_id),
+        "span-markdown" => Ok((markdown_section_spans(conn, objects_dir, node_id)?, Vec::new())),
+        "span-json" => Ok((json_field_spans(conn, objects_dir, node_id)?, Vec::new())),
         "tree-sitter-rust" => {
             let bytes = read_node_bytes(conn, objects_dir, node_id)?;
             let text = std::str::from_utf8(&bytes).map_err(|err| {
@@ -70,7 +78,7 @@ fn parser_language(parser: &str) -> Option<&'static str> {
 
 /// Extract top-level (and impl/trait/mod member) Rust symbols as fragments.
 /// Edges (calls/imports) come in a later slice; this slice yields the outline.
-fn parse_rust(text: &str) -> AnfsResult<Vec<SpanRow>> {
+fn parse_rust(text: &str) -> AnfsResult<(Vec<SpanRow>, Vec<EdgeRow>)> {
     let mut parser = tree_sitter::Parser::new();
     parser
         .set_language(&tree_sitter_rust::language())
@@ -81,8 +89,9 @@ fn parse_rust(text: &str) -> AnfsResult<Vec<SpanRow>> {
         .parse(text, None)
         .ok_or_else(|| AnfsError::PolicyDenied("failed to parse Rust source".to_string()))?;
     let mut spans = Vec::new();
-    collect_rust_symbols(tree.root_node(), text.as_bytes(), &mut spans);
-    Ok(spans)
+    let mut edges = Vec::new();
+    collect_rust_symbols(tree.root_node(), text.as_bytes(), &mut spans, &mut edges);
+    Ok((spans, edges))
 }
 
 fn node_text(node: tree_sitter::Node, src: &[u8]) -> Option<String> {
@@ -123,28 +132,78 @@ fn rust_kind(kind: &str) -> Option<&'static str> {
     }
 }
 
-fn collect_rust_symbols(node: tree_sitter::Node, src: &[u8], out: &mut Vec<SpanRow>) {
+/// Best-effort callee name from a call_expression: the final identifier of the
+/// callee (`foo()` -> foo, `a.bar()` -> bar, `A::baz()` -> baz).
+fn call_name(call: tree_sitter::Node, src: &[u8]) -> Option<String> {
+    let func = call.child_by_field_name("function")?;
+    match func.kind() {
+        "identifier" => node_text(func, src),
+        "field_expression" => func
+            .child_by_field_name("field")
+            .and_then(|n| node_text(n, src)),
+        "scoped_identifier" => func
+            .child_by_field_name("name")
+            .and_then(|n| node_text(n, src)),
+        _ => node_text(func, src),
+    }
+}
+
+/// Record one `calls` edge per call site inside a function body. dst is left as
+/// a name; resolution to the candidate set happens at query time.
+fn collect_calls(
+    node: tree_sitter::Node,
+    src: &[u8],
+    src_path: &str,
+    src_start: i64,
+    src_end: i64,
+    out: &mut Vec<EdgeRow>,
+) {
+    let mut cursor = node.walk();
+    for child in node.named_children(&mut cursor) {
+        if child.kind() == "call_expression" {
+            if let Some(name) = call_name(child, src) {
+                out.push((
+                    src_path.to_string(),
+                    src_start,
+                    src_end,
+                    "calls".to_string(),
+                    name,
+                    child.start_byte() as i64,
+                    child.end_byte() as i64,
+                ));
+            }
+        }
+        collect_calls(child, src, src_path, src_start, src_end, out);
+    }
+}
+
+fn collect_rust_symbols(
+    node: tree_sitter::Node,
+    src: &[u8],
+    out: &mut Vec<SpanRow>,
+    edges: &mut Vec<EdgeRow>,
+) {
     let mut cursor = node.walk();
     for child in node.named_children(&mut cursor) {
         let kind = child.kind();
         // declaration_list (impl/trait/mod body) is a container: recurse, no row.
         if kind == "declaration_list" {
-            collect_rust_symbols(child, src, out);
+            collect_rust_symbols(child, src, out, edges);
             continue;
         }
         if let Some(frag_kind) = rust_kind(kind) {
             let name = rust_node_name(child, src);
             let path = name.clone().unwrap_or_else(|| frag_kind.to_string());
-            out.push((
-                path,
-                child.start_byte() as i64,
-                (child.end_byte() - child.start_byte()) as i64,
-                frag_kind.to_string(),
-            ));
+            let start = child.start_byte() as i64;
+            let end = child.end_byte() as i64;
+            out.push((path.clone(), start, end - start, frag_kind.to_string()));
+            if kind == "function_item" {
+                collect_calls(child, src, &path, start, end, edges);
+            }
             // Recurse into containers to capture methods / associated items,
             // but not into function bodies (avoids local-fn noise).
             if matches!(kind, "impl_item" | "mod_item" | "trait_item") {
-                collect_rust_symbols(child, src, out);
+                collect_rust_symbols(child, src, out, edges);
             }
         }
     }
@@ -197,7 +256,7 @@ pub(crate) fn index_node_fragments(
     }
 
     // Parse (read-only) before opening the write transaction.
-    let spans = run_parser(conn, objects_dir, node_id, parser)?;
+    let (spans, edge_rows) = run_parser(conn, objects_dir, node_id, parser)?;
 
     let tx = conn.transaction()?;
     tx.execute(
@@ -238,6 +297,28 @@ pub(crate) fn index_node_fragments(
         fragment_count += 1;
     }
 
+    let mut edge_count = 0i64;
+    for (src_path, src_start, src_end, edge_kind, dst_name, evidence_start, evidence_end) in
+        &edge_rows
+    {
+        let src_fragment_id = fragment_id(&blob_hash, parser, src_path, *src_start, *src_end);
+        tx.execute(
+            "INSERT OR REPLACE INTO fragment_edges
+             (src_fragment_id, edge_kind, dst_name, dst_fragment_id,
+              evidence_node_id, evidence_start, evidence_end)
+             VALUES (?1, ?2, ?3, NULL, ?4, ?5, ?6)",
+            params![
+                src_fragment_id,
+                edge_kind,
+                dst_name,
+                node_id,
+                evidence_start,
+                evidence_end
+            ],
+        )?;
+        edge_count += 1;
+    }
+
     tx.execute(
         "INSERT OR REPLACE INTO fragment_index_runs
          (node_id, parser, blob_hash, parser_version, language,
@@ -250,13 +331,42 @@ pub(crate) fn index_node_fragments(
             PARSER_VERSION,
             parser_language(parser),
             fragment_count,
-            0i64,
+            edge_count,
             "ok",
             now_millis()
         ],
     )?;
     tx.commit()?;
-    Ok((fragment_count, 0))
+    Ok((fragment_count, edge_count))
+}
+
+/// Cross-node "who calls `name`": every `calls` edge targeting that name,
+/// joined to its source fragment. This is the candidate-set resolution done at
+/// the (here, whole-store) composition layer — no probability, just the exact
+/// set of call sites across indexed nodes.
+pub(crate) fn fragment_callers(conn: &Connection, name: &str) -> AnfsResult<Vec<CallerRow>> {
+    let mut stmt = conn.prepare(
+        "SELECT f.fragment_id, f.kind, f.name, f.node_id, e.evidence_start, e.evidence_end
+         FROM fragment_edges e
+         JOIN fragments f ON f.fragment_id = e.src_fragment_id
+         WHERE e.edge_kind = 'calls' AND e.dst_name = ?1
+         ORDER BY f.node_id, e.evidence_start",
+    )?;
+    let rows = stmt.query_map(params![name], |row| {
+        Ok((
+            row.get(0)?,
+            row.get(1)?,
+            row.get(2)?,
+            row.get(3)?,
+            row.get(4)?,
+            row.get(5)?,
+        ))
+    })?;
+    let mut out = Vec::new();
+    for row in rows {
+        out.push(row?);
+    }
+    Ok(out)
 }
 
 /// Outline of a node: its fragments ordered by byte position.
