@@ -22,8 +22,9 @@ use crate::{
     DerivedIndexRepairResult, ensure_node_exists, event_list, event_record, EventListRow,
     EventRecord, export_event_bundle, export_history_archive, export_run_bundle,
     ExportBundleResult, fetch_ref, fetch_run, finish_run, fork_workspace_refs,
-    fragment_callers, fragment_policy_labels, CallerRow, FragmentPolicyLabelRow, FragmentRow,
-    gc_candidates, gc_pins, gc_roots, GcPinRow, index_node_fragments, node_fragments,
+    context_pack, fragment_callers, fragment_policy_labels, CallerRow, ContextItemRow,
+    FragmentPolicyLabelRow, FragmentRow, gc_candidates, gc_pins, gc_roots, GcPinRow,
+    index_node_fragments, node_fragments,
     GcResultRow, import_event_bundle, ImportBundleResult, infer_ref_kind, init_db,
     InlineBlobCompactionResult, insert_edge, insert_event, insert_merge_policy_decision_event,
     insert_new_ref, insert_policy_decision_event, json_field_span, json_field_spans,
@@ -301,6 +302,19 @@ impl AnfsEngine {
     fn fragment_callers(&self, name: &str) -> PyResult<Vec<CallerRow>> {
         let conn = lock_conn(&self.inner)?;
         fragment_callers(&conn, name).map_err(PyErr::from)
+    }
+
+    /// Token-bounded context for a symbol: source of `seed_name` plus its
+    /// callers, greedily packed under `token_budget`, policy-hidden ranges
+    /// excluded. Returns `(items, token_estimate)` where each item is
+    /// `(node_id, fragment_id, name, kind, byte_start, byte_end, source)`.
+    fn context_pack(
+        &self,
+        seed_name: &str,
+        token_budget: i64,
+    ) -> PyResult<(Vec<ContextItemRow>, i64)> {
+        let conn = lock_conn(&self.inner)?;
+        context_pack(&conn, &self.inner.objects_dir, seed_name, token_budget).map_err(PyErr::from)
     }
 
     fn manifest_children(&self, node_id: &str) -> PyResult<Vec<(String, String)>> {

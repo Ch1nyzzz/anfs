@@ -114,6 +114,43 @@ def test_callers_empty_for_unknown_name(anfs_engine):
     assert fs.fragment_callers("does_not_exist") == []
 
 
+def test_context_pack_is_relevant_and_token_accurate(anfs_engine):
+    fs = anfs_engine
+    ws = fs.open_workspace("ws:coder", "coder_agent")
+    src = (
+        b"pub fn target() -> i64 { 1 }\n\n"
+        b"pub fn caller_one() -> i64 { target() }\n\n"
+        b"pub fn unrelated() -> i64 { 99 }\n"
+    )
+    node = ws.write("lib.rs", src, [])
+    fs.index_node_fragments(node, "tree-sitter-rust")
+
+    items, tokens = fs.context_pack("target", 10_000)
+    names = {item[2] for item in items}
+    assert "target" in names  # the definition
+    assert "caller_one" in names  # its caller is pulled in
+    assert "unrelated" not in names  # irrelevant code is not
+
+    # token estimate equals the packed source size (ceil bytes/4)
+    total = sum((len(item[6]) + 3) // 4 for item in items)
+    assert tokens == total
+    assert tokens <= 10_000
+
+
+def test_context_pack_respects_budget(anfs_engine):
+    fs = anfs_engine
+    ws = fs.open_workspace("ws:coder", "coder_agent")
+    src = b"".join(b"pub fn f%d() -> i64 { shared() }\n\n" % i for i in range(20))
+    src += b"pub fn shared() -> i64 { 0 }\n"
+    node = ws.write("many.rs", src, [])
+    fs.index_node_fragments(node, "tree-sitter-rust")
+
+    big, big_tokens = fs.context_pack("shared", 100_000)
+    small, small_tokens = fs.context_pack("shared", 30)
+    assert len(small) <= len(big)
+    assert small_tokens <= big_tokens
+
+
 def test_fragments_do_not_break_integrity(anfs_engine):
     fs = anfs_engine
     ws = fs.open_workspace("ws:writer", "writer_agent")

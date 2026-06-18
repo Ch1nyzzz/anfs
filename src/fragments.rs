@@ -12,6 +12,7 @@ use std::path::Path;
 use rusqlite::{params, Connection, OptionalExtension};
 
 use crate::manifest::{json_field_spans, markdown_section_spans, read_node_bytes};
+use crate::visibility::node_range_hidden;
 use crate::{now_millis, sha256_hex, AnfsError, AnfsResult};
 
 /// Bumped when a parser's output shape changes so stale rows can be detected.
@@ -30,6 +31,9 @@ pub(crate) type FragmentRow = (String, String, Option<String>, String, i64, i64)
 
 /// (src_fragment_id, src_kind, src_name, src_node_id, evidence_start, evidence_end).
 pub(crate) type CallerRow = (String, String, Option<String>, String, i64, i64);
+
+/// (node_id, fragment_id, name, kind, byte_start, byte_end, source_text).
+pub(crate) type ContextItemRow = (String, String, Option<String>, String, i64, i64, String);
 
 fn node_blob_hash(conn: &Connection, node_id: &str) -> AnfsResult<String> {
     conn.query_row(
@@ -367,6 +371,99 @@ pub(crate) fn fragment_callers(conn: &Connection, name: &str) -> AnfsResult<Vec<
         out.push(row?);
     }
     Ok(out)
+}
+
+/// Conservative token estimate (ceil(bytes / 4)), matching the kernel's
+/// existing answer-accounting estimator family.
+fn estimate_tokens(byte_len: usize) -> i64 {
+    ((byte_len + 3) / 4) as i64
+}
+
+/// The token-saving entrypoint: instead of reading whole files, pack the source
+/// of the symbol named `seed_name` plus its callers, greedily, up to
+/// `token_budget`. Policy-hidden byte ranges are never included
+/// (`node_range_hidden`). Returns the packed items and the total token estimate.
+pub(crate) fn context_pack(
+    conn: &Connection,
+    objects_dir: &Path,
+    seed_name: &str,
+    token_budget: i64,
+) -> AnfsResult<(Vec<ContextItemRow>, i64)> {
+    // Working set: the definition(s) of seed_name, then its callers' fragments.
+    let mut targets: Vec<(String, String, Option<String>, String, i64, i64)> = Vec::new();
+    {
+        let mut stmt = conn.prepare(
+            "SELECT node_id, fragment_id, name, kind, byte_start, byte_end
+             FROM fragments WHERE name = ?1 ORDER BY node_id, byte_start",
+        )?;
+        let rows = stmt.query_map(params![seed_name], |row| {
+            Ok((
+                row.get(0)?,
+                row.get(1)?,
+                row.get(2)?,
+                row.get(3)?,
+                row.get(4)?,
+                row.get(5)?,
+            ))
+        })?;
+        for row in rows {
+            targets.push(row?);
+        }
+    }
+    for caller in fragment_callers(conn, seed_name)? {
+        let frag: Option<(String, String, Option<String>, String, i64, i64)> = conn
+            .query_row(
+                "SELECT node_id, fragment_id, name, kind, byte_start, byte_end
+                 FROM fragments WHERE fragment_id = ?1",
+                params![caller.0],
+                |row| {
+                    Ok((
+                        row.get(0)?,
+                        row.get(1)?,
+                        row.get(2)?,
+                        row.get(3)?,
+                        row.get(4)?,
+                        row.get(5)?,
+                    ))
+                },
+            )
+            .optional()?;
+        if let Some(frag) = frag {
+            targets.push(frag);
+        }
+    }
+
+    let mut seen = std::collections::HashSet::new();
+    let mut packed: Vec<ContextItemRow> = Vec::new();
+    let mut tokens = 0i64;
+    for (node_id, fragment_id, name, kind, start, end) in targets {
+        if !seen.insert(fragment_id.clone()) {
+            continue;
+        }
+        // Policy: never pack bytes the caller may not see.
+        if node_range_hidden(conn, &node_id, start, end - start)? {
+            continue;
+        }
+        let bytes = read_node_bytes(conn, objects_dir, &node_id)?;
+        let source = match bytes
+            .get(start as usize..end as usize)
+            .and_then(|slice| std::str::from_utf8(slice).ok())
+        {
+            Some(text) => text.to_string(),
+            None => continue,
+        };
+        let cost = estimate_tokens(source.len());
+        // Always include at least one item; otherwise stop at the budget.
+        if !packed.is_empty() && tokens + cost > token_budget {
+            break;
+        }
+        tokens += cost;
+        packed.push((node_id, fragment_id, name, kind, start, end, source));
+        if tokens >= token_budget {
+            break;
+        }
+    }
+    Ok((packed, tokens))
 }
 
 /// Outline of a node: its fragments ordered by byte position.
