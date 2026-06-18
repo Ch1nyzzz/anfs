@@ -5,9 +5,9 @@ use std::path::{Path, PathBuf};
 
 use crate::{
     file_blob_path, insert_edge, insert_event, insert_manifest_node, new_event_id, new_pin_id,
-    node_manifest_metadata, now_millis, ref_prefix_like_pattern, require_ref, sha256_hex,
-    upsert_ref, AnfsError, AnfsResult, GcPinRow, GcResultRow, ManifestChild, RefWriteMode,
-    RetentionPolicyRow,
+    node_manifest_metadata, now_millis, ref_prefix_like_pattern, ref_view_at_event,
+    ref_view_checkpoints, require_ref, sha256_hex, upsert_ref, AnfsError, AnfsResult, GcPinRow,
+    GcResultRow, ManifestChild, RefWriteMode, RetentionPolicyRow,
 };
 
 pub(crate) fn is_blob_gc_collected(conn: &Connection, hash: &str) -> AnfsResult<bool> {
@@ -644,6 +644,35 @@ pub(crate) fn gc_roots(
     Ok(roots)
 }
 
+/// Blob hashes required to replay any recorded ref-view checkpoint. GC must
+/// never collect these, or a recorded replay proof would no longer verify.
+/// Computed by reusing the exact replay view, so it can never drift from what
+/// `verify_ref_view_checkpoint` actually needs.
+fn checkpoint_protected_hashes(
+    conn: &Connection,
+) -> AnfsResult<std::collections::HashSet<String>> {
+    let mut protected = std::collections::HashSet::new();
+    for checkpoint in ref_view_checkpoints(conn)? {
+        let (_checkpoint_id, target_event_id, _target_seq, prefix, include_inactive, ..) =
+            checkpoint;
+        let view = ref_view_at_event(conn, &target_event_id, prefix.as_deref(), include_inactive, &[])?;
+        for row in view {
+            let node_id = row.1;
+            let hash: Option<String> = conn
+                .query_row(
+                    "SELECT blob_hash FROM nodes WHERE node_id = ?1",
+                    params![node_id],
+                    |row| row.get(0),
+                )
+                .optional()?;
+            if let Some(hash) = hash {
+                protected.insert(hash);
+            }
+        }
+    }
+    Ok(protected)
+}
+
 pub(crate) fn gc_candidates(
     conn: &Connection,
     objects_dir: &Path,
@@ -652,6 +681,7 @@ pub(crate) fn gc_candidates(
     limit: Option<i64>,
 ) -> AnfsResult<Vec<(String, i64, String)>> {
     let limit = normalize_gc_limit(limit)?;
+    let protected = checkpoint_protected_hashes(conn)?;
     let include_workspaces = if include_workspaces { 1 } else { 0 };
     let mut stmt = conn.prepare(
         "
@@ -718,6 +748,10 @@ pub(crate) fn gc_candidates(
     let mut candidates = Vec::new();
     for row in rows {
         let (hash, size, storage_kind, storage_uri) = row?;
+        // Never collect blobs a recorded replay checkpoint still needs.
+        if protected.contains(&hash) {
+            continue;
+        }
         if is_blob_gc_collected(conn, &hash)? {
             if storage_kind != "file" {
                 continue;
