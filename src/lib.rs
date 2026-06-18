@@ -13,6 +13,7 @@ use std::sync::{Arc, Mutex};
 mod blob;
 mod bundle;
 mod checkout;
+mod chunked;
 mod common;
 mod embedding;
 mod engine;
@@ -42,6 +43,7 @@ mod worktree;
 use blob::*;
 use bundle::*;
 use checkout::*;
+use chunked::*;
 use common::*;
 use embedding::*;
 use errors::*;
@@ -70,6 +72,7 @@ use worktree::*;
 
 const INLINE_THRESHOLD: usize = 64 * 1024;
 const MANIFEST_MEDIA_TYPE: &str = "application/vnd.anfs.manifest+json";
+const CHUNKED_MEDIA_TYPE: &str = "application/vnd.anfs.chunked+json";
 const CURRENT_SCHEMA_VERSION: i64 = 1;
 const CURRENT_SCHEMA_NAME: &str = "anfs_kernel_schema_v1";
 

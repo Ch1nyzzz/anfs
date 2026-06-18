@@ -4,11 +4,12 @@ use std::fs;
 use std::path::Path;
 
 use crate::{
-    file_blob_path, gc_snapshot::is_blob_gc_collected, is_known_run_state, is_known_state,
-    is_terminal_run_state, node_manifest_metadata, read_node_bytes, schema_migrations, sha256_hex,
-    validate_state_transition, verify_ref_view_checkpoint, workspace_logical_path,
-    workspace_ref_name, AnfsError, AnfsResult, ManifestDoc, CURRENT_SCHEMA_NAME,
-    CURRENT_SCHEMA_VERSION, MANIFEST_MEDIA_TYPE,
+    chunked_node_chunk_hashes, file_blob_path, gc_snapshot::is_blob_gc_collected,
+    is_known_run_state, is_known_state, is_terminal_run_state, node_manifest_metadata,
+    read_node_bytes, schema_migrations, sha256_hex, validate_state_transition,
+    verify_ref_view_checkpoint, workspace_logical_path, workspace_ref_name, AnfsError, AnfsResult,
+    ManifestDoc, CHUNKED_MEDIA_TYPE, CURRENT_SCHEMA_NAME, CURRENT_SCHEMA_VERSION,
+    MANIFEST_MEDIA_TYPE,
 };
 
 
@@ -32,6 +33,7 @@ pub(crate) fn verify_integrity(conn: &Connection, objects_dir: &Path) -> AnfsRes
     check_embeddings(conn, &mut issues)?;
     check_fragments(conn, &mut issues)?;
     check_manifests(conn, objects_dir, &mut issues)?;
+    check_chunked_nodes(conn, objects_dir, &mut issues)?;
     check_ref_states_and_transitions(conn, &mut issues)?;
     check_ref_event_linkage(conn, &mut issues)?;
     check_ref_audit_chain(conn, &mut issues)?;
@@ -1795,6 +1797,42 @@ fn check_embeddings(conn: &Connection, issues: &mut Vec<String>) -> AnfsResult<(
             issues.push(format!(
                 "node_chunk_embeddings row for {node_id} chunk_size {chunk_size} chunk {chunk_index} model {model} has stale norm"
             ));
+        }
+    }
+    Ok(())
+}
+
+// Verifies every chunked node has a readable manifest whose chunk blobs exist.
+// (Chunk blob hash/size integrity is already covered by check_blobs.)
+fn check_chunked_nodes(
+    conn: &Connection,
+    objects_dir: &Path,
+    issues: &mut Vec<String>,
+) -> AnfsResult<()> {
+    let mut node_stmt =
+        conn.prepare("SELECT node_id FROM nodes WHERE media_type = ?1 ORDER BY node_id")?;
+    let node_ids: Vec<String> = node_stmt
+        .query_map(params![CHUNKED_MEDIA_TYPE], |row| row.get(0))?
+        .collect::<Result<_, _>>()?;
+    for node_id in node_ids {
+        match chunked_node_chunk_hashes(conn, objects_dir, &node_id) {
+            Ok(hashes) => {
+                for hash in hashes {
+                    let exists: i64 = conn.query_row(
+                        "SELECT COUNT(*) FROM blobs WHERE hash = ?1",
+                        params![hash],
+                        |row| row.get(0),
+                    )?;
+                    if exists == 0 {
+                        issues.push(format!(
+                            "chunked node {node_id} references missing chunk blob {hash}"
+                        ));
+                    }
+                }
+            }
+            Err(err) => issues.push(format!(
+                "chunked node {node_id} has an unreadable manifest: {err:?}"
+            )),
         }
     }
     Ok(())

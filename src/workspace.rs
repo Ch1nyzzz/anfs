@@ -14,8 +14,8 @@ use crate::{
     purpose_hides_ref_node, AnfsError, AnfsResult, ManifestChild, ManifestDoc, QueryRefRow,
     read_node_bytes, read_node_range, RefRecord, RefWriteMode, require_ref, require_state,
     sha256_hex, update_ref_state, upsert_ref, validate_state_transition, VisibilityPolicy,
-    with_sqlite_busy_retry, Workspace, workspace_logical_path, workspace_ref_name,
-    MANIFEST_MEDIA_TYPE,
+    with_sqlite_busy_retry, workspace_logical_path, workspace_ref_name, write_chunked_in_tx,
+    Workspace, MANIFEST_MEDIA_TYPE,
 };
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -116,6 +116,20 @@ impl Workspace {
         tool_call_id: Option<String>,
     ) -> PyResult<String> {
         self.write_path_range_impl(logical_path, offset, content, tool_call_id)
+            .map_err(PyErr::from)
+    }
+
+    /// Store a large file as content-addressed chunk blobs plus a manifest node.
+    /// Identical chunks dedupe across files and edits. Returns the node id.
+    #[pyo3(signature = (logical_path, content, chunk_size=65536, tool_call_id=None))]
+    fn write_chunked(
+        &self,
+        logical_path: &str,
+        content: &[u8],
+        chunk_size: i64,
+        tool_call_id: Option<String>,
+    ) -> PyResult<String> {
+        self.write_chunked_impl(logical_path, content, chunk_size, tool_call_id)
             .map_err(PyErr::from)
     }
 
@@ -596,6 +610,32 @@ impl Workspace {
             logical_path.to_string(),
             tool_call_id,
         )
+    }
+
+    pub(crate) fn write_chunked_impl(
+        &self,
+        logical_path: &str,
+        content: &[u8],
+        chunk_size: i64,
+        tool_call_id: Option<String>,
+    ) -> AnfsResult<String> {
+        with_sqlite_busy_retry(|| {
+            let mut conn = lock_conn(&self.inner)?;
+            let tx = conn.transaction()?;
+            let node_id = write_chunked_in_tx(
+                &tx,
+                &self.inner.objects_dir,
+                &self.workspace_name,
+                &self.agent_id,
+                self.run_id.as_deref(),
+                tool_call_id.as_deref(),
+                logical_path,
+                content,
+                chunk_size,
+            )?;
+            tx.commit()?;
+            Ok(node_id)
+        })
     }
 
     fn write_content_in_tx(

@@ -4,10 +4,10 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 use crate::{
-    file_blob_path, insert_edge, insert_event, insert_manifest_node, new_event_id, new_pin_id,
-    node_manifest_metadata, now_millis, ref_prefix_like_pattern, ref_view_at_event,
-    ref_view_checkpoints, require_ref, sha256_hex, upsert_ref, AnfsError, AnfsResult, GcPinRow,
-    GcResultRow, ManifestChild, RefWriteMode, RetentionPolicyRow,
+    all_chunked_chunk_hashes, file_blob_path, insert_edge, insert_event, insert_manifest_node,
+    new_event_id, new_pin_id, node_manifest_metadata, now_millis, ref_prefix_like_pattern,
+    ref_view_at_event, ref_view_checkpoints, require_ref, sha256_hex, upsert_ref, AnfsError,
+    AnfsResult, GcPinRow, GcResultRow, ManifestChild, RefWriteMode, RetentionPolicyRow,
 };
 
 pub(crate) fn is_blob_gc_collected(conn: &Connection, hash: &str) -> AnfsResult<bool> {
@@ -681,7 +681,11 @@ pub(crate) fn gc_candidates(
     limit: Option<i64>,
 ) -> AnfsResult<Vec<(String, i64, String)>> {
     let limit = normalize_gc_limit(limit)?;
-    let protected = checkpoint_protected_hashes(conn)?;
+    // Protect both: blobs a recorded replay checkpoint needs, and chunk blobs
+    // referenced only inside chunked manifest nodes (node->blob reachability
+    // below cannot see chunk blobs, so GC would otherwise corrupt them).
+    let mut protected = checkpoint_protected_hashes(conn)?;
+    protected.extend(all_chunked_chunk_hashes(conn, objects_dir)?);
     let include_workspaces = if include_workspaces { 1 } else { 0 };
     let mut stmt = conn.prepare(
         "
@@ -748,7 +752,7 @@ pub(crate) fn gc_candidates(
     let mut candidates = Vec::new();
     for row in rows {
         let (hash, size, storage_kind, storage_uri) = row?;
-        // Never collect blobs a recorded replay checkpoint still needs.
+        // Never collect a blob a checkpoint or a chunked manifest still needs.
         if protected.contains(&hash) {
             continue;
         }

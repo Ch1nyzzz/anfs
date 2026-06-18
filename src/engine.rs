@@ -40,7 +40,8 @@ use crate::{
     policy_labels, policy_rules, PolicyExpressionRuleRow, PolicyLabelRow, PolicyRuleRow,
     propagate_fragment_policy_labels_between_ranges, purpose_capability_rules,
     purpose_policy_rules, PurposeCapabilityRuleRow, PurposePolicyRuleRow, QueryRefRow,
-    read_node_bytes, read_node_range, rebuild_derived_indexes, ref_history, ref_view_at_event,
+    read_chunked_node, read_node_bytes, read_node_range, rebuild_derived_indexes, ref_history,
+    ref_view_at_event,
     ref_view_checkpoints, RefHistoryRow, RefViewCheckpointRow, RefViewCheckpointVerificationRow,
     RefViewRow, reject_unsupported_future_schema, RepairPlanRow, require_expected_ref_version,
     require_ref, require_schema_current, require_state, retention_policies, RetentionPolicyRow,
@@ -202,6 +203,18 @@ impl AnfsEngine {
         })
         .map_err(PyErr::from)?;
         let bytes = read_node_bytes(&conn, &self.inner.objects_dir, node_id)?;
+        Ok(PyBytes::new_bound(py, &bytes))
+    }
+
+    /// Reassemble the full content of a chunked node from its chunk blobs.
+    fn read_chunked_node<'py>(
+        &self,
+        py: Python<'py>,
+        node_id: &str,
+    ) -> PyResult<Bound<'py, PyBytes>> {
+        let conn = lock_conn(&self.inner)?;
+        let bytes =
+            read_chunked_node(&conn, &self.inner.objects_dir, node_id).map_err(PyErr::from)?;
         Ok(PyBytes::new_bound(py, &bytes))
     }
 
