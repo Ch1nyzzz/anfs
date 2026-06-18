@@ -206,3 +206,63 @@ def test_fragments_do_not_break_integrity(anfs_engine):
     rs = ws.write("lib.rs", b"pub fn a() { b() }\npub fn b() {}\n", [])
     fs.index_node_fragments(rs, "tree-sitter-rust")
     assert fs.verify_integrity() == []
+
+
+def _index_chain(fs):
+    """top() -> mid() -> leaf(), one symbol per file."""
+    ws = fs.open_workspace("ws:coder", "coder_agent")
+    for path, src in [
+        ("leaf.rs", b"pub fn leaf() -> i64 { 1 }\n"),
+        ("mid.rs", b"pub fn mid() -> i64 { leaf() }\n"),
+        ("top.rs", b"pub fn top() -> i64 { mid() }\n"),
+    ]:
+        fs.index_node_fragments(ws.write(path, src, []), "tree-sitter-rust")
+
+
+def test_call_graph_callees_walks_the_chain(anfs_engine):
+    fs = anfs_engine
+    _index_chain(fs)
+    nodes, edges, est = fs.call_graph("top", "callees", 2, 4, 2000)
+    # Reached the whole execution flow, each at its hop distance.
+    assert {(n[2], n[6]) for n in nodes} == {("top", 0), ("mid", 1), ("leaf", 2)}
+    resolved = {(e[1], e[2]) for e in edges if e[3] is not None}
+    assert resolved == {("top", "mid"), ("mid", "leaf")}
+    assert est > 0
+
+
+def test_call_graph_callers_walks_blast_radius_upward(anfs_engine):
+    fs = anfs_engine
+    _index_chain(fs)
+    nodes, _edges, _est = fs.call_graph("leaf", "callers", 2, 4, 2000)
+    assert {(n[2], n[6]) for n in nodes} == {("leaf", 0), ("mid", 1), ("top", 2)}
+
+
+def test_call_graph_depth_bounds_traversal(anfs_engine):
+    fs = anfs_engine
+    _index_chain(fs)
+    nodes, _edges, _est = fs.call_graph("top", "callees", 1, 4, 2000)
+    assert {n[2] for n in nodes} == {"top", "mid"}  # leaf is two hops away, excluded
+
+
+def test_call_graph_fanout_guard_does_not_explode(anfs_engine):
+    fs = anfs_engine
+    ws = fs.open_workspace("ws:coder", "coder_agent")
+    # `common` is defined 5 times (> max_fanout); user() calls it once. Bodies
+    # must differ — identical content is one content-addressed fragment, not five.
+    for i in range(5):
+        src = f"pub fn common() -> i64 {{ {i} }}\n".encode()
+        fs.index_node_fragments(ws.write(f"d{i}.rs", src, []), "tree-sitter-rust")
+    fs.index_node_fragments(ws.write("u.rs", b"pub fn user() { common() }\n", []),
+                            "tree-sitter-rust")
+    nodes, edges, _est = fs.call_graph("user", "callees", 3, 4, 2000)
+    # `common` resolves to 5 > max_fanout(4): edge recorded, but not recursed into.
+    assert any(e[2] == "common" and e[3] is None for e in edges)
+    assert "common" not in {n[2] for n in nodes}
+
+
+def test_call_graph_records_audit_event(anfs_engine):
+    fs = anfs_engine
+    _index_chain(fs)
+    fs.call_graph("top", "callees", 2, 4, 2000, agent_id="walker", tool_call_id="tc_cg")
+    assert len(fs.events(kind="code_call_graph")) == 1
+    assert fs.verify_integrity() == []

@@ -1,0 +1,48 @@
+{
+  "repo": "excalidraw",
+  "lang": "typescript",
+  "question": "How does Excalidraw render and update canvas elements?",
+  "model": "deepseek-v4-flash",
+  "runs": 1,
+  "corpus_files": 414,
+  "arms": {
+    "baseline": {
+      "total_tokens": 792342,
+      "uncached_tokens": 59030,
+      "tool_calls": 33,
+      "success": 0,
+      "runs": [
+        {
+          "tool_calls": 33,
+          "prompt_tokens": 789776,
+          "completion_tokens": 2566,
+          "cache_miss_tokens": 56464,
+          "uncached_tokens": 59030,
+          "total_tokens": 792342,
+          "steps": 20,
+          "stopped": "max_steps",
+          "answer": ""
+        }
+      ]
+    },
+    "anfs": {
+      "total_tokens": 694621,
+      "uncached_tokens": 50013,
+      "tool_calls": 33,
+      "success": 0,
+      "runs": [
+        {
+          "tool_calls": 33,
+          "prompt_tokens": 692290,
+          "completion_tokens": 2331,
+          "cache_miss_tokens": 47682,
+          "uncached_tokens": 50013,
+          "total_tokens": 694621,
+          "steps": 20,
+          "stopped": "max_steps",
+          "answer": ""
+        }
+      ]
+    }
+  }
+}

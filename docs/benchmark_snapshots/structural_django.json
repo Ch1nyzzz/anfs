@@ -1,0 +1,6128 @@
+{
+  "repo": "django",
+  "lang": "python",
+  "oracle": "scip-python",
+  "corpus_files": 45,
+  "evaluated": 763,
+  "anfs_recall": 19.331619537275063,
+  "anfs_precision": 66.95156695156695,
+  "grep_recall": 19.48586118251928,
+  "grep_precision": 38.25964062184535,
+  "anfs_ops": 1.0,
+  "grep_ops": 3.2070773263433816,
+  "aggregate": {
+    "oracle": 9725,
+    "anfs_hit": 1880,
+    "anfs_total": 2808,
+    "grep_hit": 1895,
+    "grep_total": 4953,
+    "anfs_ops": 763,
+    "grep_ops": 2447
+  },
+  "rows": [
+    {
+      "symbol": "CASCADE",
+      "oracle": 15,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "DO_NOTHING",
+      "oracle": 8,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "PROTECT",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "RESTRICT",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "RelatedObjectDoesNotExist",
+      "oracle": 10,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "SET",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "SET_DEFAULT",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "SET_NULL",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__add__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__aiter__",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "__and__",
+      "oracle": 12,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "__bool__",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "__call__",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "__class_getitem__",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "__contains__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__copy__",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "__deepcopy__",
+      "oracle": 10,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "__del__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__enter__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__eq__",
+      "oracle": 53,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 18
+    },
+    {
+      "symbol": "__exit__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__get__",
+      "oracle": 65,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 11
+    },
+    {
+      "symbol": "__getitem__",
+      "oracle": 19,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "__getstate__",
+      "oracle": 14,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 10
+    },
+    {
+      "symbol": "__hash__",
+      "oracle": 13,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 12
+    },
+    {
+      "symbol": "__init__",
+      "oracle": 929,
+      "anfs_recall": 90,
+      "anfs_total": 93,
+      "grep_recall": 90,
+      "grep_total": 230
+    },
+    {
+      "symbol": "__init_subclass__",
+      "oracle": 12,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 6
+    },
+    {
+      "symbol": "__instancecheck__",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "__invert__",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "__iter__",
+      "oracle": 28,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 14
+    },
+    {
+      "symbol": "__len__",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "__lt__",
+      "oracle": 10,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__mod__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__mul__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__neg__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__new__",
+      "oracle": 23,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 7
+    },
+    {
+      "symbol": "__or__",
+      "oracle": 16,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "__pow__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__radd__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__reduce__",
+      "oracle": 12,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 9
+    },
+    {
+      "symbol": "__repr__",
+      "oracle": 75,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 34
+    },
+    {
+      "symbol": "__rmod__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__rmul__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__rpow__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__rsub__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__rtruediv__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__set__",
+      "oracle": 71,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 10
+    },
+    {
+      "symbol": "__setstate__",
+      "oracle": 9,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "__str__",
+      "oracle": 35,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 16
+    },
+    {
+      "symbol": "__sub__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__subclasscheck__",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "__truediv__",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "__xor__",
+      "oracle": 16,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_add_hints",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 4,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "_add_q",
+      "oracle": 27,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 5
+    },
+    {
+      "symbol": "_annotate",
+      "oracle": 11,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_as_sql",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_as_sql_parts",
+      "oracle": 11,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_assign_returned_values",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_async_generator",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_avoid_cloning",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_base_manager",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_batched_insert",
+      "oracle": 21,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_chain",
+      "oracle": 30,
+      "anfs_recall": 27,
+      "anfs_total": 29,
+      "grep_recall": 27,
+      "grep_total": 32
+    },
+    {
+      "symbol": "_check_allowing_files_or_folders",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_backend_specific_checks",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_blank_and_null_values",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_bulk_create_options",
+      "oracle": 12,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_choices",
+      "oracle": 13,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_clashes",
+      "oracle": 14,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_column_name_clashes",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_composite_pk",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_connector",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_check_constraints",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_db_collation",
+      "oracle": 12,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_check_db_comment",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_db_default",
+      "oracle": 12,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_db_index",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_db_table_comment",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_decimal_places",
+      "oracle": 10,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_decimal_places_and_max_digits",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_default",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_deprecation_details",
+      "oracle": 13,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_field_name",
+      "oracle": 10,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_check_field_name_clashes",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_fields",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_fix_default_value",
+      "oracle": 10,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 6
+    },
+    {
+      "symbol": "_check_id_field",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_if_value_fixed",
+      "oracle": 12,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_check_ignored_options",
+      "oracle": 12,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_check_image_library_installed",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_indexes",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_local_fields",
+      "oracle": 17,
+      "anfs_recall": 1,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "_check_long_column_names",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_m2m_through_same_relationship",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_managers",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_max_digits",
+      "oracle": 10,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_max_length_attribute",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_max_length_warning",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_model",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_model_name_db_lookup_clashes",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_mutually_exclusive_options",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_null_allowed_for_primary_keys",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_on_delete",
+      "oracle": 17,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_on_delete_db_support",
+      "oracle": 10,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_check_operator_queryset",
+      "oracle": 5,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_check_ordering",
+      "oracle": 11,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_ordering_first_last_queryset_aggregation",
+      "oracle": 8,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_check_parent_chain",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_persistence",
+      "oracle": 11,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_primary_key",
+      "oracle": 7,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_check_property_name_related_field_accessor_clashes",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_references",
+      "oracle": 8,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_check_referencing_to_swapped_model",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_related_fields",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_related_name_is_valid",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_related_query_name_is_valid",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_relation_model_exists",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_relationship_model",
+      "oracle": 44,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_single_primary_key",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_str_default_value",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_supported",
+      "oracle": 15,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_check_swappable",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_table_uniqueness",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_to_fields_composite_pk",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_to_fields_exist",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_unique",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 5
+    },
+    {
+      "symbol": "_check_unique_target",
+      "oracle": 15,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_unique_together",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_upload_to",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_check_validators",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_choices_is_value",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_clear_cached_class_lookups",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_clear_ordering_in_combined_queries",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_clone",
+      "oracle": 23,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 8
+    },
+    {
+      "symbol": "_combinator_query",
+      "oracle": 7,
+      "anfs_recall": 3,
+      "anfs_total": 4,
+      "grep_recall": 3,
+      "grep_total": 5
+    },
+    {
+      "symbol": "_combine",
+      "oracle": 35,
+      "anfs_recall": 21,
+      "anfs_total": 21,
+      "grep_recall": 21,
+      "grep_total": 23
+    },
+    {
+      "symbol": "_combine_sql_parts",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_constructor_signature",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_contains_aggregate",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_contains_over_clause",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_convert_value_noop",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_db_default_expression",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_default_manager",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_del_file",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_description",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_disable_cloning",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 5,
+      "grep_recall": 0,
+      "grep_total": 8
+    },
+    {
+      "symbol": "_do_insert",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_do_update",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_earliest",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_empty",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_enable_cloning",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 5,
+      "grep_recall": 0,
+      "grep_total": 7
+    },
+    {
+      "symbol": "_execute_query",
+      "oracle": 8,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_expire_cache",
+      "oracle": 12,
+      "anfs_recall": 3,
+      "anfs_total": 4,
+      "grep_recall": 3,
+      "grep_total": 5
+    },
+    {
+      "symbol": "_expr_refs_base_model",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_expression_refs_exclude",
+      "oracle": 10,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 6
+    },
+    {
+      "symbol": "_extract_model_params",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_fetch_all",
+      "oracle": 18,
+      "anfs_recall": 8,
+      "anfs_total": 8,
+      "grep_recall": 8,
+      "grep_total": 10
+    },
+    {
+      "symbol": "_filter_or_exclude",
+      "oracle": 9,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_filter_or_exclude_inplace",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_filter_prefetch_queryset",
+      "oracle": 11,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_format_names",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_forward_fields_map",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_gen_col_aliases",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_gen_cols",
+      "oracle": 10,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 6
+    },
+    {
+      "symbol": "_generate_next_value_",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_get_FIELD_display",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_get_check_sql",
+      "oracle": 7,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_get_col",
+      "oracle": 6,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_get_combinator_part_sql",
+      "oracle": 11,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_get_condition_sql",
+      "oracle": 16,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 6
+    },
+    {
+      "symbol": "_get_default",
+      "oracle": 9,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_get_default_pk_class",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_get_defer_select_mask",
+      "oracle": 17,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_get_expr_references",
+      "oracle": 10,
+      "anfs_recall": 4,
+      "anfs_total": 9,
+      "grep_recall": 4,
+      "grep_total": 10
+    },
+    {
+      "symbol": "_get_field_expression_map",
+      "oracle": 12,
+      "anfs_recall": 0,
+      "anfs_total": 4,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "_get_fields",
+      "oracle": 33,
+      "anfs_recall": 8,
+      "anfs_total": 12,
+      "grep_recall": 8,
+      "grep_total": 14
+    },
+    {
+      "symbol": "_get_file",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_get_index_expressions",
+      "oracle": 7,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_get_json_path",
+      "oracle": 5,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_get_lookup",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_get_m2m_attr",
+      "oracle": 12,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_get_m2m_db_table",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_get_m2m_reverse_attr",
+      "oracle": 14,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_get_naive_now",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_get_next_or_previous_by_FIELD",
+      "oracle": 11,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_get_next_or_previous_in_order",
+      "oracle": 11,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_get_only_select_mask",
+      "oracle": 9,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_get_path_info",
+      "oracle": 10,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_get_pk_val",
+      "oracle": 7,
+      "anfs_recall": 4,
+      "anfs_total": 5,
+      "grep_recall": 4,
+      "grep_total": 6
+    },
+    {
+      "symbol": "_get_queryset_methods",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_get_repr_options",
+      "oracle": 10,
+      "anfs_recall": 4,
+      "anfs_total": 5,
+      "grep_recall": 4,
+      "grep_total": 9
+    },
+    {
+      "symbol": "_get_set_deprecation_msg_params",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_get_unique_checks",
+      "oracle": 18,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_handle_order_with_respect_to",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_has_contribute_to_class",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_has_filters",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_has_signal_listeners",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_identity",
+      "oracle": 10,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_insert",
+      "oracle": 18,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_is_pk_set",
+      "oracle": 11,
+      "anfs_recall": 10,
+      "anfs_total": 22,
+      "grep_recall": 10,
+      "grep_total": 23
+    },
+    {
+      "symbol": "_iterator",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_lazy_method",
+      "oracle": 7,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_load_field",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_merge_known_related_objects",
+      "oracle": 5,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_merge_sanity_check",
+      "oracle": 8,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_next_is_sticky",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_non_pk_concrete_field_names",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_not_support_combined_queries",
+      "oracle": 15,
+      "anfs_recall": 13,
+      "anfs_total": 13,
+      "grep_recall": 13,
+      "grep_total": 14
+    },
+    {
+      "symbol": "_order_by_pairs",
+      "oracle": 27,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_output_field_or_none",
+      "oracle": 11,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_paired",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_parse_expressions",
+      "oracle": 8,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 7
+    },
+    {
+      "symbol": "_perform_date_checks",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_perform_unique_checks",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_populate_directed_relation_graph",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_prefetch_related_objects",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_prepare",
+      "oracle": 33,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_prepare_for_bulk_create",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_prepare_related_fields_for_save",
+      "oracle": 15,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_process_as_mysql",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_process_as_oracle",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_process_as_sqlite",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_property_names",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_raw_delete",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_register_combinable_fields",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_relation_tree",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_require_file",
+      "oracle": 7,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 6
+    },
+    {
+      "symbol": "_resolve_combined_type",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_resolve_leaf",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_resolve_node",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_resolve_output_field",
+      "oracle": 25,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 13
+    },
+    {
+      "symbol": "_reverse_one_to_one_field_names",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_save_parents",
+      "oracle": 22,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_save_table",
+      "oracle": 43,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_set_creation_counter",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_set_file",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_set_instance_attribute",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_set_pk_val",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_setup_joins",
+      "oracle": 7,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_setup_query",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_subclasses",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_subquery_fields_len",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_to_naive",
+      "oracle": 6,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_traverse_ancestors",
+      "oracle": 5,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_unregister_class_lookup",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_unregister_instance_lookup",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_update",
+      "oracle": 9,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_validate_force_insert",
+      "oracle": 9,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_validate_values_are_expressions",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_values",
+      "oracle": 7,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "aaggregate",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "abulk_create",
+      "oracle": 8,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "abulk_update",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "accessor_name",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "acontains",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "acount",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "acreate",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "add",
+      "oracle": 80,
+      "anfs_recall": 55,
+      "anfs_total": 57,
+      "grep_recall": 55,
+      "grep_total": 62
+    },
+    {
+      "symbol": "add_annotation",
+      "oracle": 11,
+      "anfs_recall": 3,
+      "anfs_total": 7,
+      "grep_recall": 3,
+      "grep_total": 8
+    },
+    {
+      "symbol": "add_deferred_loading",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "add_dependency",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "add_distinct_fields",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "add_extra",
+      "oracle": 13,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "add_field",
+      "oracle": 12,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "add_field_update",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 5,
+      "grep_recall": 0,
+      "grep_total": 6
+    },
+    {
+      "symbol": "add_fields",
+      "oracle": 15,
+      "anfs_recall": 4,
+      "anfs_total": 6,
+      "grep_recall": 4,
+      "grep_total": 7
+    },
+    {
+      "symbol": "add_filter",
+      "oracle": 6,
+      "anfs_recall": 5,
+      "anfs_total": 7,
+      "grep_recall": 5,
+      "grep_total": 8
+    },
+    {
+      "symbol": "add_filtered_relation",
+      "oracle": 18,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "add_immediate_loading",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "add_manager",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "add_ordering",
+      "oracle": 9,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "add_prefix",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "add_q",
+      "oracle": 12,
+      "anfs_recall": 5,
+      "anfs_total": 7,
+      "grep_recall": 5,
+      "grep_total": 10
+    },
+    {
+      "symbol": "add_related_update",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "add_restricted_objects",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "add_select_col",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "add_select_related",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "add_to_class",
+      "oracle": 12,
+      "anfs_recall": 9,
+      "anfs_total": 11,
+      "grep_recall": 9,
+      "grep_total": 12
+    },
+    {
+      "symbol": "add_update_fields",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "add_update_values",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "add_votes",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "adelete",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "aearliest",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "aexists",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "aexplain",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "afirst",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "aget",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "aget_or_create",
+      "oracle": 9,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "aggregate",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "ain_bulk",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "aiterator",
+      "oracle": 8,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "alast",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "alatest",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "alias",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "all",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 19,
+      "grep_recall": 0,
+      "grep_total": 26
+    },
+    {
+      "symbol": "all_parents",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "allowed_default",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 6
+    },
+    {
+      "symbol": "annotate",
+      "oracle": 5,
+      "anfs_recall": 3,
+      "anfs_total": 4,
+      "grep_recall": 3,
+      "grep_total": 18
+    },
+    {
+      "symbol": "annotation_select",
+      "oracle": 28,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "app_config",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "append_annotation_mask",
+      "oracle": 5,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "apply_bilateral_transforms",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "apply_converters",
+      "oracle": 7,
+      "anfs_recall": 3,
+      "anfs_total": 5,
+      "grep_recall": 3,
+      "grep_total": 6
+    },
+    {
+      "symbol": "aprefetch_related_objects",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "arefresh_from_db",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "as_manager",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "as_mysql",
+      "oracle": 47,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 18
+    },
+    {
+      "symbol": "as_native",
+      "oracle": 18,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 6
+    },
+    {
+      "symbol": "as_oracle",
+      "oracle": 97,
+      "anfs_recall": 3,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 35
+    },
+    {
+      "symbol": "as_postgresql",
+      "oracle": 47,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 14
+    },
+    {
+      "symbol": "as_sql",
+      "oracle": 524,
+      "anfs_recall": 114,
+      "anfs_total": 132,
+      "grep_recall": 113,
+      "grep_total": 205
+    },
+    {
+      "symbol": "as_sqlite",
+      "oracle": 72,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 29
+    },
+    {
+      "symbol": "asave",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "asc",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "assemble_as_sql",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "attnames",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "aupdate",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "aupdate_or_create",
+      "oracle": 10,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "base_manager",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "base_table",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "batch_process_rhs",
+      "oracle": 14,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 9
+    },
+    {
+      "symbol": "bitand",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 8
+    },
+    {
+      "symbol": "bitleftshift",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "bitor",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 8
+    },
+    {
+      "symbol": "bitrightshift",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "bitxor",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 7
+    },
+    {
+      "symbol": "build_filter",
+      "oracle": 63,
+      "anfs_recall": 4,
+      "anfs_total": 5,
+      "grep_recall": 4,
+      "grep_total": 6
+    },
+    {
+      "symbol": "build_lookup",
+      "oracle": 11,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 5
+    },
+    {
+      "symbol": "build_where",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "bulk_create",
+      "oracle": 36,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 8
+    },
+    {
+      "symbol": "bulk_update",
+      "oracle": 21,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 6
+    },
+    {
+      "symbol": "bump_prefix",
+      "oracle": 13,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "cache_name",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "cached_col",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "can_fast_delete",
+      "oracle": 11,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "can_filter",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 5,
+      "grep_recall": 3,
+      "grep_total": 6
+    },
+    {
+      "symbol": "can_migrate",
+      "oracle": 8,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "cast_db_type",
+      "oracle": 7,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 6
+    },
+    {
+      "symbol": "chain",
+      "oracle": 9,
+      "anfs_recall": 5,
+      "anfs_total": 11,
+      "grep_recall": 5,
+      "grep_total": 15
+    },
+    {
+      "symbol": "change_aliases",
+      "oracle": 25,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "check",
+      "oracle": 170,
+      "anfs_recall": 21,
+      "anfs_total": 28,
+      "grep_recall": 22,
+      "grep_total": 56
+    },
+    {
+      "symbol": "check_alias",
+      "oracle": 7,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 6
+    },
+    {
+      "symbol": "check_filterable",
+      "oracle": 8,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "check_query_object_type",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "check_rel_lookup_compatibility",
+      "oracle": 8,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "check_related_objects",
+      "oracle": 11,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "check_rhs_elements_length_equals_lhs_length",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "check_rhs_is_collection_of_tuples_or_lists",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "check_rhs_is_query",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "check_rhs_is_supported_expression",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "check_rhs_is_tuple_or_list",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "check_rhs_length_equals_lhs_length",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "choices",
+      "oracle": 24,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "clean",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 8
+    },
+    {
+      "symbol": "clean_fields",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "clear_deferred_loading",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "clear_limits",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "clear_ordering",
+      "oracle": 16,
+      "anfs_recall": 9,
+      "anfs_total": 16,
+      "grep_recall": 9,
+      "grep_total": 17
+    },
+    {
+      "symbol": "clear_restricted_objects_from_queryset",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "clear_restricted_objects_from_set",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "clear_select_clause",
+      "oracle": 8,
+      "anfs_recall": 2,
+      "anfs_total": 5,
+      "grep_recall": 2,
+      "grep_total": 6
+    },
+    {
+      "symbol": "clear_select_fields",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "clear_where",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "clone",
+      "oracle": 52,
+      "anfs_recall": 19,
+      "anfs_total": 33,
+      "grep_recall": 19,
+      "grep_total": 43
+    },
+    {
+      "symbol": "close",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 8,
+      "grep_recall": 1,
+      "grep_total": 9
+    },
+    {
+      "symbol": "closed",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "coalesce",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "collapse_group_by",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "collect",
+      "oracle": 37,
+      "anfs_recall": 4,
+      "anfs_total": 5,
+      "grep_recall": 4,
+      "grep_total": 6
+    },
+    {
+      "symbol": "columns",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "combine",
+      "oracle": 38,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "compile",
+      "oracle": 26,
+      "anfs_recall": 21,
+      "anfs_total": 70,
+      "grep_recall": 21,
+      "grep_total": 72
+    },
+    {
+      "symbol": "compile_json_path_final_key",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "complex_filter",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "composite_fields_to_tuples",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "concrete_fields",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "condition",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "conditional",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "connect",
+      "oracle": 9,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "constraint_sql",
+      "oracle": 12,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "contains",
+      "oracle": 8,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "contains_aggregate",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "contains_column_references",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "contains_expressions",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "contains_over_clause",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "contains_self_reference_subquery",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "contains_subquery",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "context",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "contribute_to_class",
+      "oracle": 105,
+      "anfs_recall": 9,
+      "anfs_total": 10,
+      "grep_recall": 9,
+      "grep_total": 30
+    },
+    {
+      "symbol": "contribute_to_related_class",
+      "oracle": 23,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "convert_empty_strings",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "convert_value",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "copy",
+      "oracle": 62,
+      "anfs_recall": 61,
+      "anfs_total": 74,
+      "grep_recall": 61,
+      "grep_total": 79
+    },
+    {
+      "symbol": "count",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 5,
+      "grep_recall": 2,
+      "grep_total": 8
+    },
+    {
+      "symbol": "count_active_tables",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "create",
+      "oracle": 41,
+      "anfs_recall": 21,
+      "anfs_total": 21,
+      "grep_recall": 21,
+      "grep_total": 25
+    },
+    {
+      "symbol": "create_forward_many_to_many_manager",
+      "oracle": 27,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "create_many_to_many_intermediary_model",
+      "oracle": 16,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "create_namedtuple_class",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "create_reverse_many_to_one_manager",
+      "oracle": 10,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 5
+    },
+    {
+      "symbol": "create_sql",
+      "oracle": 30,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "cursor_iter",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "date_error_message",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "dates",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "datetimes",
+      "oracle": 11,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "db",
+      "oracle": 40,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "db_check",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 5
+    },
+    {
+      "symbol": "db_manager",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 11,
+      "grep_recall": 0,
+      "grep_total": 12
+    },
+    {
+      "symbol": "db_parameters",
+      "oracle": 10,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 10
+    },
+    {
+      "symbol": "db_returning",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "db_returning_fields",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "db_tablespace",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "db_type",
+      "oracle": 12,
+      "anfs_recall": 8,
+      "anfs_total": 10,
+      "grep_recall": 8,
+      "grep_total": 19
+    },
+    {
+      "symbol": "db_type_parameters",
+      "oracle": 5,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 6
+    },
+    {
+      "symbol": "db_type_suffix",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "deconstruct",
+      "oracle": 189,
+      "anfs_recall": 31,
+      "anfs_total": 32,
+      "grep_recall": 31,
+      "grep_total": 67
+    },
+    {
+      "symbol": "default_alias",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "default_manager",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "defer",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 7
+    },
+    {
+      "symbol": "delete",
+      "oracle": 54,
+      "anfs_recall": 4,
+      "anfs_total": 6,
+      "grep_recall": 4,
+      "grep_total": 14
+    },
+    {
+      "symbol": "delete_batch",
+      "oracle": 9,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "delete_cached_value",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 8,
+      "grep_recall": 0,
+      "grep_total": 9
+    },
+    {
+      "symbol": "demote",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "demote_joins",
+      "oracle": 9,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "desc",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "description",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "difference",
+      "oracle": 12,
+      "anfs_recall": 9,
+      "anfs_total": 10,
+      "grep_recall": 9,
+      "grep_total": 11
+    },
+    {
+      "symbol": "disconnect",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "distinct",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 8
+    },
+    {
+      "symbol": "do_query",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "do_related_class",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "earliest",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "empty_result_set_value",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "error_messages",
+      "oracle": 25,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "exclude",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 6
+    },
+    {
+      "symbol": "execute_returning_sql",
+      "oracle": 13,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "execute_sql",
+      "oracle": 42,
+      "anfs_recall": 6,
+      "anfs_total": 16,
+      "grep_recall": 6,
+      "grep_total": 20
+    },
+    {
+      "symbol": "exists",
+      "oracle": 11,
+      "anfs_recall": 2,
+      "anfs_total": 13,
+      "grep_recall": 2,
+      "grep_total": 16
+    },
+    {
+      "symbol": "explain",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "explain_query",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "external_aliases",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "extra",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 8
+    },
+    {
+      "symbol": "extra_select",
+      "oracle": 10,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "fetch",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 7
+    },
+    {
+      "symbol": "fetch_many",
+      "oracle": 11,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "fetch_mode",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "fetch_one",
+      "oracle": 10,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "field",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 9
+    },
+    {
+      "symbol": "field_as_sql",
+      "oracle": 9,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "fields",
+      "oracle": 13,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 10
+    },
+    {
+      "symbol": "fields_map",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "filter",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 39,
+      "grep_recall": 0,
+      "grep_total": 55
+    },
+    {
+      "symbol": "find_ordering_name",
+      "oracle": 20,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "first",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "flatchoices",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "flatten",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 5,
+      "grep_recall": 2,
+      "grep_total": 7
+    },
+    {
+      "symbol": "foreign_related_fields",
+      "oracle": 11,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "formfield",
+      "oracle": 103,
+      "anfs_recall": 27,
+      "anfs_total": 27,
+      "grep_recall": 27,
+      "grep_total": 56
+    },
+    {
+      "symbol": "from_db",
+      "oracle": 9,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "from_db_value",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "from_lookup",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "from_param",
+      "oracle": 10,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "from_queryset",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "full_clean",
+      "oracle": 13,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "generate_filename",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "generated_sql",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "get",
+      "oracle": 64,
+      "anfs_recall": 55,
+      "anfs_total": 100,
+      "grep_recall": 55,
+      "grep_total": 109
+    },
+    {
+      "symbol": "get_accessor_name",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_aggregation",
+      "oracle": 39,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_ancestor_link",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 6,
+      "grep_recall": 1,
+      "grep_total": 7
+    },
+    {
+      "symbol": "get_attname",
+      "oracle": 5,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 5
+    },
+    {
+      "symbol": "get_attname_column",
+      "oracle": 8,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 8
+    },
+    {
+      "symbol": "get_base_chain",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 2,
+      "grep_total": 5
+    },
+    {
+      "symbol": "get_bilateral_transforms",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_blank_choice_label",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_bound_params",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 8
+    },
+    {
+      "symbol": "get_cached_value",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 10,
+      "grep_recall": 0,
+      "grep_total": 11
+    },
+    {
+      "symbol": "get_candidate_relations_to_delete",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_child_with_renamed_prefix",
+      "oracle": 19,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_children_from_q",
+      "oracle": 5,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "get_choices",
+      "oracle": 23,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 5
+    },
+    {
+      "symbol": "get_class_lookups",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_col",
+      "oracle": 18,
+      "anfs_recall": 3,
+      "anfs_total": 14,
+      "grep_recall": 3,
+      "grep_total": 19
+    },
+    {
+      "symbol": "get_cols",
+      "oracle": 7,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 6
+    },
+    {
+      "symbol": "get_columns",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_combinator_sql",
+      "oracle": 11,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_compiler",
+      "oracle": 16,
+      "anfs_recall": 11,
+      "anfs_total": 28,
+      "grep_recall": 11,
+      "grep_total": 29
+    },
+    {
+      "symbol": "get_constraints",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_converters",
+      "oracle": 7,
+      "anfs_recall": 4,
+      "anfs_total": 6,
+      "grep_recall": 4,
+      "grep_total": 7
+    },
+    {
+      "symbol": "get_count",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_current_prefetch_to",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_current_querysets",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_current_to_attr",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_db_converters",
+      "oracle": 17,
+      "anfs_recall": 7,
+      "anfs_total": 9,
+      "grep_recall": 7,
+      "grep_total": 15
+    },
+    {
+      "symbol": "get_db_prep_lookup",
+      "oracle": 9,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_db_prep_save",
+      "oracle": 20,
+      "anfs_recall": 2,
+      "anfs_total": 5,
+      "grep_recall": 2,
+      "grep_total": 11
+    },
+    {
+      "symbol": "get_db_prep_value",
+      "oracle": 38,
+      "anfs_recall": 6,
+      "anfs_total": 11,
+      "grep_recall": 6,
+      "grep_total": 26
+    },
+    {
+      "symbol": "get_default",
+      "oracle": 9,
+      "anfs_recall": 4,
+      "anfs_total": 8,
+      "grep_recall": 4,
+      "grep_total": 12
+    },
+    {
+      "symbol": "get_default_columns",
+      "oracle": 22,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "get_deferred_fields",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_del_batches",
+      "oracle": 7,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_direct_rhs_sql",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_distinct",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "get_exclusion",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_expression_for_validation",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_external_cols",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 5
+    },
+    {
+      "symbol": "get_extra_restriction",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 7
+    },
+    {
+      "symbol": "get_extra_select",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_fallback_sql",
+      "oracle": 31,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 9
+    },
+    {
+      "symbol": "get_field",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 51,
+      "grep_recall": 0,
+      "grep_total": 59
+    },
+    {
+      "symbol": "get_field_names_from_opts",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_fields",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 6,
+      "grep_recall": 0,
+      "grep_total": 19
+    },
+    {
+      "symbol": "get_filter_kwargs_for_object",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 4,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "get_foreign_related_value",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 5,
+      "grep_recall": 0,
+      "grep_total": 6
+    },
+    {
+      "symbol": "get_forward_related_filter",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 6
+    },
+    {
+      "symbol": "get_from_clause",
+      "oracle": 9,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_group_by",
+      "oracle": 13,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_group_by_cols",
+      "oracle": 28,
+      "anfs_recall": 9,
+      "anfs_total": 18,
+      "grep_recall": 9,
+      "grep_total": 37
+    },
+    {
+      "symbol": "get_initial_alias",
+      "oracle": 9,
+      "anfs_recall": 4,
+      "anfs_total": 13,
+      "grep_recall": 4,
+      "grep_total": 14
+    },
+    {
+      "symbol": "get_instance_lookups",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "get_instance_value_for_fields",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_internal_type",
+      "oracle": 9,
+      "anfs_recall": 8,
+      "anfs_total": 24,
+      "grep_recall": 8,
+      "grep_total": 58
+    },
+    {
+      "symbol": "get_joining_fields",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_lhs_str",
+      "oracle": 9,
+      "anfs_recall": 6,
+      "anfs_total": 6,
+      "grep_recall": 6,
+      "grep_total": 7
+    },
+    {
+      "symbol": "get_limit_choices_to",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_local_related_value",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_lookup",
+      "oracle": 10,
+      "anfs_recall": 8,
+      "anfs_total": 20,
+      "grep_recall": 8,
+      "grep_total": 27
+    },
+    {
+      "symbol": "get_lookups",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_meta",
+      "oracle": 16,
+      "anfs_recall": 14,
+      "anfs_total": 23,
+      "grep_recall": 14,
+      "grep_total": 24
+    },
+    {
+      "symbol": "get_normalized_value",
+      "oracle": 13,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "get_object",
+      "oracle": 11,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_or_create",
+      "oracle": 23,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 7
+    },
+    {
+      "symbol": "get_order_by",
+      "oracle": 13,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 2,
+      "grep_total": 6
+    },
+    {
+      "symbol": "get_order_dir",
+      "oracle": 7,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_parent_list",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "get_path_from_parent",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_path_info",
+      "oracle": 12,
+      "anfs_recall": 3,
+      "anfs_total": 6,
+      "grep_recall": 3,
+      "grep_total": 9
+    },
+    {
+      "symbol": "get_path_to_parent",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_paths_from_expression",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_pk_value_on_save",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "get_placeholder_sql",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 6
+    },
+    {
+      "symbol": "get_prefetch_querysets",
+      "oracle": 41,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 13
+    },
+    {
+      "symbol": "get_prefetcher",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_prep_lhs",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_prep_lookup",
+      "oracle": 70,
+      "anfs_recall": 5,
+      "anfs_total": 8,
+      "grep_recall": 5,
+      "grep_total": 19
+    },
+    {
+      "symbol": "get_prep_value",
+      "oracle": 54,
+      "anfs_recall": 21,
+      "anfs_total": 29,
+      "grep_recall": 21,
+      "grep_total": 47
+    },
+    {
+      "symbol": "get_qualify_sql",
+      "oracle": 16,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_queryset",
+      "oracle": 19,
+      "anfs_recall": 5,
+      "anfs_total": 14,
+      "grep_recall": 5,
+      "grep_total": 22
+    },
+    {
+      "symbol": "get_refs",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 6,
+      "grep_recall": 1,
+      "grep_total": 9
+    },
+    {
+      "symbol": "get_related_field",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "get_related_populators",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_related_selections",
+      "oracle": 64,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "get_related_updates",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_reverse_joining_fields",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_reverse_path_info",
+      "oracle": 8,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 5
+    },
+    {
+      "symbol": "get_reverse_related_filter",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_rhs_op",
+      "oracle": 9,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 6
+    },
+    {
+      "symbol": "get_select",
+      "oracle": 24,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_select_for_update_of_arguments",
+      "oracle": 12,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_select_from_parent",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_select_mask",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_source_expressions",
+      "oracle": 65,
+      "anfs_recall": 48,
+      "anfs_total": 56,
+      "grep_recall": 48,
+      "grep_total": 73
+    },
+    {
+      "symbol": "get_source_fields",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "get_substr",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_transform",
+      "oracle": 8,
+      "anfs_recall": 5,
+      "anfs_total": 9,
+      "grep_recall": 5,
+      "grep_total": 15
+    },
+    {
+      "symbol": "get_tzname",
+      "oracle": 6,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "get_violation_error_message",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "has_composite_fields",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "has_db_default",
+      "oracle": 5,
+      "anfs_recall": 4,
+      "anfs_total": 6,
+      "grep_recall": 4,
+      "grep_total": 7
+    },
+    {
+      "symbol": "has_default",
+      "oracle": 11,
+      "anfs_recall": 10,
+      "anfs_total": 13,
+      "grep_recall": 10,
+      "grep_total": 14
+    },
+    {
+      "symbol": "has_filters",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "has_limit_one",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "has_results",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "has_select_fields",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "hidden",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "identity",
+      "oracle": 38,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 8
+    },
+    {
+      "symbol": "in_bulk",
+      "oracle": 33,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "insert_values",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "instances_with_model",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "intersection",
+      "oracle": 7,
+      "anfs_recall": 3,
+      "anfs_total": 4,
+      "grep_recall": 3,
+      "grep_total": 5
+    },
+    {
+      "symbol": "is_cached",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 14,
+      "grep_recall": 2,
+      "grep_total": 17
+    },
+    {
+      "symbol": "is_composite_pk",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "is_empty",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "is_nullable",
+      "oracle": 5,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 6
+    },
+    {
+      "symbol": "is_simple_lookup",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "is_sliced",
+      "oracle": 16,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "is_summary",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "iterator",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 6
+    },
+    {
+      "symbol": "join",
+      "oracle": 102,
+      "anfs_recall": 81,
+      "anfs_total": 82,
+      "grep_recall": 81,
+      "grep_total": 85
+    },
+    {
+      "symbol": "join_parent_model",
+      "oracle": 10,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "label",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "label_lower",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "labels",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "last",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "latest",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "lazy_related_operation",
+      "oracle": 8,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "leaves",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "lhs",
+      "oracle": 14,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "local_concrete_fields",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "local_related_fields",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "make_foreign_order_accessors",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "make_immutable_fields_list",
+      "oracle": 8,
+      "anfs_recall": 7,
+      "anfs_total": 7,
+      "grep_recall": 7,
+      "grep_total": 8
+    },
+    {
+      "symbol": "make_model_tuple",
+      "oracle": 14,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 6
+    },
+    {
+      "symbol": "managers",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "managers_map",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "many_to_many",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "many_to_one",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "merge_dicts",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "method_get_order",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "method_set_order",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "model_fields",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "model_unpickle",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "name",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "names",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "names_to_path",
+      "oracle": 31,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 7
+    },
+    {
+      "symbol": "none",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "normalize_prefetch_lookups",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "normalize_together",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "on_delete_sql",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "one_to_many",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "one_to_one",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "only",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 10
+    },
+    {
+      "symbol": "open",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 6
+    },
+    {
+      "symbol": "order_by",
+      "oracle": 8,
+      "anfs_recall": 3,
+      "anfs_total": 9,
+      "grep_recall": 5,
+      "grep_total": 15
+    },
+    {
+      "symbol": "orderby_issubset_groupby",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "ordered",
+      "oracle": 8,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "output_field",
+      "oracle": 68,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "params_type",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "path",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "path_infos",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "pipes_concat_sql",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "pk_fields",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "populate",
+      "oracle": 12,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "pre_save",
+      "oracle": 13,
+      "anfs_recall": 4,
+      "anfs_total": 7,
+      "grep_recall": 4,
+      "grep_total": 14
+    },
+    {
+      "symbol": "pre_save_val",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "pre_sql_setup",
+      "oracle": 25,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 5
+    },
+    {
+      "symbol": "prefetch_one_level",
+      "oracle": 10,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "prefetch_related",
+      "oracle": 9,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 10
+    },
+    {
+      "symbol": "prefetch_related_objects",
+      "oracle": 11,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 8
+    },
+    {
+      "symbol": "prefix_references",
+      "oracle": 6,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "prepare_database_save",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "prepare_value",
+      "oracle": 11,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "preprocess_lhs",
+      "oracle": 12,
+      "anfs_recall": 8,
+      "anfs_total": 9,
+      "grep_recall": 8,
+      "grep_total": 10
+    },
+    {
+      "symbol": "process_lhs",
+      "oracle": 31,
+      "anfs_recall": 15,
+      "anfs_total": 15,
+      "grep_recall": 15,
+      "grep_total": 20
+    },
+    {
+      "symbol": "process_rhs",
+      "oracle": 80,
+      "anfs_recall": 27,
+      "anfs_total": 27,
+      "grep_recall": 27,
+      "grep_total": 40
+    },
+    {
+      "symbol": "promote",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "promote_joins",
+      "oracle": 14,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "query",
+      "oracle": 113,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 8
+    },
+    {
+      "symbol": "quote_name",
+      "oracle": 10,
+      "anfs_recall": 6,
+      "anfs_total": 15,
+      "grep_recall": 6,
+      "grep_total": 17
+    },
+    {
+      "symbol": "quote_name_unless_alias",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "raw",
+      "oracle": 9,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "ref_alias",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "referenced_base_fields",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "referenced_fields",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "refresh_from_db",
+      "oracle": 32,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "refs_expression",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "register_class_lookup",
+      "oracle": 9,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "register_combinable_fields",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "register_instance_lookup",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "register_wrappers",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "rel_db_type",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 6
+    },
+    {
+      "symbol": "relabel_aliases",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 2,
+      "grep_total": 6
+    },
+    {
+      "symbol": "relabeled_clone",
+      "oracle": 32,
+      "anfs_recall": 6,
+      "anfs_total": 14,
+      "grep_recall": 6,
+      "grep_total": 27
+    },
+    {
+      "symbol": "related_fields",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "related_manager_cls",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "related_model",
+      "oracle": 8,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "related_objects",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "related_query_name",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 8,
+      "grep_recall": 2,
+      "grep_total": 9
+    },
+    {
+      "symbol": "remote_field",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "remove_sql",
+      "oracle": 11,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "rename_prefix_from_q",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "replace_expressions",
+      "oracle": 26,
+      "anfs_recall": 5,
+      "anfs_total": 11,
+      "grep_recall": 5,
+      "grep_total": 15
+    },
+    {
+      "symbol": "reset_refcounts",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "resolve_callables",
+      "oracle": 6,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "resolve_expression",
+      "oracle": 118,
+      "anfs_recall": 30,
+      "anfs_total": 44,
+      "grep_recall": 30,
+      "grep_total": 70
+    },
+    {
+      "symbol": "resolve_expression_parameter",
+      "oracle": 26,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "resolve_lookup_value",
+      "oracle": 12,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "resolve_model_init_order",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "resolve_ref",
+      "oracle": 17,
+      "anfs_recall": 0,
+      "anfs_total": 5,
+      "grep_recall": 0,
+      "grep_total": 6
+    },
+    {
+      "symbol": "resolve_related_fields",
+      "oracle": 14,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "resolve_relation",
+      "oracle": 11,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 6
+    },
+    {
+      "symbol": "results_iter",
+      "oracle": 10,
+      "anfs_recall": 0,
+      "anfs_total": 4,
+      "grep_recall": 0,
+      "grep_total": 6
+    },
+    {
+      "symbol": "return_None",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "reverse",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 2,
+      "grep_total": 5
+    },
+    {
+      "symbol": "reverse_ordering",
+      "oracle": 10,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "reverse_path_infos",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "reverse_related_fields",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "rhs_is_direct_value",
+      "oracle": 13,
+      "anfs_recall": 12,
+      "anfs_total": 18,
+      "grep_recall": 12,
+      "grep_total": 19
+    },
+    {
+      "symbol": "run_validators",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "save",
+      "oracle": 30,
+      "anfs_recall": 2,
+      "anfs_total": 9,
+      "grep_recall": 2,
+      "grep_total": 16
+    },
+    {
+      "symbol": "save_base",
+      "oracle": 32,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "save_form_data",
+      "oracle": 9,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "select_for_update",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "select_format",
+      "oracle": 19,
+      "anfs_recall": 1,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 11
+    },
+    {
+      "symbol": "select_related",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 17
+    },
+    {
+      "symbol": "select_related_descend",
+      "oracle": 10,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "serializable_value",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "set_annotation_mask",
+      "oracle": 16,
+      "anfs_recall": 6,
+      "anfs_total": 8,
+      "grep_recall": 6,
+      "grep_total": 9
+    },
+    {
+      "symbol": "set_attributes_from_name",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "set_attributes_from_rel",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "set_cached_value",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 16,
+      "grep_recall": 0,
+      "grep_total": 18
+    },
+    {
+      "symbol": "set_empty",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "set_extra_mask",
+      "oracle": 7,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "set_field_name",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "set_group_by",
+      "oracle": 14,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "set_limits",
+      "oracle": 14,
+      "anfs_recall": 4,
+      "anfs_total": 5,
+      "grep_recall": 4,
+      "grep_total": 6
+    },
+    {
+      "symbol": "set_name_with_model",
+      "oracle": 10,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "set_select",
+      "oracle": 5,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "set_source_expressions",
+      "oracle": 42,
+      "anfs_recall": 21,
+      "anfs_total": 25,
+      "grep_recall": 21,
+      "grep_total": 41
+    },
+    {
+      "symbol": "set_values",
+      "oracle": 34,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 2,
+      "grep_total": 5
+    },
+    {
+      "symbol": "set_wrapper_classes",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "setting_changed",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "setup_joins",
+      "oracle": 28,
+      "anfs_recall": 4,
+      "anfs_total": 8,
+      "grep_recall": 4,
+      "grep_total": 11
+    },
+    {
+      "symbol": "setup_pk",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "setup_proxy",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "setup_query",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "single_alias",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "size",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "slice_expression",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "solve_lookup_type",
+      "oracle": 10,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "sort",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "split_exclude",
+      "oracle": 10,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "split_having_qualify",
+      "oracle": 17,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "split_parameter_list_as_sql",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "sql_with_params",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "subclass_exception",
+      "oracle": 10,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "subclasses",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "swappable_setting",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "swapped",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "table_alias",
+      "oracle": 9,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "target_field",
+      "oracle": 14,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "through",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "to_python",
+      "oracle": 117,
+      "anfs_recall": 12,
+      "anfs_total": 13,
+      "grep_recall": 12,
+      "grep_total": 30
+    },
+    {
+      "symbol": "total_unique_constraints",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "totally_ordered",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "trim_joins",
+      "oracle": 10,
+      "anfs_recall": 3,
+      "anfs_total": 5,
+      "grep_recall": 3,
+      "grep_total": 6
+    },
+    {
+      "symbol": "trim_start",
+      "oracle": 14,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "try_transform",
+      "oracle": 12,
+      "anfs_recall": 4,
+      "anfs_total": 5,
+      "grep_recall": 4,
+      "grep_total": 6
+    },
+    {
+      "symbol": "union",
+      "oracle": 10,
+      "anfs_recall": 3,
+      "anfs_total": 4,
+      "grep_recall": 3,
+      "grep_total": 6
+    },
+    {
+      "symbol": "unique",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "unique_error_message",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "unnest",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "unpickle_named_row",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "unref_alias",
+      "oracle": 6,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 6
+    },
+    {
+      "symbol": "update",
+      "oracle": 42,
+      "anfs_recall": 31,
+      "anfs_total": 40,
+      "grep_recall": 31,
+      "grep_total": 46
+    },
+    {
+      "symbol": "update_batch",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "update_dimension_fields",
+      "oracle": 12,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "update_join_types",
+      "oracle": 8,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "update_or_create",
+      "oracle": 26,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 6
+    },
+    {
+      "symbol": "url",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "using",
+      "oracle": 10,
+      "anfs_recall": 1,
+      "anfs_total": 27,
+      "grep_recall": 1,
+      "grep_total": 29
+    },
+    {
+      "symbol": "validate",
+      "oracle": 72,
+      "anfs_recall": 3,
+      "anfs_total": 4,
+      "grep_recall": 3,
+      "grep_total": 12
+    },
+    {
+      "symbol": "validate_constraints",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "validate_unique",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "validators",
+      "oracle": 9,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "value_from_object",
+      "oracle": 10,
+      "anfs_recall": 8,
+      "anfs_total": 9,
+      "grep_recall": 8,
+      "grep_total": 11
+    },
+    {
+      "symbol": "value_to_string",
+      "oracle": 11,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 9
+    },
+    {
+      "symbol": "values",
+      "oracle": 24,
+      "anfs_recall": 21,
+      "anfs_total": 34,
+      "grep_recall": 21,
+      "grep_total": 59
+    },
+    {
+      "symbol": "values_list",
+      "oracle": 14,
+      "anfs_recall": 2,
+      "anfs_total": 9,
+      "grep_recall": 4,
+      "grep_total": 24
+    },
+    {
+      "symbol": "verbose_name_raw",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "window_frame_start_end",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "year_lookup_bounds",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    }
+  ]
+}

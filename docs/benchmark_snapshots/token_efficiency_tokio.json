@@ -1,0 +1,86 @@
+{
+  "model": "deepseek-v4-flash",
+  "runs": 1,
+  "corpus_files": 124,
+  "corpus_symbols": 1339,
+  "tasks": [
+    {
+      "name": "tokio_schedule_async_tasks",
+      "question": "How does tokio schedule and run async tasks on its runtime?",
+      "arms": {
+        "baseline": {
+          "uncached_tokens": 41212,
+          "cache_miss_tokens": 37460,
+          "completion_tokens": 3752,
+          "total_tokens": 325500,
+          "tool_calls": 21,
+          "key_facts_hit": 6,
+          "success": 1,
+          "runs": [
+            {
+              "tool_calls": 21,
+              "prompt_tokens": 321748,
+              "completion_tokens": 3752,
+              "cache_hit_tokens": 284288,
+              "cache_miss_tokens": 37460,
+              "uncached_tokens": 41212,
+              "total_tokens": 325500,
+              "steps": 13,
+              "stopped": "answer",
+              "key_facts_hit": 6,
+              "answer": "Here's a comprehensive explanation of how Tokio schedules and runs async tasks on its runtime.\n\n---\n\n## Overview\n\nTokio has **two scheduler flavors** behind a common `scheduler::Handle` enum:\n\n- **`CurrentThread`** \u2013 a single-threaded executor (used by `#[tokio::main]` without the `rt-multi-thread` feature, or by `LocalSet`).\n- **`MultiThread`** \u2013 a work-stealing thread pool (the default `#[tokio::main]`).\n\nBoth implement the same `task::Schedule` trait to unify the task lifecycle.\n\n---\n\n## 1. Task Creation & Representation\n\nWhen you call `tokio::spawn(future)`, the flow is:\n\n1. **`Handle::spawn()`** (in `scheduler/mod.rs`) dispatches to the flavor-specific spawn.\n2. For **MultiThread**, `Handle::spawn()` \u2192 `Handle::bind_new_task()` (in `multi_thread/handle.rs`) calls `shared.owned.bind(future, ...)`, which:\n   - Allocates a `task::Task<S>` backed by a `RawTask` (a `NonNull<Header>` pointing to a `Cell<T, S>` with header, core (with the future + scheduler), and trailer).\n   - Returns a `(JoinHandle, Option<Notified>)`.\n3. The `Notified` (if `Some`) is passed to `Schedule::schedule()`, which delivers it to a worker's queue.\n\nKey types: `Task<S>`, `Notified<S>`, `RawTask`, `Cell<T, S>`, `JoinHandle<T>`.\n\n---\n\n## 2. Scheduling a Task (`Schedule::schedule`)\n\n### CurrentThread Scheduler\n\n`Arc<Handle>` implements `Schedule`. Its `schedule()` method (in `current_thread/mod.rs`) checks **which thread** is calling:\n\n- **From the same runtime thread**: pushes the `Notified` onto the **local `VecDeque<Notified>`** (the `core.tasks` queue).\n- **From another thread**: pushes into the **shared `Inject` queue** and calls `driver.unpark()` to wake the runtime thread.\n\n### MultiThread Scheduler\n\n`Arc<Handle>` implements `Schedule`. Its `schedule()` \u2192 `Handle::schedule_task()` (in `multi_thread/worker.rs`) does:\n\n- **From the same worker thread (same handle, core present)** \u2192 `schedule_local()`:\n  - If `lifo_enabled` (default `true`), pushes to the **LIFO slot** (`core.lifo_slot`). The previous LIFO task (if any) is moved to the back of the local run queue.\n  - If it's a `yield_now` or LIFO is disabled, pushes to the back of the local `run_queue` (a lock-free MPSC queue).\n  - Calls `notify_parked_local()` to wake an idle worker if needed.\n- **From another thread or without a core** \u2192 `push_remote_task()`:\n  - Pushes into the **global `Inject` queue** (a concurrent linked list protected by a mutex).\n  - Calls `notify_parked_remote()` to wake a parked worker.\n\nKey types: `Core` (local to each worker), `queue::Local<Arc<Handle>>` (local run queue), `inject::Shared<Arc<Handle>>` (global injection queue), `lifo_slot: Option<Notified>`.\n\n---\n\n## 3. The Worker Run Loop\n\n### CurrentThread\n\n`CoreGuard::block_on()` runs a tight loop:\n\n```\nloop {\n    poll the \"block_on\" future if woken\n    for _ in 0..event_interval {\n        tick++\n        task = core.next_task(handle)   // alternates local queue and inject queue\n        if Some(task) \u2192 run_task(task)  // poll the future\n        else \u2192 park() or park_yield()   // yield to I/O/timer driver\n    }\n    park_yield()  // yield periodically to drive I/O/timers\n}\n```\n\n`next_task()` checks the global queue every `global_queue_interval` ticks (default 31), else prioritizes the local queue.\n\n### MultiThread\n\nEach worker thread runs `Context::run()` (in `multi_thread/worker.rs`):\n\n```\nwhile !core.is_shutdown {\n    tick()\n    maintenance()              // periodically park_yield to drive I/O/timers\n    if let Some(task) = core.next_task(&worker) {\n        run_task(task)         // poll the future + LIFO slot tasks\n        continue\n    }\n    // No local work \u2192 try to steal\n    if let Some(task) = core.steal_work(&worker) {\n        run_task(task)\n    } else {\n        park()                 // sleep until woken\n    }\n}\n```\n\n**`next_task()`** alternates between:\n1. Checking the global inject queue every `global_queue_interval` ticks. When pulling from the inject queue, it takes a **batch** of tasks (about `len / num_workers + 1`) to amortize lock contention, returning one directly and pushing the rest to the local queue.\n2. Otherwise, popping from the **local queue** (`lifo_slot` first, then `run_queue`).\n\n---\n\n## 4. Work-Stealing\n\nWhen a worker finds no local work, `steal_work()` (in `multi_thread/worker.rs`):\n\n1. **Transitions to \"searching\"** state via `Idle` coordination (only if fewer than half the workers are already searching).\n2. Picks a **random starting worker** and iterates through all others.\n3. Calls `target.steal.steal_into(&mut self.run_queue, ...)` which steals **half** the tasks from the victim's local queue (using the lock-free `queue::Steal` handle).\n4. Falls back to checking the global inject queue.\n\nKey types: `queue::Steal<Arc<Handle>>` (shared with other workers via `Remote`), `Idle` (coordinates searching/parked state).\n\n---\n\n## 5. Running a Task (Polling)\n\n`run_task()` (in `multi_thread/worker.rs`, ~line 700):\n\n1. Takes the `Notified` and asserts ownership via `owned.assert_owner()`.\n2. Stores the `Core` in thread-local context so `schedule()` can find it.\n3. Calls `task.run()`, which calls `RawTask::poll()` \u2192 vtable dispatch \u2192 `Harness::poll()` \u2192 `poll_inner()`.\n4. **`poll_inner()`** (in `harness.rs`):\n   - Atomically transitions state from idle to **`RUNNING`**.\n   - Constructs a `Waker` from the task's header and calls `Future::poll()`.\n   - On `Poll::Ready(())` \u2192 task completes \u2192 `complete()` stores the output and wakes the `JoinHandle`.\n   - On `Poll::Pending` \u2192 transitions back to idle. If the task was concurrently cancelled, runs the cancellation logic.\n5. After the task returns, the worker **checks the LIFO slot** and runs LIFO tasks up to `MAX_LIFO_POLLS_PER_TICK` (3), using cooperative budgeting to avoid starvation.\n\nKey types: `Harness<T, S>`, `State` (atomic bitfield with `RUNNING`, `COMPLETE`, `NOTIFIED`, `CANCELLED`, `JOIN_INTEREST` bits).\n\n---\n\n## 6. Parking & Wake-up\n\nWhen no work is found, `park()` (multi-thread) or `park()` (current-thread):\n\n1. Submits metrics.\n2. Transitions the worker to \"parked\" state in `Idle`.\n3. Releases the I/O driver to another thread (multi-thread) or parks the I/O driver (current-thread).\n4. Thread sleeps until **unparked** by:\n   - Another worker scheduling a task (via `notify_parked_local/remote()`).\n   - An I/O event or timer firing (via the driver's park/unpark mechanism).\n5. On wake-up: transitions from parked, wakes deferred tasks, re-checks for work.\n\n---\n\n## Summary of Key Types & Functions\n\n| Component | Key Types | Key Functions |\n|-----------|-----------|---------------|\n| **Task** | `Task<S>`, `Notified<S>`, `RawTask`, `Cell<T,S>`, `Harness<T,S>` | `RawTask::poll()`, `Harness::poll_inner()` |\n| **Scheduling** | `Schedule` trait, `Inject<Arc<Handle>>`, `queue::Local`, `lifo_slot` | `schedule()`, `schedule_local()`, `push_remote_task()` |\n| **CurrentThread** | `CurrentThread`, `Core` (with `VecDeque<Notified>`), `Shared` | `CoreGuard::block_on()`, `next_task()`, `park()` |\n| **MultiThread** | `Worker`, `Core` (with `run_queue`, `lifo_slot`), `Shared`, `Idle`, `Remote` | `Context::run()`, `next_task()`, `steal_work()`, `run_task()`, `park()` |\n| **State Machine** | `State` (atomic bits) | `transition_to_running()"
+            }
+          ]
+        },
+        "rag": {
+          "uncached_tokens": 67865,
+          "cache_miss_tokens": 63465,
+          "completion_tokens": 4400,
+          "total_tokens": 735385,
+          "tool_calls": 26,
+          "key_facts_hit": 6,
+          "success": 1,
+          "runs": [
+            {
+              "tool_calls": 26,
+              "prompt_tokens": 730985,
+              "completion_tokens": 4400,
+              "cache_hit_tokens": 667520,
+              "cache_miss_tokens": 63465,
+              "uncached_tokens": 67865,
+              "total_tokens": 735385,
+              "steps": 18,
+              "stopped": "answer",
+              "key_facts_hit": 6,
+              "answer": "Now I have a thorough understanding. Here is the full explanation.\n\n---\n\n## How Tokio Schedules and Runs Async Tasks\n\nTokio has two runtime flavors: **current-thread** (`CurrentThread`) and **multi-thread** (`MultiThread`). Both share the same core abstraction but differ in their scheduling data structures and parallelism.\n\n### 1. The Core Primitive: The `task::Schedule` Trait\n\nEvery scheduler implements `task::Schedule` (defined in `tokio/src/runtime/task/mod.rs`). The key method is:\n\n```rust\nfn schedule(&self, task: Notified<Self>);\n```\n\nThis is called whenever a task's waker is invoked. It puts the task back into a run queue so it can be polled again. Both runtime flavors implement this trait on `Arc<Handle>`.\n\n---\n\n### 2. Spawning a Task\n\n`tokio::spawn` \u2192 `Handle::spawn` \u2192 `bind_new_task`:\n\n1. **`OwnedTasks::bind`** allocates the task and returns a `(JoinHandle, Notified)` pair.\n2. **`schedule_option_task_without_yield(notified)`** is called to enqueue the task for the first time.\n\n---\n\n### 3. The `schedule()` Implementation (How tasks get onto a queue)\n\n**Multi-thread** (`tokio/src/runtime/scheduler/multi_thread/worker.rs`, lines ~1300\u20131350):\n\n- The `schedule()` trait method calls `self.schedule_task(task, false)`.\n- `schedule_task` checks the thread-local context: **if the current thread is a worker of *this* scheduler and holds a core**, it calls `schedule_local()`.\n- **`schedule_local()`** either:\n  - Pushes to the **LIFO slot** (last-scheduled task runs next, improving cache locality for message-passing patterns). The previous LIFO task gets moved to the back of the local run queue.\n  - Or, if LIFO is disabled or this is a `yield_now`, pushes to the **back of the local run queue** (a fixed-capacity, lock-free MPSC queue of 256 slots \u2014 defined in `queue::Local`). If the queue is full, half the tasks overflow into the **global injection queue** (`inject::Shared`).\n- If the caller is **not** a worker thread (e.g. a non-Tokio thread), **`push_remote_task()`** pushes to the global injection queue and calls `notify_parked_remote()` to wake a sleeping worker.\n\n**Current-thread** (`tokio/src/runtime/scheduler/current_thread/mod.rs`, lines ~660\u2013700):\n\n- `schedule()` checks the thread-local context. If the call originates from within the same runtime, the task is pushed to the **local `VecDeque`**.\n- Otherwise (external wake), the task goes to the **global injection queue** (`Inject`), and the driver is unparked to wake the single thread.\n\n---\n\n### 4. The Execution Loop: Getting Tasks from Queues\n\n#### Multi-thread: `Worker::run()` (worker.rs, line 561)\n\nEach worker thread runs a tight loop:\n\n```\nloop {\n    core.tick();\n    core = maintenance(core);           // check IO/timers every event_interval\n    if let Some(task) = core.next_task(&worker) {\n        core = run_task(task, core);\n    } else {\n        // local queues empty \u2192 try stealing\n        if let Some(task) = core.steal_work(&worker) {\n            core = run_task(task, core);\n        } else {\n            park();  // sleep until woken\n        }\n    }\n}\n```\n\n**`Core::next_task()`** (worker.rs, line ~1058):\n- Every `global_queue_interval` ticks, it first checks the **global injection queue** (via `next_remote_task()`), then falls back to the local queue.\n- On other ticks, it checks the **local queue first** (LIFO slot \u2192 `run_queue.pop()`), and only falls back to the global injection queue if local is empty.\n- When pulling from the global queue, it takes a **batch** of tasks (computed dynamically based on the number of workers) to amortize locking costs.\n\n**`Core::steal_work()`** (worker.rs, line ~1125):\n- Transitions to \"searching\" state (limited to half the workers to avoid contention).\n- Randomly probes other workers' local run queues, stealing half their tasks.\n- Falls back to the global injection queue if no worker has work.\n\n**`run_task()`** (worker.rs, line ~601):\n- Removes the task from `OwnedTasks` ownership tracking.\n- Transitions worker out of \"searching\".\n- Sets the core in the thread-local, then calls `task.run()` within `coop::budget()` (cooperative scheduling budget).\n- After the task yields (`Poll::Pending`) or completes, if there's a task in the LIFO slot, it runs that **immediately** (without resetting the coop budget), up to 3 consecutive LIFO runs before disabling the LIFO slot temporarily.\n\n#### Current-thread: `Context::block_on()` (current_thread/mod.rs, line ~841)\n\n- Calls `driver.park_timeout` with a 0 timeout to check for IO/timer events every `event_interval` ticks.\n- **`Core::next_task()`**: similar to multi-thread \u2014 alternates between local queue and global injection queue based on `global_queue_interval`.\n- When no tasks are available, `park()` puts the thread to sleep on the I/O driver, waking when I/O events, timers, or external wakers fire.\n\n---\n\n### 5. Key Data Structures\n\n| Structure | Location | Purpose |\n|---|---|---|\n| `queue::Local` (lock-free, fixed 256-slot) | `multi_thread/queue.rs` | Per-worker local run queue |\n| `inject::Shared` (MPSC linked list) | `scheduler/inject.rs` | Global injection queue for external spawns and overflow |\n| `Core::lifo_slot: Option<Notified>` | `multi_thread/worker.rs` | The LIFO optimization slot |\n| `OwnedTasks` | `runtime/task/mod.rs` | Tracks all live tasks (used for shutdown and taskdump) |\n| `Idle` | `multi_thread/idle.rs` | Coordinates which workers are searching/parked |\n| `Defer` | `scheduler/defer.rs` | Deferred waker notifications |\n\n---\n\n### 6. Summary of Key Types and Functions\n\n- **`task::Schedule`** trait \u2014 the contract between task harness and scheduler (`schedule()`, `release()`, `yield_now()`)\n- **`Handle`** (multi-thread) \u2014 implements `Schedule`; has `schedule_task()`, `schedule_local()`, `push_remote_task()`\n- **`Worker::run()`** \u2014 the main loop for each multi-thread worker\n- **`Core::next_task()`** \u2014 selects the next task from LIFO slot \u2192 local queue \u2192 global queue\n- **`Core::next_local_task()`** \u2014 pops from LIFO slot, then from the local run queue\n- **`Core::steal_work()`** \u2014 work-stealing from other workers' local queues\n- **`Handle::schedule_local()`** \u2014 enqueues a task onto a worker's local queue or LIFO slot\n- **`CurrentThread::block_on()`** \u2014 the main loop for the current-thread runtime\n- **`Core::push_task()` / `Core::next_task()`** (current-thread) \u2014 local `VecDeque` operations\n- **`inject::Shared`** \u2014 the global, multi-producer queue\n- **`OwnedTasks::bind()`** \u2014 creates a new task and registers it with the runtime\n- **`coop::budget()`** \u2014 enforces cooperative scheduling (preventing a single task from starving others)\n- **`driver::Driver::park()` / `Driver::park_timeout()`** \u2014 blocking on the I/O driver (which also processes timers)\n\n### 7. Fairness Guarantees\n\nThe scheduler alternates between local and global queues using `global_queue_interval` (default 31 for current-thread, dynamically tuned for multi-thread). It periodically yields to the I/O driver every `event_interval` ticks (default 61). The LIFO slot is temporarily disabled after 3 consecutive LIFO runs to prevent starvation. Work-stealing ensures idle workers can pick up tasks from busy workers."
+            }
+          ]
+        },
+        "anfs": {
+          "uncached_tokens": 17162,
+          "cache_miss_tokens": 13785,
+          "completion_tokens": 3377,
+          "total_tokens": 275466,
+          "tool_calls": 40,
+          "key_facts_hit": 0,
+          "success": 0,
+          "runs": [
+            {
+              "tool_calls": 40,
+              "prompt_tokens": 272089,
+              "completion_tokens": 3377,
+              "cache_hit_tokens": 258304,
+              "cache_miss_tokens": 13785,
+              "uncached_tokens": 17162,
+              "total_tokens": 275466,
+              "steps": 24,
+              "stopped": "max_steps",
+              "key_facts_hit": 0,
+              "answer": ""
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

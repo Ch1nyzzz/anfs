@@ -1,0 +1,48 @@
+{
+  "repo": "vscode",
+  "lang": "typescript",
+  "question": "How does the extension host communicate with the main process?",
+  "model": "deepseek-v4-flash",
+  "runs": 1,
+  "corpus_files": 581,
+  "arms": {
+    "baseline": {
+      "total_tokens": 322184,
+      "uncached_tokens": 23944,
+      "tool_calls": 30,
+      "success": 0,
+      "runs": [
+        {
+          "tool_calls": 30,
+          "prompt_tokens": 319727,
+          "completion_tokens": 2457,
+          "cache_miss_tokens": 21487,
+          "uncached_tokens": 23944,
+          "total_tokens": 322184,
+          "steps": 20,
+          "stopped": "max_steps",
+          "answer": ""
+        }
+      ]
+    },
+    "anfs": {
+      "total_tokens": 318653,
+      "uncached_tokens": 23741,
+      "tool_calls": 31,
+      "success": 0,
+      "runs": [
+        {
+          "tool_calls": 31,
+          "prompt_tokens": 316036,
+          "completion_tokens": 2617,
+          "cache_miss_tokens": 21124,
+          "uncached_tokens": 23741,
+          "total_tokens": 318653,
+          "steps": 20,
+          "stopped": "max_steps",
+          "answer": ""
+        }
+      ]
+    }
+  }
+}

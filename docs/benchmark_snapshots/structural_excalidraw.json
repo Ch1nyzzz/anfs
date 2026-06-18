@@ -1,0 +1,1544 @@
+{
+  "repo": "excalidraw",
+  "lang": "typescript",
+  "oracle": "scip-typescript",
+  "corpus_files": 414,
+  "evaluated": 190,
+  "anfs_recall": 38.71186440677966,
+  "anfs_precision": 79.30555555555556,
+  "grep_recall": 73.45762711864407,
+  "grep_precision": 56.60919540229885,
+  "anfs_ops": 1.0,
+  "grep_ops": 6.010526315789473,
+  "aggregate": {
+    "oracle": 2950,
+    "anfs_hit": 1142,
+    "anfs_total": 1440,
+    "grep_hit": 2167,
+    "grep_total": 3828,
+    "anfs_ops": 190,
+    "grep_ops": 1142
+  },
+  "rows": [
+    {
+      "symbol": "CommandPaletteInner",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "IconPicker",
+      "oracle": 22,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "LibraryMenuItems",
+      "oracle": 22,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "Picker",
+      "oracle": 19,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "TTDStreamFetch",
+      "oracle": 24,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 21,
+      "grep_total": 22
+    },
+    {
+      "symbol": "abort",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 32,
+      "grep_recall": 3,
+      "grep_total": 106
+    },
+    {
+      "symbol": "add",
+      "oracle": 48,
+      "anfs_recall": 41,
+      "anfs_total": 42,
+      "grep_recall": 43,
+      "grep_total": 46
+    },
+    {
+      "symbol": "addElementsFromMixedContentPaste",
+      "oracle": 10,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "addEventListeners",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "addPointToPath",
+      "oracle": 9,
+      "anfs_recall": 7,
+      "anfs_total": 9,
+      "grep_recall": 7,
+      "grep_total": 13
+    },
+    {
+      "symbol": "addTextFromPaste",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "applyLatestChanges",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "applyTo",
+      "oracle": 7,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "cacheEmbeddableRef",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "calculate",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "cancel",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 11
+    },
+    {
+      "symbol": "cancelScheduledFrame",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "cancelScheduledFrameIfIdle",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "cleanup",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 5,
+      "grep_recall": 2,
+      "grep_total": 7
+    },
+    {
+      "symbol": "clear",
+      "oracle": 50,
+      "anfs_recall": 26,
+      "anfs_total": 30,
+      "grep_recall": 50,
+      "grep_total": 62
+    },
+    {
+      "symbol": "clearImageShapeCache",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "clearSelection",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 7
+    },
+    {
+      "symbol": "clearTrails",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "click",
+      "oracle": 50,
+      "anfs_recall": 5,
+      "anfs_total": 10,
+      "grep_recall": 49,
+      "grep_total": 168
+    },
+    {
+      "symbol": "clickAt",
+      "oracle": 35,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 34,
+      "grep_total": 35
+    },
+    {
+      "symbol": "clickOn",
+      "oracle": 16,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 15,
+      "grep_total": 16
+    },
+    {
+      "symbol": "componentDidUpdate",
+      "oracle": 19,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "convertFromVecToUint8Array",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "create",
+      "oracle": 11,
+      "anfs_recall": 6,
+      "anfs_total": 7,
+      "grep_recall": 6,
+      "grep_total": 7
+    },
+    {
+      "symbol": "createElement",
+      "oracle": 97,
+      "anfs_recall": 20,
+      "anfs_total": 27,
+      "grep_recall": 81,
+      "grep_total": 484
+    },
+    {
+      "symbol": "createExcalidrawAPI",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "createMockStream",
+      "oracle": 16,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 14,
+      "grep_total": 15
+    },
+    {
+      "symbol": "createUrls",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "createWorker",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "crop",
+      "oracle": 10,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "dataView",
+      "oracle": 12,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 7
+    },
+    {
+      "symbol": "decode",
+      "oracle": 7,
+      "anfs_recall": 5,
+      "anfs_total": 7,
+      "grep_recall": 6,
+      "grep_total": 10
+    },
+    {
+      "symbol": "delete",
+      "oracle": 20,
+      "anfs_recall": 20,
+      "anfs_total": 32,
+      "grep_recall": 20,
+      "grep_total": 34
+    },
+    {
+      "symbol": "deselectElements",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "destroy",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 6,
+      "grep_recall": 2,
+      "grep_total": 7
+    },
+    {
+      "symbol": "disconnect",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 3,
+      "grep_total": 5
+    },
+    {
+      "symbol": "doubleClick",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 5
+    },
+    {
+      "symbol": "doubleClickAt",
+      "oracle": 18,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 17,
+      "grep_total": 18
+    },
+    {
+      "symbol": "doubleClickOn",
+      "oracle": 13,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 12,
+      "grep_total": 13
+    },
+    {
+      "symbol": "down",
+      "oracle": 150,
+      "anfs_recall": 6,
+      "anfs_total": 6,
+      "grep_recall": 149,
+      "grep_total": 150
+    },
+    {
+      "symbol": "downAt",
+      "oracle": 39,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 37,
+      "grep_total": 38
+    },
+    {
+      "symbol": "drawTrail",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "editText",
+      "oracle": 8,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "encode",
+      "oracle": 10,
+      "anfs_recall": 7,
+      "anfs_total": 9,
+      "grep_recall": 7,
+      "grep_total": 11
+    },
+    {
+      "symbol": "endPath",
+      "oracle": 14,
+      "anfs_recall": 14,
+      "anfs_total": 14,
+      "grep_recall": 14,
+      "grep_total": 19
+    },
+    {
+      "symbol": "error",
+      "oracle": 66,
+      "anfs_recall": 57,
+      "anfs_total": 66,
+      "grep_recall": 65,
+      "grep_total": 76
+    },
+    {
+      "symbol": "executeAction",
+      "oracle": 67,
+      "anfs_recall": 34,
+      "anfs_total": 63,
+      "grep_recall": 63,
+      "grep_total": 129
+    },
+    {
+      "symbol": "extractRateLimitHeaders",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "fetchFont",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "flush",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 9,
+      "grep_recall": 2,
+      "grep_total": 10
+    },
+    {
+      "symbol": "focusContainer",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 9,
+      "grep_recall": 0,
+      "grep_total": 14
+    },
+    {
+      "symbol": "fontFacesLoader",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "fontFacesStylesGenerator",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "generateFontFaceDeclarations",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get",
+      "oracle": 139,
+      "anfs_recall": 92,
+      "anfs_total": 110,
+      "grep_recall": 129,
+      "grep_total": 156
+    },
+    {
+      "symbol": "getAsFile",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "getAsString",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getCanvasOffsets",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "getCharacters",
+      "oracle": 5,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "getCharsPerFamily",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "getContent",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getCurrentItemRoundness",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "getCurrentTrail",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "getData",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 7,
+      "grep_recall": 2,
+      "grep_total": 8
+    },
+    {
+      "symbol": "getDialogSize",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getElement",
+      "oracle": 26,
+      "anfs_recall": 21,
+      "anfs_total": 25,
+      "grep_recall": 25,
+      "grep_total": 56
+    },
+    {
+      "symbol": "getElementAtPosition",
+      "oracle": 18,
+      "anfs_recall": 11,
+      "anfs_total": 11,
+      "grep_recall": 11,
+      "grep_total": 12
+    },
+    {
+      "symbol": "getElementHitThreshold",
+      "oracle": 8,
+      "anfs_recall": 7,
+      "anfs_total": 7,
+      "grep_recall": 7,
+      "grep_total": 8
+    },
+    {
+      "symbol": "getElementsAtPosition",
+      "oracle": 8,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "getEvent",
+      "oracle": 10,
+      "anfs_recall": 10,
+      "anfs_total": 10,
+      "grep_recall": 10,
+      "grep_total": 11
+    },
+    {
+      "symbol": "getFormat",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getHTMLIFrameElement",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "getLibraryItems",
+      "oracle": 7,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 6
+    },
+    {
+      "symbol": "getPosition",
+      "oracle": 9,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 9,
+      "grep_total": 10
+    },
+    {
+      "symbol": "getRenderableElementsMap",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getSelectedElements",
+      "oracle": 117,
+      "anfs_recall": 36,
+      "anfs_total": 59,
+      "grep_recall": 72,
+      "grep_total": 219
+    },
+    {
+      "symbol": "getSelectedTextEditingContainerAtPosition",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getSelectedTextElement",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "getTextBindableContainerAtPosition",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "getTextElementAtPosition",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "getTextWysiwygSnappedToCenterPosition",
+      "oracle": 10,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "getTrailOptions",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "getUnicodeRangeRegex",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getUniqueFamilies",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "getVisibleCanvasElements",
+      "oracle": 17,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "group",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 6,
+      "grep_total": 7
+    },
+    {
+      "symbol": "handleDelayedBindModeChange",
+      "oracle": 27,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "handleDraggingScrollBar",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "handleHoverSelectedLinearElement",
+      "oracle": 12,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "handleIframeLikeCenterClick",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "handleKeyDown",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "handleOnExportResult",
+      "oracle": 16,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "handlePointerMoveOverScrollbars",
+      "oracle": 10,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "handleSkipBindMode",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "handleTextWysiwyg",
+      "oracle": 14,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "has",
+      "oracle": 68,
+      "anfs_recall": 62,
+      "anfs_total": 63,
+      "grep_recall": 67,
+      "grep_total": 73
+    },
+    {
+      "symbol": "hasLastPoint",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "hashToInteger",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "hitElement",
+      "oracle": 15,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "init",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 12,
+      "grep_recall": 2,
+      "grep_total": 14
+    },
+    {
+      "symbol": "initialPointerDownState",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "insertClipboardContent",
+      "oracle": 23,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "inverse",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "isASelectedElement",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "isHittingCommonBoundingBoxOfSelectedElements",
+      "oracle": 11,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "isIframeLikeElementCenter",
+      "oracle": 12,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "isStateChangePredicateOptions",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "join",
+      "oracle": 33,
+      "anfs_recall": 22,
+      "anfs_total": 34,
+      "grep_recall": 33,
+      "grep_total": 39
+    },
+    {
+      "symbol": "load",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 3,
+      "grep_total": 7
+    },
+    {
+      "symbol": "loadFontFaces",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "maybeCacheReferenceSnapPoints",
+      "oracle": 7,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 6
+    },
+    {
+      "symbol": "maybeCacheVisibleGaps",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "mermaidLite",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "move",
+      "oracle": 27,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 24,
+      "grep_total": 25
+    },
+    {
+      "symbol": "moveTo",
+      "oracle": 91,
+      "anfs_recall": 25,
+      "anfs_total": 25,
+      "grep_recall": 89,
+      "grep_total": 90
+    },
+    {
+      "symbol": "mutateElement",
+      "oracle": 91,
+      "anfs_recall": 65,
+      "anfs_total": 74,
+      "grep_recall": 90,
+      "grep_total": 100
+    },
+    {
+      "symbol": "normalize",
+      "oracle": 10,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 7
+    },
+    {
+      "symbol": "normalizeBaseUrl",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "observe",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 3,
+      "grep_total": 5
+    },
+    {
+      "symbol": "onClick",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 5,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "onErrorHandler",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "onFrame",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "onIframeSrcCopy",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "onKeyDownFromPointerDownHandler",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "onKeyUpFromPointerDownHandler",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "onMagicFrameGenerate",
+      "oracle": 9,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "onMessageHandler",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "onPointerMoveFromPointerDownHandler",
+      "oracle": 61,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "onPointerUpFromPointerDownHandler",
+      "oracle": 35,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "onWindowMessage",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "open",
+      "oracle": 6,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 6,
+      "grep_total": 7
+    },
+    {
+      "symbol": "openConfirmModal",
+      "oracle": 10,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "parseHTMLTree",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "perform",
+      "oracle": 7,
+      "anfs_recall": 2,
+      "anfs_total": 6,
+      "grep_recall": 2,
+      "grep_total": 21
+    },
+    {
+      "symbol": "pop",
+      "oracle": 10,
+      "anfs_recall": 8,
+      "anfs_total": 12,
+      "grep_recall": 9,
+      "grep_total": 15
+    },
+    {
+      "symbol": "postMessage",
+      "oracle": 8,
+      "anfs_recall": 7,
+      "anfs_total": 7,
+      "grep_recall": 8,
+      "grep_total": 9
+    },
+    {
+      "symbol": "prepareDataForJSONExport",
+      "oracle": 11,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "push",
+      "oracle": 172,
+      "anfs_recall": 155,
+      "anfs_total": 162,
+      "grep_recall": 171,
+      "grep_total": 180
+    },
+    {
+      "symbol": "record",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "redo",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 91
+    },
+    {
+      "symbol": "register",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 73
+    },
+    {
+      "symbol": "registerAction",
+      "oracle": 5,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "registerAll",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "removeEventListeners",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "renderEmbeddables",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "reset",
+      "oracle": 59,
+      "anfs_recall": 14,
+      "anfs_total": 14,
+      "grep_recall": 59,
+      "grep_total": 60
+    },
+    {
+      "symbol": "resetAll",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "resetDelayedBindMode",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "resetTapTwice",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "resize",
+      "oracle": 11,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 10,
+      "grep_total": 11
+    },
+    {
+      "symbol": "restorePosition",
+      "oracle": 13,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 11,
+      "grep_total": 12
+    },
+    {
+      "symbol": "rightClickAt",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 5,
+      "grep_total": 6
+    },
+    {
+      "symbol": "rotate",
+      "oracle": 10,
+      "anfs_recall": 7,
+      "anfs_total": 7,
+      "grep_recall": 9,
+      "grep_total": 26
+    },
+    {
+      "symbol": "round",
+      "oracle": 52,
+      "anfs_recall": 48,
+      "anfs_total": 75,
+      "grep_recall": 52,
+      "grep_total": 81
+    },
+    {
+      "symbol": "running",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "scheduleNextFrame",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "select",
+      "oracle": 42,
+      "anfs_recall": 6,
+      "anfs_total": 11,
+      "grep_recall": 40,
+      "grep_total": 49
+    },
+    {
+      "symbol": "set",
+      "oracle": 52,
+      "anfs_recall": 40,
+      "anfs_total": 54,
+      "grep_recall": 51,
+      "grep_total": 67
+    },
+    {
+      "symbol": "setData",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "setPlugins",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "sortSelectedElementsIntoHighlightedFrame",
+      "oracle": 10,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "start",
+      "oracle": 17,
+      "anfs_recall": 6,
+      "anfs_total": 6,
+      "grep_recall": 9,
+      "grep_total": 12
+    },
+    {
+      "symbol": "startPath",
+      "oracle": 12,
+      "anfs_recall": 10,
+      "anfs_total": 10,
+      "grep_recall": 10,
+      "grep_total": 15
+    },
+    {
+      "symbol": "stop",
+      "oracle": 5,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 8
+    },
+    {
+      "symbol": "stopCollabTrails",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "subscribe",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "subset",
+      "oracle": 30,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "test",
+      "oracle": 26,
+      "anfs_recall": 23,
+      "anfs_total": 24,
+      "grep_recall": 26,
+      "grep_total": 83
+    },
+    {
+      "symbol": "tick",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "toCSS",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "toggleOverscrollBehavior",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "undo",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 119
+    },
+    {
+      "symbol": "ungroup",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "up",
+      "oracle": 157,
+      "anfs_recall": 6,
+      "anfs_total": 6,
+      "grep_recall": 156,
+      "grep_total": 157
+    },
+    {
+      "symbol": "upAt",
+      "oracle": 18,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 16,
+      "grep_total": 17
+    },
+    {
+      "symbol": "update",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "updateCollabTrails",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "updateElementsToBeErased",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "updateGestureOnPointerDown",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "updateLanguage",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "useAppStateValue",
+      "oracle": 12,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "useExcalidrawStateValue",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "useOnAppStateChange",
+      "oracle": 12,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "useOutsideClick",
+      "oracle": 17,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "useTransitionPolyfill",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    }
+  ]
+}

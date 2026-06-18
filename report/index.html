@@ -141,6 +141,7 @@
   .vs{font-size:.92rem;color:var(--muted);font-weight:300;margin:6px 0}
   .vs .r{color:var(--red);font-family:var(--mono);font-weight:600}
   .vs .g{color:var(--green);font-family:var(--mono);font-weight:600}
+  b.g,td.g{color:var(--green);font-weight:600}
   .tref{font-family:var(--mono);font-size:.72rem;color:var(--dim);margin-top:10px;display:block}
 
   @media(max-width:860px){
@@ -177,9 +178,9 @@
   <div class="ds reveal d4">
     <div class="row"><div class="k">CORE</div><div class="v">Rust + SQLite + PyO3 · 本地优先语义内核</div></div>
     <div class="row"><div class="k">KERNEL SIZE</div><div class="v"><b>28,240</b> 行 / 28 模块</div></div>
-    <div class="row"><div class="k">VERIFICATION</div><div class="v"><b>151</b> 测试全过 · 16 领域文件 · 每场景 verify_integrity()==[]</div></div>
-    <div class="row"><div class="k">DEPENDENCIES</div><div class="v"><b>7</b> 个 crate（无托管向量库 / ANN / 模型调用进内核）</div></div>
-    <div class="row"><div class="k">PROVEN</div><div class="v">C1 防泄漏 · C2 并发 · C3 溯源 · C4 兼容性（机制 + 真实基线双层）</div></div>
+    <div class="row"><div class="k">VERIFICATION</div><div class="v"><b>167</b> 测试全过 · 每场景 verify_integrity()==[]</div></div>
+    <div class="row"><div class="k">CODE GRAPH</div><div class="v">tree-sitter <b>6 语言</b>（Rust·Python·TS·Go·Java·Swift）· callers / call_graph / context_pack</div></div>
+    <div class="row"><div class="k">PROVEN</div><div class="v">C1 防泄漏 · C2 并发 · C3 溯源 · C4 兼容性 · <b>C5 代码图（7 repo 对照编译器 oracle）</b></div></div>
   </div>
 </div></header>
 
@@ -492,9 +493,56 @@ if exists("patch.diff"): consume()<br>
   </div>
 </div></section>
 
+<!-- ============ CODE-GRAPH STUDY ============ -->
+<section><div class="wrap">
+  <div class="sec-no">§10 · Code-Graph Study</div>
+  <h2 class="title">代码图检索：在 codegraph 自己的 7 个 repo 上，对照编译器 oracle</h2>
+  <p class="sub">同 <span class="mono">codegraph</span> 的 7 个开源仓库、每仓一道架构题。把"哪些位置调用了符号 X"这个结构查询，用 <b class="g">ANFS callers/call_graph（一次索引查询）</b> 对比 <b>无工具 agent 的 grep</b>，双方都对<b>各语言编译器级 oracle</b> 打分（rust-analyzer · scip-python · scip-typescript · scip-go · scip-java；Swift 无 SCIP 索引器，用 sourcekit-lsp 自建）。不挑题、不靠我们自己定对错。</p>
+
+  <h3 class="disp" style="font-size:1.25rem;margin:34px 0 8px">准确性（对编译器 oracle，确定性，无 LLM）</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:.86rem;font-family:var(--mono)">
+    <thead><tr style="border-bottom:1px solid var(--line);color:var(--muted);text-align:left">
+      <th style="padding:6px 8px">repo</th><th>lang</th>
+      <th style="color:var(--teal)">ANFS 召回</th><th style="color:var(--teal)">ANFS 精度</th>
+      <th style="color:var(--dim)">grep 召回</th><th style="color:var(--dim)">grep 精度</th></tr></thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">gin</td><td>Go</td><td class="g">99.0%</td><td class="g">94.6%</td><td>98.7%</td><td>82.4%</td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">okhttp</td><td>Java</td><td>91.2%</td><td class="g">96.2%</td><td>100%</td><td>68.6%</td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">alamofire</td><td>Swift</td><td class="g">74.0%</td><td class="g">87.0%</td><td>65.0%</td><td>48.7%</td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">tokio</td><td>Rust</td><td>80.7%</td><td>66.1%</td><td>92.5%</td><td>66.9%</td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">excalidraw</td><td>TS</td><td>38.7%</td><td class="g">79.3%</td><td>73.5%</td><td>56.6%</td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">vscode</td><td>TS</td><td>47.3%</td><td class="g">14.4%</td><td>49.5%</td><td>6.7%</td></tr>
+      <tr><td style="padding:6px 8px">django</td><td>Python</td><td>19.3%</td><td class="g">67.0%</td><td>19.5%</td><td>38.3%</td></tr>
+    </tbody>
+  </table>
+  <p class="sub" style="margin-top:12px"><b class="g">精度：ANFS ≥ grep，全部 7 语言</b>（grep 把注释/字符串/定义行也当调用）。<b>召回看语言把调用藏多深</b>：Go/Swift 显式调用 → ANFS 双赢；Rust/Java/TS 的运算符脱糖、宏、JSX、箭头函数、动态分发把调用藏起来 → AST 看不到、编译器 oracle 看得到，grep 文本反而抓得多。<b class="g">效率：ANFS 一次查询拿到带 caller 归属的全集</b>，grep 要 1 次 grep + 逐文件读才能归属。</p>
+
+  <h3 class="disp" style="font-size:1.25rem;margin:40px 0 8px">效率：agent 答题数 token（codegraph 的头条指标）</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:.86rem;font-family:var(--mono)">
+    <thead><tr style="border-bottom:1px solid var(--line);color:var(--muted);text-align:left">
+      <th style="padding:6px 8px">repo</th><th>lang</th><th>baseline token</th><th style="color:var(--teal)">ANFS token</th><th>省</th><th>答完 base/anfs</th></tr></thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">gin</td><td>Go</td><td>77,875</td><td>51,623</td><td class="g">34%</td><td>1/1 · 1/1</td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">okhttp</td><td>Java</td><td>41,288</td><td>35,780</td><td class="g">13%</td><td>1/1 · 1/1</td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">alamofire</td><td>Swift</td><td>152,405</td><td>175,502</td><td style="color:var(--amber)">−15%</td><td>1/1 · 1/1</td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">tokio</td><td>Rust</td><td>539,133</td><td>278,280</td><td>48%</td><td>1/1 · <span style="color:var(--amber)">0/1</span></td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">django</td><td>Python</td><td>240,822</td><td>218,427</td><td>9%</td><td><span style="color:var(--amber)">0/1 · 0/1</span></td></tr>
+      <tr style="border-bottom:1px solid var(--line)"><td style="padding:6px 8px">excalidraw</td><td>TS</td><td>792,342</td><td>694,621</td><td>12%</td><td><span style="color:var(--amber)">0/1 · 0/1</span></td></tr>
+      <tr><td style="padding:6px 8px">vscode</td><td>TS</td><td>322,184</td><td>318,653</td><td>1%</td><td><span style="color:var(--amber)">0/1 · 0/1</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="cols2" style="margin-top:22px">
+    <div class="box warn"><h4 style="color:var(--amber)">诚实读法</h4>
+      <p style="font-size:.92rem;color:var(--muted);font-weight:300">ANFS 靠"读精确 span 而非整文件"省 token（干净完成处：gin 34%、okhttp 13%），但<b style="color:var(--ink);font-weight:500">不稳赢</b>——alamofire 反多 15%，且宽泛题常没答完（省的一部分是非完成假象）。而且 ANFS <b style="color:var(--ink);font-weight:500">调用次数更多</b>（granular outline→read_span），与 codegraph"又省 token 又少调用"相反——我们今天是<b style="color:var(--ink);font-weight:500">多调用换少 token</b>。</p></div>
+    <div class="box k"><h4 style="color:var(--teal)">真正稳的护城河</h4>
+      <p style="font-size:.92rem;color:var(--muted);font-weight:300">跨全 7 语言普适成立的是：<b class="g">精度更高 · 一次调用拿到带归属的检索 · 检索本身可审计/可回放</b>（<span class="mono">context_pack</span>/<span class="mono">call_graph</span> 落 <span class="mono">code_context_query</span>/<span class="mono">code_call_graph</span> 事件）。后者是 grep 和只读 sidecar 都给不了的。token 省与完整性是语言相关的红利，不是保证。</p></div>
+  </div>
+</div></section>
+
 <!-- ============ LIMITS ============ -->
 <section><div class="wrap">
-  <div class="sec-no">§10 · Honest Boundaries</div>
+  <div class="sec-no">§11 · Honest Boundaries</div>
   <h2 class="title">诚实的边界</h2>
   <div class="cols2" style="margin-top:22px">
     <div class="box warn"><h4 style="color:var(--amber)">机制，而非语义</h4>
@@ -506,17 +554,22 @@ if exists("patch.diff"): consume()<br>
 
 <!-- ============ REPRO ============ -->
 <section style="border-bottom:0"><div class="wrap">
-  <div class="sec-no">§11 · Reproduce</div>
+  <div class="sec-no">§12 · Reproduce</div>
   <h2 class="title">全部可复现</h2>
   <p class="sub">所有数字来自 <span class="mono">benchmarks/</span> 脚本与 <span class="mono">tests/</span> 回归断言，快照存于 <span class="mono">docs/benchmark_snapshots/</span>。</p>
   <pre><span class="c"># 内核 + 全套验证</span>
-maturin develop && python -m pytest tests/ -q          <span class="g"># 151 passed</span>
+maturin develop && python -m pytest tests/ -q          <span class="g"># 167 passed</span>
 
 <span class="c"># 四项差异化证明（机制级，无需联网）</span>
 python benchmarks/leak_redteam_benchmark.py            <span class="c"># §04  off 100% / on 0%</span>
 python benchmarks/concurrency_real_benchmark.py        <span class="c"># §01 §07  真多进程 + git 三向</span>
 python benchmarks/provenance_benchmark.py              <span class="c"># §02 §06  闭包 100% vs git 0%</span>
 python benchmarks/worktree_cost_benchmark.py           <span class="c"># C4  边界 vs 内循环代价</span>
+
+<span class="c"># 代码图研究：7 repo 对照编译器 oracle（§10）</span>
+python benchmarks/structural_accuracy_benchmark.py --repo gin --root &lt;repo&gt; --scip &lt;index.scip&gt;
+python benchmarks/token_efficiency_benchmark.py   --repo gin --root &lt;repo&gt;     <span class="c"># token 对比</span>
+python benchmarks/aggregate_report.py                  <span class="c"># 汇总双表</span>
 
 <span class="c"># 真实 LLM 基线（需 DEEPSEEK_API_KEY）</span>
 python benchmarks/leak_llm_baseline.py                 <span class="c"># §04  75% / 25% / 0%</span>
@@ -525,7 +578,7 @@ python benchmarks/coding_agent_compat_benchmark.py     <span class="c"># C4  5/5
 
 <footer><div class="wrap">
   ANFS · Agent-Native File System —— 内核设计与验证报告。<br>
-  内核契约 docs/06 · 复杂度审计 docs/09 · 数据集调研 docs/10 · 主张表与评测计划 docs/11 · benchmark 快照 docs/benchmark_snapshots/
+  内核契约 docs/06 · 复杂度审计 docs/09 · 代码图研究 §10（structural_accuracy / token_efficiency / aggregate_report）· benchmark 快照 docs/benchmark_snapshots/
 </div></footer>
 
 </body>

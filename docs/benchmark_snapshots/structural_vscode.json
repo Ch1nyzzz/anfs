@@ -1,0 +1,3768 @@
+{
+  "repo": "vscode",
+  "lang": "typescript",
+  "oracle": "scip-typescript",
+  "corpus_files": 581,
+  "evaluated": 468,
+  "anfs_recall": 47.25890356142457,
+  "anfs_precision": 14.393662400975016,
+  "grep_recall": 49.53981592637055,
+  "grep_precision": 6.740349539935754,
+  "anfs_ops": 1.0,
+  "grep_ops": 10.77991452991453,
+  "aggregate": {
+    "oracle": 2499,
+    "anfs_hit": 1181,
+    "anfs_total": 8205,
+    "grep_hit": 1238,
+    "grep_total": 18367,
+    "anfs_ops": 468,
+    "grep_ops": 5045
+  },
+  "rows": [
+    {
+      "symbol": "LifecyclePhaseToString",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "StartupKindToString",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "_evalParsedExcludeExpression",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_getElementXY",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_handle",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_msg",
+      "oracle": 5,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "_pushGroup",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_readMyActivationEvents",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_registerAuthenticationExtensionPointHandler",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_registerEnvContributedAuthenticationProviders",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_renameKeyInLocations",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_resolveAtLocation",
+      "oracle": 9,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "_toSet",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "_updatePolicyDefinitions",
+      "oracle": 10,
+      "anfs_recall": 6,
+      "anfs_total": 6,
+      "grep_recall": 6,
+      "grep_total": 8
+    },
+    {
+      "symbol": "acceptQuotas",
+      "oracle": 19,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 6
+    },
+    {
+      "symbol": "acceptUsers",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "activateByEvent",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 23,
+      "grep_recall": 1,
+      "grep_total": 43
+    },
+    {
+      "symbol": "add",
+      "oracle": 28,
+      "anfs_recall": 26,
+      "anfs_total": 450,
+      "grep_recall": 28,
+      "grep_total": 1688
+    },
+    {
+      "symbol": "addDescription",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "addFileOperationParticipant",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 11
+    },
+    {
+      "symbol": "addMatch",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "addNotebookDocument",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "addSaveParticipant",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 18
+    },
+    {
+      "symbol": "addWorkspaceService",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "alloc",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 13,
+      "grep_recall": 1,
+      "grep_total": 17
+    },
+    {
+      "symbol": "apply",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 23,
+      "grep_recall": 1,
+      "grep_total": 38
+    },
+    {
+      "symbol": "applyCSS",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "applyHTML",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "applyMeta",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "applyPlatformSpecificKeys",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "applyReadonly",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "autoDetectLanguage",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "backup",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 18,
+      "grep_recall": 0,
+      "grep_total": 94
+    },
+    {
+      "symbol": "buffer",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "canBeType",
+      "oracle": 6,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 6
+    },
+    {
+      "symbol": "canDispose",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 7,
+      "grep_recall": 1,
+      "grep_total": 19
+    },
+    {
+      "symbol": "cancel",
+      "oracle": 8,
+      "anfs_recall": 8,
+      "anfs_total": 62,
+      "grep_recall": 8,
+      "grep_total": 78
+    },
+    {
+      "symbol": "checkForUpdates",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "checkProposedApiEnabled",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "cleanUp",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "clear",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 70,
+      "grep_recall": 4,
+      "grep_total": 150
+    },
+    {
+      "symbol": "clearQuotas",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 5
+    },
+    {
+      "symbol": "close",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 25,
+      "grep_recall": 3,
+      "grep_total": 81
+    },
+    {
+      "symbol": "collectMetadata",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "compareGroups",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "compareQuotas",
+      "oracle": 9,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "compute",
+      "oracle": 11,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "computeAutoSaveConfiguration",
+      "oracle": 8,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "computeGateInfo",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "confirm",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 18,
+      "grep_recall": 1,
+      "grep_total": 21
+    },
+    {
+      "symbol": "confirmBeforeClose",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "contains",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 22,
+      "grep_recall": 2,
+      "grep_total": 70
+    },
+    {
+      "symbol": "containsActivationEvent",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 4,
+      "grep_recall": 0,
+      "grep_total": 8
+    },
+    {
+      "symbol": "containsExtension",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 6,
+      "grep_recall": 1,
+      "grep_total": 13
+    },
+    {
+      "symbol": "copy",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 8,
+      "grep_recall": 1,
+      "grep_total": 17
+    },
+    {
+      "symbol": "copySetting",
+      "oracle": 12,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "create",
+      "oracle": 17,
+      "anfs_recall": 10,
+      "anfs_total": 98,
+      "grep_recall": 13,
+      "grep_total": 202
+    },
+    {
+      "symbol": "createAuxiliaryWindow",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "createContainer",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "createDynamicAuthenticationProvider",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "createFolder",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 43
+    },
+    {
+      "symbol": "createInstallMcpServerResultsFromEvent",
+      "oracle": 7,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "createMessageOfType",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "createModel",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 13
+    },
+    {
+      "symbol": "createOrGetXaaProvider",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "createProfile",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "createProxyIdentifier",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "createReadonlyMatcher",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "createSession",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 15,
+      "grep_recall": 1,
+      "grep_total": 32
+    },
+    {
+      "symbol": "createTerminal",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "createValidator",
+      "oracle": 12,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 2,
+      "grep_total": 5
+    },
+    {
+      "symbol": "defaultKeybindingsContents",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "del",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 14,
+      "grep_recall": 1,
+      "grep_total": 19
+    },
+    {
+      "symbol": "delete",
+      "oracle": 14,
+      "anfs_recall": 9,
+      "anfs_total": 127,
+      "grep_recall": 9,
+      "grep_total": 146
+    },
+    {
+      "symbol": "delta",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 10,
+      "grep_recall": 1,
+      "grep_total": 11
+    },
+    {
+      "symbol": "destroy",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 13
+    },
+    {
+      "symbol": "detectEncodingByBOMFromBuffer",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "detectEncodingFromBuffer",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 25
+    },
+    {
+      "symbol": "determineExtensionHostKinds",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "disableAutoSave",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "dispose",
+      "oracle": 33,
+      "anfs_recall": 28,
+      "anfs_total": 272,
+      "grep_recall": 28,
+      "grep_total": 663
+    },
+    {
+      "symbol": "doCanDispose",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 6
+    },
+    {
+      "symbol": "doCheckForUpdates",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "doCreate",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "doCreateFileOrFolder",
+      "oracle": 10,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "doCreateModel",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 6
+    },
+    {
+      "symbol": "doCreateOrGet",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 5
+    },
+    {
+      "symbol": "doHandleSaveError",
+      "oracle": 10,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "doHasValidBasename",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "doMoveOrCopy",
+      "oracle": 10,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "doResolve",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 11,
+      "grep_recall": 1,
+      "grep_total": 15
+    },
+    {
+      "symbol": "doResolveEntitlement",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "doResolveFromBackup",
+      "oracle": 6,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 6
+    },
+    {
+      "symbol": "doResolveStartupKind",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "doSave",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 6,
+      "grep_recall": 2,
+      "grep_total": 21
+    },
+    {
+      "symbol": "doSaveSequential",
+      "oracle": 26,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "doSetDirty",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 2,
+      "grep_total": 6
+    },
+    {
+      "symbol": "doShow",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 5
+    },
+    {
+      "symbol": "doShowWhile",
+      "oracle": 6,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 5
+    },
+    {
+      "symbol": "doShutdown",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "doSignUpFree",
+      "oracle": 6,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 6
+    },
+    {
+      "symbol": "doUpdateModel",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "done",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 15,
+      "grep_recall": 0,
+      "grep_total": 65
+    },
+    {
+      "symbol": "enableAutoSaveAfterShortDelay",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "encodeLatin1",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "encodingExists",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "end",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 12,
+      "grep_recall": 3,
+      "grep_total": 18
+    },
+    {
+      "symbol": "equals",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 62,
+      "grep_recall": 2,
+      "grep_total": 81
+    },
+    {
+      "symbol": "error",
+      "oracle": 47,
+      "anfs_recall": 41,
+      "anfs_total": 224,
+      "grep_recall": 45,
+      "grep_total": 246
+    },
+    {
+      "symbol": "escapeInvisibleChars",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "every",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 25,
+      "grep_recall": 1,
+      "grep_total": 30
+    },
+    {
+      "symbol": "excludeToGlobPattern",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "extensionDescriptionArrayToMap",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "extensionHostKindToString",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 10,
+      "grep_recall": 0,
+      "grep_total": 11
+    },
+    {
+      "symbol": "extensionRunningPreferenceToString",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "extractCellOutputDetails",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "file",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 138,
+      "grep_recall": 1,
+      "grep_total": 743
+    },
+    {
+      "symbol": "fileURI",
+      "oracle": 8,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "filter",
+      "oracle": 23,
+      "anfs_recall": 16,
+      "anfs_total": 239,
+      "grep_recall": 23,
+      "grep_total": 299
+    },
+    {
+      "symbol": "filterSettings",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "findDefaultUriScheme",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "findEditor",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "fixSettingLinks",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "flush",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 13,
+      "grep_recall": 3,
+      "grep_total": 16
+    },
+    {
+      "symbol": "forEach",
+      "oracle": 15,
+      "anfs_recall": 14,
+      "anfs_total": 171,
+      "grep_recall": 15,
+      "grep_total": 226
+    },
+    {
+      "symbol": "forceResolveEntitlement",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "forceResolveFromFile",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 6
+    },
+    {
+      "symbol": "generate",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "generateMetadataUri",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "get",
+      "oracle": 32,
+      "anfs_recall": 32,
+      "anfs_total": 567,
+      "grep_recall": 32,
+      "grep_total": 829
+    },
+    {
+      "symbol": "getAccounts",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 16,
+      "grep_recall": 0,
+      "grep_total": 20
+    },
+    {
+      "symbol": "getActiveViewWithId",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "getAll",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 19
+    },
+    {
+      "symbol": "getArrayValidator",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getAssociatedRemoteProfile",
+      "oracle": 8,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "getAssociatedRemoteProfiles",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "getAuthenticationProviderActivationEvent",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getAutoSaveConfiguration",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "getAutoSaveMode",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "getChannel",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 33,
+      "grep_recall": 1,
+      "grep_total": 33
+    },
+    {
+      "symbol": "getChatPlanName",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "getColor",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 13,
+      "grep_recall": 4,
+      "grep_total": 15
+    },
+    {
+      "symbol": "getColors",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "getConfigId",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getConnection",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 23,
+      "grep_recall": 2,
+      "grep_total": 25
+    },
+    {
+      "symbol": "getContent",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 21,
+      "grep_recall": 3,
+      "grep_total": 45
+    },
+    {
+      "symbol": "getContentWithoutMostCommonlyUsed",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getCurrentAuthenticationSessionInfo",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "getDefaultAccount",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 4,
+      "grep_recall": 3,
+      "grep_total": 5
+    },
+    {
+      "symbol": "getDefaultAccountAuthenticationProvider",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 15,
+      "grep_recall": 2,
+      "grep_total": 20
+    },
+    {
+      "symbol": "getDirty",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 10
+    },
+    {
+      "symbol": "getEditorSelection",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getEditors",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 19,
+      "grep_recall": 1,
+      "grep_total": 51
+    },
+    {
+      "symbol": "getElementXY",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getElements",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "getEncoding",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 6,
+      "grep_recall": 1,
+      "grep_total": 20
+    },
+    {
+      "symbol": "getEnvironment",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 16,
+      "grep_recall": 3,
+      "grep_total": 18
+    },
+    {
+      "symbol": "getErrorsForSchema",
+      "oracle": 6,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "getExtensionFeature",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 6,
+      "grep_recall": 0,
+      "grep_total": 8
+    },
+    {
+      "symbol": "getExtensionId",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "getGroup",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 16,
+      "grep_recall": 1,
+      "grep_total": 27
+    },
+    {
+      "symbol": "getInstalled",
+      "oracle": 6,
+      "anfs_recall": 6,
+      "anfs_total": 24,
+      "grep_recall": 6,
+      "grep_total": 31
+    },
+    {
+      "symbol": "getInvalidTypeError",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "getLanguageId",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 18,
+      "grep_recall": 1,
+      "grep_total": 45
+    },
+    {
+      "symbol": "getLineCount",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 5,
+      "grep_recall": 3,
+      "grep_total": 7
+    },
+    {
+      "symbol": "getLocalServerInfo",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "getLogs",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "getMostCommonlyUsedSettings",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 6
+    },
+    {
+      "symbol": "getNotebook",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getNumericValidators",
+      "oracle": 19,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getObjectValidator",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getOrActivateProviderIdForServer",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 14
+    },
+    {
+      "symbol": "getPolicyData",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getPolicyValue",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 6,
+      "grep_recall": 1,
+      "grep_total": 40
+    },
+    {
+      "symbol": "getPreference",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 6
+    },
+    {
+      "symbol": "getProvider",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 11,
+      "grep_recall": 1,
+      "grep_total": 15
+    },
+    {
+      "symbol": "getProxy",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getRegisteredGroups",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 11
+    },
+    {
+      "symbol": "getRemoteMcpResource",
+      "oracle": 11,
+      "anfs_recall": 7,
+      "anfs_total": 7,
+      "grep_recall": 7,
+      "grep_total": 8
+    },
+    {
+      "symbol": "getRemoteProfile",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 6
+    },
+    {
+      "symbol": "getRemoteProfiles",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "getRoundTripTime",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "getSessions",
+      "oracle": 13,
+      "anfs_recall": 5,
+      "anfs_total": 10,
+      "grep_recall": 5,
+      "grep_total": 21
+    },
+    {
+      "symbol": "getSettingsGroups",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "getStringIdentifierForProxy",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "getStringValidators",
+      "oracle": 17,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getTerminalBuffer",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "getUriBasenameLabel",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 13
+    },
+    {
+      "symbol": "getValue",
+      "oracle": 23,
+      "anfs_recall": 23,
+      "anfs_total": 151,
+      "grep_recall": 11,
+      "grep_total": 291
+    },
+    {
+      "symbol": "getViewWithId",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "getWindow",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 5,
+      "grep_recall": 0,
+      "grep_total": 8
+    },
+    {
+      "symbol": "getWorkspace",
+      "oracle": 10,
+      "anfs_recall": 10,
+      "anfs_total": 71,
+      "grep_recall": 10,
+      "grep_total": 256
+    },
+    {
+      "symbol": "globMatchesResource",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "guessEncodingByBuffer",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "handleBeforeUnload",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "handleRemoteInstallMcpServerResultsFromEvent",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "handleSaveError",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 6
+    },
+    {
+      "symbol": "handleSaveSuccess",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 3,
+      "grep_total": 8
+    },
+    {
+      "symbol": "handleUnload",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "handleVetoBeforeClose",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "has",
+      "oracle": 16,
+      "anfs_recall": 15,
+      "anfs_total": 147,
+      "grep_recall": 15,
+      "grep_total": 198
+    },
+    {
+      "symbol": "hasManagedSettingsPolicyDefinitions",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "hasShortAutoSaveDelay",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "hasShownAccessibleView",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "hasSiblingClauses",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "hasSiblingFn",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "hasSiblingPromiseFn",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "hasState",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 12,
+      "grep_recall": 2,
+      "grep_total": 76
+    },
+    {
+      "symbol": "hasTotal",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "hasValidBasename",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 10
+    },
+    {
+      "symbol": "hide",
+      "oracle": 6,
+      "anfs_recall": 6,
+      "anfs_total": 32,
+      "grep_recall": 6,
+      "grep_total": 36
+    },
+    {
+      "symbol": "includedInQuery",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "includedInQuerySync",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "infinite",
+      "oracle": 7,
+      "anfs_recall": 7,
+      "anfs_total": 8,
+      "grep_recall": 7,
+      "grep_total": 9
+    },
+    {
+      "symbol": "info",
+      "oracle": 8,
+      "anfs_recall": 7,
+      "anfs_total": 136,
+      "grep_recall": 7,
+      "grep_total": 143
+    },
+    {
+      "symbol": "init",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 9,
+      "grep_recall": 1,
+      "grep_total": 26
+    },
+    {
+      "symbol": "initAllSettingsMap",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "initialize",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 45,
+      "grep_recall": 4,
+      "grep_total": 150
+    },
+    {
+      "symbol": "install",
+      "oracle": 18,
+      "anfs_recall": 4,
+      "anfs_total": 11,
+      "grep_recall": 4,
+      "grep_total": 20
+    },
+    {
+      "symbol": "installFromGallery",
+      "oracle": 30,
+      "anfs_recall": 4,
+      "anfs_total": 14,
+      "grep_recall": 4,
+      "grep_total": 22
+    },
+    {
+      "symbol": "installModelListeners",
+      "oracle": 7,
+      "anfs_recall": 3,
+      "anfs_total": 6,
+      "grep_recall": 3,
+      "grep_total": 10
+    },
+    {
+      "symbol": "isAccessAllowed",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 4,
+      "grep_recall": 0,
+      "grep_total": 81
+    },
+    {
+      "symbol": "isActiveElement",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "isAnonymous",
+      "oracle": 6,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "isAuthenticationProviderRegistered",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 12
+    },
+    {
+      "symbol": "isAuthenticationSession",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "isAuthenticationWwwAuthenticateRequest",
+      "oracle": 8,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "isDirty",
+      "oracle": 14,
+      "anfs_recall": 11,
+      "anfs_total": 51,
+      "grep_recall": 11,
+      "grep_total": 263
+    },
+    {
+      "symbol": "isDisposed",
+      "oracle": 11,
+      "anfs_recall": 11,
+      "anfs_total": 35,
+      "grep_recall": 11,
+      "grep_total": 64
+    },
+    {
+      "symbol": "isDynamicAuthenticationProvider",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "isEditorGroup",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "isEditorReplacement",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "isEqual",
+      "oracle": 19,
+      "anfs_recall": 19,
+      "anfs_total": 99,
+      "grep_recall": 19,
+      "grep_total": 113
+    },
+    {
+      "symbol": "isFileMatch",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "isFilePatternMatch",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 10
+    },
+    {
+      "symbol": "isHorizontal",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "isInsideWorkspace",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "isMessageOfType",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 6,
+      "grep_recall": 0,
+      "grep_total": 7
+    },
+    {
+      "symbol": "isModified",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 11,
+      "grep_recall": 1,
+      "grep_total": 56
+    },
+    {
+      "symbol": "isMultiWindowPart",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "isNullOrEmpty",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "isNullRange",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "isOpen",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 11,
+      "grep_recall": 2,
+      "grep_total": 19
+    },
+    {
+      "symbol": "isOrphaned",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 7
+    },
+    {
+      "symbol": "isPreferredGroup",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "isProUser",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "isProfileURL",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "isProposedApiEnabled",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 6
+    },
+    {
+      "symbol": "isReadonly",
+      "oracle": 14,
+      "anfs_recall": 6,
+      "anfs_total": 14,
+      "grep_recall": 6,
+      "grep_total": 37
+    },
+    {
+      "symbol": "isResolved",
+      "oracle": 14,
+      "anfs_recall": 14,
+      "anfs_total": 32,
+      "grep_recall": 14,
+      "grep_total": 57
+    },
+    {
+      "symbol": "isSettingsProperty",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "isStatusbarEntryLocation",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "isStatusbarEntryPriority",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "isStoredFileWorkingCopySaveEvent",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "isSupported",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 6
+    },
+    {
+      "symbol": "isTextFileEditorModel",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "isTextFileOperationError",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "isTitleBarEmpty",
+      "oracle": 6,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "isTooltipWithCommands",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "isUTFEncoding",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "isUntitledWithAssociatedResource",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "isUserDataProfileTemplate",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "join",
+      "oracle": 17,
+      "anfs_recall": 14,
+      "anfs_total": 182,
+      "grep_recall": 17,
+      "grep_total": 256
+    },
+    {
+      "symbol": "keys",
+      "oracle": 13,
+      "anfs_recall": 11,
+      "anfs_total": 111,
+      "grep_recall": 13,
+      "grep_total": 133
+    },
+    {
+      "symbol": "layout",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 9,
+      "grep_recall": 1,
+      "grep_total": 13
+    },
+    {
+      "symbol": "listToMap",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "logChatEntitlements",
+      "oracle": 8,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "map",
+      "oracle": 38,
+      "anfs_recall": 33,
+      "anfs_total": 438,
+      "grep_recall": 38,
+      "grep_total": 543
+    },
+    {
+      "symbol": "massageOptions",
+      "oracle": 13,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "matches",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 27,
+      "grep_recall": 2,
+      "grep_total": 38
+    },
+    {
+      "symbol": "matchesExcludesSync",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "matchesProvider",
+      "oracle": 9,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "matchesScope",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "move",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 12,
+      "grep_recall": 1,
+      "grep_total": 37
+    },
+    {
+      "symbol": "normalizeEncoding",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "notify",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 9,
+      "grep_recall": 1,
+      "grep_total": 11
+    },
+    {
+      "symbol": "onBeforeUnload",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "onConfigurationChange",
+      "oracle": 7,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "onDidChangeContent",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 9,
+      "grep_recall": 2,
+      "grep_total": 21
+    },
+    {
+      "symbol": "onDidChangeLocalProfiles",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "onDidChangeWorkbenchState",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 10
+    },
+    {
+      "symbol": "onDidChangeWorkspaceFolders",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 5,
+      "grep_recall": 2,
+      "grep_total": 23
+    },
+    {
+      "symbol": "onDidFilesChange",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 12,
+      "grep_recall": 1,
+      "grep_total": 18
+    },
+    {
+      "symbol": "onDidScopeActivate",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "onDidScopeDeactivate",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "onError",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "onFilesConfigurationChange",
+      "oracle": 9,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "onLoadAfterUnload",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "onModelContentChanged",
+      "oracle": 7,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 2,
+      "grep_total": 16
+    },
+    {
+      "symbol": "onScopeClosed",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "onScopeOpened",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "onUnknownSignUpError",
+      "oracle": 5,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "onUnload",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "onUnprocessableSignUpError",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "open",
+      "oracle": 15,
+      "anfs_recall": 7,
+      "anfs_total": 45,
+      "grep_recall": 7,
+      "grep_total": 56
+    },
+    {
+      "symbol": "openView",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 4,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "openWindow",
+      "oracle": 21,
+      "anfs_recall": 2,
+      "anfs_total": 10,
+      "grep_recall": 2,
+      "grep_total": 19
+    },
+    {
+      "symbol": "parse",
+      "oracle": 50,
+      "anfs_recall": 27,
+      "anfs_total": 194,
+      "grep_recall": 30,
+      "grep_total": 547
+    },
+    {
+      "symbol": "parseApprovedOrganizations",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "parseAssociatedRemoteProfiles",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "parseMetadataUri",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "parseObject",
+      "oracle": 11,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "parseOverrideSettings",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "parseProperties",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "parseQuotas",
+      "oracle": 13,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "parseSetting",
+      "oracle": 43,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "parseString",
+      "oracle": 10,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 6
+    },
+    {
+      "symbol": "parseVariable",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "partOpensMaximizedFromString",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "partOpensMaximizedSettingToString",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "participate",
+      "oracle": 10,
+      "anfs_recall": 4,
+      "anfs_total": 9,
+      "grep_recall": 4,
+      "grep_total": 16
+    },
+    {
+      "symbol": "pathIncludedInQuery",
+      "oracle": 8,
+      "anfs_recall": 0,
+      "anfs_total": 5,
+      "grep_recall": 0,
+      "grep_total": 7
+    },
+    {
+      "symbol": "positionFromString",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "positionToString",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "preferredSideBySideGroupDirection",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "preventSaveConflicts",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "preventUnload",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 2,
+      "grep_total": 6
+    },
+    {
+      "symbol": "priorityToRank",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 4,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "prompt",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 36,
+      "grep_recall": 2,
+      "grep_total": 38
+    },
+    {
+      "symbol": "publicLog2",
+      "oracle": 5,
+      "anfs_recall": 5,
+      "anfs_total": 41,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "pushGroup",
+      "oracle": 7,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 5
+    },
+    {
+      "symbol": "pushLine",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "pushSetting",
+      "oracle": 9,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "pushSettingDescription",
+      "oracle": 11,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "pushStackElement",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 6,
+      "grep_recall": 3,
+      "grep_total": 9
+    },
+    {
+      "symbol": "pushValue",
+      "oracle": 12,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "read",
+      "oracle": 5,
+      "anfs_recall": 4,
+      "anfs_total": 34,
+      "grep_recall": 5,
+      "grep_total": 53
+    },
+    {
+      "symbol": "readActivationEvents",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 6
+    },
+    {
+      "symbol": "readAllowedExtensions",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 7,
+      "grep_recall": 2,
+      "grep_total": 32
+    },
+    {
+      "symbol": "readExtensionPointContributions",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "readFileStream",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 6
+    },
+    {
+      "symbol": "readUInt8",
+      "oracle": 5,
+      "anfs_recall": 5,
+      "anfs_total": 10,
+      "grep_recall": 5,
+      "grep_total": 13
+    },
+    {
+      "symbol": "refresh",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 6,
+      "grep_recall": 1,
+      "grep_total": 23
+    },
+    {
+      "symbol": "refreshProperty",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "register",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "registerAuthenticationProvider",
+      "oracle": 9,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 68
+    },
+    {
+      "symbol": "registerAuthenticationProviderHostDelegate",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "registerChannel",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 6
+    },
+    {
+      "symbol": "registerDeclaredAuthenticationProvider",
+      "oracle": 7,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 11
+    },
+    {
+      "symbol": "registerExtensionFeature",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 8
+    },
+    {
+      "symbol": "registerExtensionPoint",
+      "oracle": 14,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "registerHandler",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 4,
+      "grep_recall": 0,
+      "grep_total": 9
+    },
+    {
+      "symbol": "registerListeners",
+      "oracle": 10,
+      "anfs_recall": 10,
+      "anfs_total": 40,
+      "grep_recall": 10,
+      "grep_total": 82
+    },
+    {
+      "symbol": "registerModel",
+      "oracle": 11,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "registerWindowDriver",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "registerWorkingCopy",
+      "oracle": 18,
+      "anfs_recall": 2,
+      "anfs_total": 12,
+      "grep_recall": 2,
+      "grep_total": 26
+    },
+    {
+      "symbol": "registerWorkingCopyProvider",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "reload",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 37,
+      "grep_recall": 3,
+      "grep_total": 63
+    },
+    {
+      "symbol": "remove",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 78,
+      "grep_recall": 4,
+      "grep_total": 113
+    },
+    {
+      "symbol": "removeAllowedExtensions",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 8
+    },
+    {
+      "symbol": "removeDuplicateResults",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "removeEmptySettingsGroups",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "removeNotebookDocument",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "removeProfile",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 5,
+      "grep_recall": 2,
+      "grep_total": 7
+    },
+    {
+      "symbol": "removeSession",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 6
+    },
+    {
+      "symbol": "removeWorkspaceService",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "render",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 11
+    },
+    {
+      "symbol": "replace",
+      "oracle": 11,
+      "anfs_recall": 5,
+      "anfs_total": 59,
+      "grep_recall": 11,
+      "grep_total": 83
+    },
+    {
+      "symbol": "request",
+      "oracle": 7,
+      "anfs_recall": 2,
+      "anfs_total": 14,
+      "grep_recall": 2,
+      "grep_total": 45
+    },
+    {
+      "symbol": "reset",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 14,
+      "grep_recall": 1,
+      "grep_total": 23
+    },
+    {
+      "symbol": "resolve",
+      "oracle": 17,
+      "anfs_recall": 6,
+      "anfs_total": 219,
+      "grep_recall": 6,
+      "grep_total": 717
+    },
+    {
+      "symbol": "resolveAsync",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 49
+    },
+    {
+      "symbol": "resolveEntitlement",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "resolveExtensionHostDebugEnvironment",
+      "oracle": 7,
+      "anfs_recall": 7,
+      "anfs_total": 7,
+      "grep_recall": 7,
+      "grep_total": 8
+    },
+    {
+      "symbol": "resolveFromBuffer",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 6
+    },
+    {
+      "symbol": "resolveFromContent",
+      "oracle": 13,
+      "anfs_recall": 3,
+      "anfs_total": 6,
+      "grep_recall": 3,
+      "grep_total": 12
+    },
+    {
+      "symbol": "resolveFromFile",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 8
+    },
+    {
+      "symbol": "resolvePatternsForProvider",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 6,
+      "grep_recall": 0,
+      "grep_total": 7
+    },
+    {
+      "symbol": "resolveStartupKind",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "resolveWindowId",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "resume",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "revert",
+      "oracle": 7,
+      "anfs_recall": 4,
+      "anfs_total": 13,
+      "grep_recall": 4,
+      "grep_total": 59
+    },
+    {
+      "symbol": "run",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 6,
+      "grep_recall": 2,
+      "grep_total": 22
+    },
+    {
+      "symbol": "runFileOperationParticipants",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "runSaveParticipants",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 8
+    },
+    {
+      "symbol": "save",
+      "oracle": 12,
+      "anfs_recall": 7,
+      "anfs_total": 34,
+      "grep_recall": 7,
+      "grep_total": 155
+    },
+    {
+      "symbol": "serializeElement",
+      "oracle": 11,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "set",
+      "oracle": 49,
+      "anfs_recall": 41,
+      "anfs_total": 412,
+      "grep_recall": 41,
+      "grep_total": 499
+    },
+    {
+      "symbol": "setAdditionalGroups",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "setAssociatedRemoteProfiles",
+      "oracle": 6,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "setDirty",
+      "oracle": 14,
+      "anfs_recall": 10,
+      "anfs_total": 16,
+      "grep_recall": 10,
+      "grep_total": 39
+    },
+    {
+      "symbol": "setEncoding",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 15
+    },
+    {
+      "symbol": "setForceHidden",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "setHandler",
+      "oracle": 7,
+      "anfs_recall": 5,
+      "anfs_total": 12,
+      "grep_recall": 6,
+      "grep_total": 19
+    },
+    {
+      "symbol": "setLanguageId",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 6,
+      "grep_recall": 2,
+      "grep_total": 13
+    },
+    {
+      "symbol": "setOrphaned",
+      "oracle": 9,
+      "anfs_recall": 7,
+      "anfs_total": 14,
+      "grep_recall": 7,
+      "grep_total": 16
+    },
+    {
+      "symbol": "setValue",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 4,
+      "grep_recall": 0,
+      "grep_total": 56
+    },
+    {
+      "symbol": "shouldRender",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 7
+    },
+    {
+      "symbol": "shouldShowCustomTitleBar",
+      "oracle": 10,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "show",
+      "oracle": 16,
+      "anfs_recall": 11,
+      "anfs_total": 37,
+      "grep_recall": 11,
+      "grep_total": 50
+    },
+    {
+      "symbol": "showWhile",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "signIn",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 5,
+      "grep_recall": 1,
+      "grep_total": 12
+    },
+    {
+      "symbol": "snapshot",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 5,
+      "grep_recall": 2,
+      "grep_total": 8
+    },
+    {
+      "symbol": "snapshotToString",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 8,
+      "grep_recall": 0,
+      "grep_total": 12
+    },
+    {
+      "symbol": "sortGroups",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "stat",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 16,
+      "grep_recall": 1,
+      "grep_total": 23
+    },
+    {
+      "symbol": "stop",
+      "oracle": 6,
+      "anfs_recall": 6,
+      "anfs_total": 22,
+      "grep_recall": 6,
+      "grep_total": 25
+    },
+    {
+      "symbol": "store",
+      "oracle": 7,
+      "anfs_recall": 7,
+      "anfs_total": 85,
+      "grep_recall": 7,
+      "grep_total": 120
+    },
+    {
+      "symbol": "stringToSnapshot",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "stringify",
+      "oracle": 13,
+      "anfs_recall": 12,
+      "anfs_total": 128,
+      "grep_recall": 13,
+      "grep_total": 209
+    },
+    {
+      "symbol": "test",
+      "oracle": 13,
+      "anfs_recall": 13,
+      "anfs_total": 113,
+      "grep_recall": 13,
+      "grep_total": 2010
+    },
+    {
+      "symbol": "then",
+      "oracle": 8,
+      "anfs_recall": 8,
+      "anfs_total": 156,
+      "grep_recall": 8,
+      "grep_total": 285
+    },
+    {
+      "symbol": "toBufferOrReadable",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 10
+    },
+    {
+      "symbol": "toCanonicalName",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "toContent",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 2,
+      "grep_total": 6
+    },
+    {
+      "symbol": "toDecodeStream",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 12
+    },
+    {
+      "symbol": "toEncodeReadable",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 5
+    },
+    {
+      "symbol": "toErrorMessage",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 15,
+      "grep_recall": 1,
+      "grep_total": 17
+    },
+    {
+      "symbol": "toExtension",
+      "oracle": 8,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 0,
+      "grep_total": 3
+    },
+    {
+      "symbol": "toExtensionDescription",
+      "oracle": 10,
+      "anfs_recall": 0,
+      "anfs_total": 6,
+      "grep_recall": 0,
+      "grep_total": 7
+    },
+    {
+      "symbol": "toExtensionWithKind",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "toIconvLiteEncoding",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "toJschardetEncoding",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "toNodeEncoding",
+      "oracle": 5,
+      "anfs_recall": 3,
+      "anfs_total": 4,
+      "grep_recall": 3,
+      "grep_total": 6
+    },
+    {
+      "symbol": "toQuotas",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "toRegExp",
+      "oracle": 7,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "toRegisteredEditorPriorityInfo",
+      "oracle": 5,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "toResource",
+      "oracle": 8,
+      "anfs_recall": 5,
+      "anfs_total": 17,
+      "grep_recall": 5,
+      "grep_total": 31
+    },
+    {
+      "symbol": "toString",
+      "oracle": 22,
+      "anfs_recall": 22,
+      "anfs_total": 310,
+      "grep_recall": 22,
+      "grep_total": 696
+    },
+    {
+      "symbol": "toUserDataProfileUri",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "toWorkspaceMcpServer",
+      "oracle": 15,
+      "anfs_recall": 14,
+      "anfs_total": 14,
+      "grep_recall": 14,
+      "grep_total": 15
+    },
+    {
+      "symbol": "total",
+      "oracle": 7,
+      "anfs_recall": 5,
+      "anfs_total": 6,
+      "grep_recall": 5,
+      "grep_total": 9
+    },
+    {
+      "symbol": "trace",
+      "oracle": 42,
+      "anfs_recall": 41,
+      "anfs_total": 213,
+      "grep_recall": 41,
+      "grep_total": 223
+    },
+    {
+      "symbol": "trackLeaks",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "tryActivateProvider",
+      "oracle": 11,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "typeInEditor",
+      "oracle": 7,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "uninstall",
+      "oracle": 8,
+      "anfs_recall": 4,
+      "anfs_total": 8,
+      "grep_recall": 4,
+      "grep_total": 13
+    },
+    {
+      "symbol": "unregisterAuthenticationProvider",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "unregisterDeclaredAuthenticationProvider",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "unregisterWorkingCopy",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "untrackLeaks",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "update",
+      "oracle": 31,
+      "anfs_recall": 8,
+      "anfs_total": 38,
+      "grep_recall": 9,
+      "grep_total": 68
+    },
+    {
+      "symbol": "updateAllowedExtensions",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 6,
+      "grep_recall": 0,
+      "grep_total": 29
+    },
+    {
+      "symbol": "updateContext",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 5
+    },
+    {
+      "symbol": "updateContextKeys",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 5,
+      "grep_recall": 1,
+      "grep_total": 7
+    },
+    {
+      "symbol": "updateContextSync",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "updateCopilotManagedSettingDefinitions",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "updateLastResolvedFileStat",
+      "oracle": 7,
+      "anfs_recall": 3,
+      "anfs_total": 6,
+      "grep_recall": 3,
+      "grep_total": 8
+    },
+    {
+      "symbol": "updateMetadata",
+      "oracle": 6,
+      "anfs_recall": 3,
+      "anfs_total": 9,
+      "grep_recall": 3,
+      "grep_total": 19
+    },
+    {
+      "symbol": "updateNameFromFirstLine",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "updateOptions",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "updatePolicyDefinitions",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "updateProfile",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "updateProperty",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "updateReadonly",
+      "oracle": 8,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 0,
+      "grep_total": 11
+    },
+    {
+      "symbol": "updateResultGroup",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "updateValue",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 12,
+      "grep_recall": 1,
+      "grep_total": 85
+    },
+    {
+      "symbol": "userHome",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 5,
+      "grep_recall": 0,
+      "grep_total": 13
+    },
+    {
+      "symbol": "validatePropertyName",
+      "oracle": 3,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 1
+    },
+    {
+      "symbol": "validateSettingsEditorOptions",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 3,
+      "grep_recall": 0,
+      "grep_total": 4
+    },
+    {
+      "symbol": "valueValidatesAsType",
+      "oracle": 11,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "vetoBeforeUnload",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "wait",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 33,
+      "grep_recall": 3,
+      "grep_total": 37
+    },
+    {
+      "symbol": "warn",
+      "oracle": 8,
+      "anfs_recall": 5,
+      "anfs_total": 65,
+      "grep_recall": 7,
+      "grep_total": 80
+    },
+    {
+      "symbol": "when",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 8,
+      "grep_recall": 1,
+      "grep_total": 11
+    },
+    {
+      "symbol": "with",
+      "oracle": 11,
+      "anfs_recall": 8,
+      "anfs_total": 44,
+      "grep_recall": 8,
+      "grep_total": 113
+    },
+    {
+      "symbol": "withChannel",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 6,
+      "grep_recall": 0,
+      "grep_total": 6
+    },
+    {
+      "symbol": "withConfiguration",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "withExpectedShutdown",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "withProgress",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 14,
+      "grep_recall": 2,
+      "grep_total": 14
+    },
+    {
+      "symbol": "worked",
+      "oracle": 5,
+      "anfs_recall": 3,
+      "anfs_total": 5,
+      "grep_recall": 3,
+      "grep_total": 8
+    },
+    {
+      "symbol": "write",
+      "oracle": 5,
+      "anfs_recall": 4,
+      "anfs_total": 54,
+      "grep_recall": 5,
+      "grep_total": 98
+    },
+    {
+      "symbol": "writeFile",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 27,
+      "grep_recall": 1,
+      "grep_total": 237
+    },
+    {
+      "symbol": "writeFileElevated",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "writeInTerminal",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 2
+    },
+    {
+      "symbol": "writeResultGroups",
+      "oracle": 8,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "writeSettingsGroupToBuilder",
+      "oracle": 5,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "writeUInt8",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 14,
+      "grep_recall": 3,
+      "grep_total": 15
+    }
+  ]
+}

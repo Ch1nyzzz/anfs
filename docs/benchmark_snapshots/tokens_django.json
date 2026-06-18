@@ -1,0 +1,48 @@
+{
+  "repo": "django",
+  "lang": "python",
+  "question": "How does Django's ORM build and execute a query from a QuerySet?",
+  "model": "deepseek-v4-flash",
+  "runs": 1,
+  "corpus_files": 45,
+  "arms": {
+    "baseline": {
+      "total_tokens": 240822,
+      "uncached_tokens": 23734,
+      "tool_calls": 27,
+      "success": 0,
+      "runs": [
+        {
+          "tool_calls": 27,
+          "prompt_tokens": 238268,
+          "completion_tokens": 2554,
+          "cache_miss_tokens": 21180,
+          "uncached_tokens": 23734,
+          "total_tokens": 240822,
+          "steps": 20,
+          "stopped": "max_steps",
+          "answer": ""
+        }
+      ]
+    },
+    "anfs": {
+      "total_tokens": 218427,
+      "uncached_tokens": 16443,
+      "tool_calls": 30,
+      "success": 0,
+      "runs": [
+        {
+          "tool_calls": 30,
+          "prompt_tokens": 215442,
+          "completion_tokens": 2985,
+          "cache_miss_tokens": 13458,
+          "uncached_tokens": 16443,
+          "total_tokens": 218427,
+          "steps": 20,
+          "stopped": "max_steps",
+          "answer": ""
+        }
+      ]
+    }
+  }
+}

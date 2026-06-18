@@ -20,8 +20,9 @@ use crate::{
     collect_garbage, commit_worktree, CompactionPlanRow, create_ref_view_checkpoint,
     DerivedIndexRepairResult, ensure_node_exists, event_list, event_record, EventListRow,
     EventRecord, export_event_bundle, export_history_archive, export_run_bundle,
-    ExportBundleResult, fetch_ref, fetch_run, finish_run, context_pack, fragment_callers,
-    fragment_policy_labels, CallerRow, ContextItemRow, FragmentPolicyLabelRow, FragmentRow,
+    ExportBundleResult, fetch_ref, fetch_run, finish_run, call_graph, context_pack,
+    fragment_callers, fragment_policy_labels, CallGraphEdgeRow, CallGraphNodeRow, CallerRow,
+    ContextItemRow, FragmentPolicyLabelRow, FragmentRow,
     gc_candidates, gc_pins, gc_roots, GcPinRow, index_node_fragments, node_fragments,
     GcResultRow, import_event_bundle, ImportBundleResult, infer_ref_kind, init_db,
     InlineBlobCompactionResult, insert_edge, insert_event, insert_merge_policy_decision_event,
@@ -318,6 +319,43 @@ impl AnfsEngine {
             &mut conn,
             &self.inner.objects_dir,
             seed_name,
+            token_budget,
+            agent_id.as_deref(),
+            run_id.as_deref(),
+            tool_call_id.as_deref(),
+        )
+        .map_err(PyErr::from)
+    }
+
+    /// Depth-bounded call-graph walk from `seed_name`. Returns
+    /// `(nodes, edges, token_estimate)` where each node is
+    /// `(fragment_id, node_id, name, kind, byte_start, byte_end, depth, source)`
+    /// and each edge is `(src_fragment_id, src_name, dst_name, dst_fragment_id,
+    /// evidence_node_id, evidence_start, evidence_end)`. `direction` is
+    /// "callees" (execution flow) or "callers" (multi-hop blast radius). With
+    /// `agent_id` set, the walk is recorded as a `code_call_graph` event.
+    #[pyo3(signature = (seed_name, direction="callees", max_depth=3, max_fanout=4,
+                        token_budget=2000, agent_id=None, run_id=None, tool_call_id=None))]
+    #[allow(clippy::too_many_arguments)]
+    fn call_graph(
+        &self,
+        seed_name: &str,
+        direction: &str,
+        max_depth: i64,
+        max_fanout: i64,
+        token_budget: i64,
+        agent_id: Option<String>,
+        run_id: Option<String>,
+        tool_call_id: Option<String>,
+    ) -> PyResult<(Vec<CallGraphNodeRow>, Vec<CallGraphEdgeRow>, i64)> {
+        let mut conn = lock_conn(&self.inner)?;
+        call_graph(
+            &mut conn,
+            &self.inner.objects_dir,
+            seed_name,
+            direction,
+            max_depth,
+            max_fanout,
             token_budget,
             agent_id.as_deref(),
             run_id.as_deref(),

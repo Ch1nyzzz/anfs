@@ -1,0 +1,3112 @@
+{
+  "repo": "tokio",
+  "lang": "rust",
+  "oracle": "rust-analyzer",
+  "corpus_files": 124,
+  "evaluated": 386,
+  "anfs_recall": 80.6509945750452,
+  "anfs_precision": 66.09855502037792,
+  "grep_recall": 92.54068716094032,
+  "grep_precision": 66.9172932330827,
+  "anfs_ops": 1.0,
+  "grep_ops": 5.243523316062176,
+  "aggregate": {
+    "oracle": 2212,
+    "anfs_hit": 1784,
+    "anfs_total": 2699,
+    "grep_hit": 2047,
+    "grep_total": 3059,
+    "anfs_ops": 386,
+    "grep_ops": 2024
+  },
+  "rows": [
+    {
+      "symbol": "abort",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "abort_handle",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 4,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "about_to_park",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "add_entry",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "add_source",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "allocate",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "as_mut",
+      "oracle": 29,
+      "anfs_recall": 17,
+      "anfs_total": 36,
+      "grep_recall": 29,
+      "grep_total": 41
+    },
+    {
+      "symbol": "as_u64",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 6,
+      "grep_recall": 1,
+      "grep_total": 6
+    },
+    {
+      "symbol": "assert_dropped",
+      "oracle": 7,
+      "anfs_recall": 7,
+      "anfs_total": 7,
+      "grep_recall": 7,
+      "grep_total": 7
+    },
+    {
+      "symbol": "assert_lifo_enabled_is_correct",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "assert_not_dropped",
+      "oracle": 11,
+      "anfs_recall": 11,
+      "anfs_total": 11,
+      "grep_recall": 11,
+      "grep_total": 11
+    },
+    {
+      "symbol": "assert_owner",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 5,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "bind",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "bind_inner",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "bind_local",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "bind_new_task",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "block_in_place",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "block_on",
+      "oracle": 13,
+      "anfs_recall": 12,
+      "anfs_total": 33,
+      "grep_recall": 13,
+      "grep_total": 35
+    },
+    {
+      "symbol": "block_on_inner",
+      "oracle": 6,
+      "anfs_recall": 6,
+      "anfs_total": 6,
+      "grep_recall": 6,
+      "grep_total": 6
+    },
+    {
+      "symbol": "block_on_timeout",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "budget",
+      "oracle": 5,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 5
+    },
+    {
+      "symbol": "build",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 28,
+      "grep_recall": 3,
+      "grep_total": 32
+    },
+    {
+      "symbol": "build_current_thread_local_runtime",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "build_current_thread_runtime",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "build_current_thread_runtime_components",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "build_local",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "can_read_output",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "cancel",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 5
+    },
+    {
+      "symbol": "cancel_task",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "cancelled",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "capture",
+      "oracle": 11,
+      "anfs_recall": 11,
+      "anfs_total": 14,
+      "grep_recall": 11,
+      "grep_total": 14
+    },
+    {
+      "symbol": "channel",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 16,
+      "grep_recall": 2,
+      "grep_total": 17
+    },
+    {
+      "symbol": "clear_entry",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "clear_readiness",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "clear_wakers",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "clone",
+      "oracle": 73,
+      "anfs_recall": 65,
+      "anfs_total": 118,
+      "grep_recall": 71,
+      "grep_total": 128
+    },
+    {
+      "symbol": "clone_waker",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "close",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "close_and_shutdown_all",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "complete",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "consume_signal_ready",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "core",
+      "oracle": 10,
+      "anfs_recall": 10,
+      "anfs_total": 12,
+      "grep_recall": 10,
+      "grep_total": 12
+    },
+    {
+      "symbol": "create",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "create_blocking_pool",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "current",
+      "oracle": 9,
+      "anfs_recall": 7,
+      "anfs_total": 13,
+      "grep_recall": 9,
+      "grep_total": 16
+    },
+    {
+      "symbol": "current_enter_context",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "deadline_to_tick",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "dealloc",
+      "oracle": 9,
+      "anfs_recall": 8,
+      "anfs_total": 8,
+      "grep_recall": 8,
+      "grep_total": 8
+    },
+    {
+      "symbol": "dec_fd_count",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "dec_num_idle_threads",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "dec_num_searching",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "dec_num_threads",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "dec_num_unparked",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "dec_queue_depth",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "default",
+      "oracle": 14,
+      "anfs_recall": 13,
+      "anfs_total": 23,
+      "grep_recall": 14,
+      "grep_total": 25
+    },
+    {
+      "symbol": "defer",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 7,
+      "grep_recall": 4,
+      "grep_total": 9
+    },
+    {
+      "symbol": "deref",
+      "oracle": 49,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "deregister",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "deregister_source",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "disallow_block_in_place",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "display_eq",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "driver",
+      "oracle": 27,
+      "anfs_recall": 26,
+      "anfs_total": 29,
+      "grep_recall": 27,
+      "grep_total": 31
+    },
+    {
+      "symbol": "drop",
+      "oracle": 48,
+      "anfs_recall": 48,
+      "anfs_total": 87,
+      "grep_recall": 48,
+      "grep_total": 88
+    },
+    {
+      "symbol": "drop_abort_handle",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "drop_future_or_output",
+      "oracle": 5,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 5
+    },
+    {
+      "symbol": "drop_join_handle_fast",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "drop_join_handle_slow",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "drop_reference",
+      "oracle": 6,
+      "anfs_recall": 6,
+      "anfs_total": 6,
+      "grep_recall": 6,
+      "grep_total": 6
+    },
+    {
+      "symbol": "drop_waker",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "duration_as_u64",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 5,
+      "grep_recall": 2,
+      "grep_total": 7
+    },
+    {
+      "symbol": "elapsed",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 8,
+      "grep_recall": 3,
+      "grep_total": 9
+    },
+    {
+      "symbol": "enable_all",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "end_poll",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "end_processing_scheduled_tasks",
+      "oracle": 5,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 5
+    },
+    {
+      "symbol": "enter",
+      "oracle": 15,
+      "anfs_recall": 14,
+      "anfs_total": 18,
+      "grep_recall": 15,
+      "grep_total": 20
+    },
+    {
+      "symbol": "enter_runtime",
+      "oracle": 5,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "eq",
+      "oracle": 57,
+      "anfs_recall": 1,
+      "anfs_total": 4,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "exhausted",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "exit_runtime",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "extend_expiration",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "fetch_update",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "fetch_update_action",
+      "oracle": 6,
+      "anfs_recall": 6,
+      "anfs_total": 6,
+      "grep_recall": 6,
+      "grep_total": 7
+    },
+    {
+      "symbol": "fire",
+      "oracle": 5,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 5
+    },
+    {
+      "symbol": "fmt",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 9,
+      "grep_recall": 3,
+      "grep_total": 9
+    },
+    {
+      "symbol": "from",
+      "oracle": 7,
+      "anfs_recall": 7,
+      "anfs_total": 15,
+      "grep_recall": 7,
+      "grep_total": 16
+    },
+    {
+      "symbol": "from_config",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "from_parts",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "from_raw",
+      "oracle": 25,
+      "anfs_recall": 25,
+      "anfs_total": 30,
+      "grep_recall": 25,
+      "grep_total": 30
+    },
+    {
+      "symbol": "gen_shared_list_size",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "get_cfg",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_core_offset",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_id",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 4,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_id_offset",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_id_ptr",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_new_task",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_owner_id",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_queue_next",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "get_scheduler",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "get_shard_size",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "get_trailer",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "get_trailer_offset",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "gone",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "handle",
+      "oracle": 12,
+      "anfs_recall": 11,
+      "anfs_total": 14,
+      "grep_recall": 12,
+      "grep_total": 15
+    },
+    {
+      "symbol": "has_pending_work",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "has_tasks",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "header",
+      "oracle": 28,
+      "anfs_recall": 24,
+      "anfs_total": 24,
+      "grep_recall": 28,
+      "grep_total": 28
+    },
+    {
+      "symbol": "header_ptr",
+      "oracle": 10,
+      "anfs_recall": 10,
+      "anfs_total": 12,
+      "grep_recall": 10,
+      "grep_total": 12
+    },
+    {
+      "symbol": "hooks",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "id",
+      "oracle": 7,
+      "anfs_recall": 5,
+      "anfs_total": 13,
+      "grep_recall": 6,
+      "grep_total": 15
+    },
+    {
+      "symbol": "inc_lifo_capped",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "inc_lifo_schedules",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "inc_local_schedule_count",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "inc_num_idle_threads",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "inc_num_inc_notify_local",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "inc_num_maintenance",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "inc_num_searching",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "inc_num_threads",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "inc_num_unparks_local",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "inc_queue_depth",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "inc_remote_schedule_count",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "incr_fd_count",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "incr_overflow_count",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "incr_ready_count_by",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "incr_steal_count",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "incr_steal_operations",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "init",
+      "oracle": 7,
+      "anfs_recall": 1,
+      "anfs_total": 6,
+      "grep_recall": 7,
+      "grep_total": 7
+    },
+    {
+      "symbol": "inject",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "injection_queue_depth",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "insert",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 8,
+      "grep_recall": 2,
+      "grep_total": 8
+    },
+    {
+      "symbol": "instant_to_tick",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 5,
+      "grep_total": 5
+    },
+    {
+      "symbol": "into_inner",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "into_notified",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "into_raw",
+      "oracle": 7,
+      "anfs_recall": 7,
+      "anfs_total": 7,
+      "grep_recall": 7,
+      "grep_total": 7
+    },
+    {
+      "symbol": "into_task",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "into_waker",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "is_cancelled",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 7,
+      "grep_recall": 4,
+      "grep_total": 10
+    },
+    {
+      "symbol": "is_closed",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 4,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "is_complete",
+      "oracle": 13,
+      "anfs_recall": 10,
+      "anfs_total": 10,
+      "grep_recall": 13,
+      "grep_total": 13
+    },
+    {
+      "symbol": "is_elapsed",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "is_empty",
+      "oracle": 25,
+      "anfs_recall": 20,
+      "anfs_total": 26,
+      "grep_recall": 25,
+      "grep_total": 32
+    },
+    {
+      "symbol": "is_entered",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 5,
+      "grep_total": 5
+    },
+    {
+      "symbol": "is_idle",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "is_join_interested",
+      "oracle": 8,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 8,
+      "grep_total": 8
+    },
+    {
+      "symbol": "is_join_waker_set",
+      "oracle": 8,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 8,
+      "grep_total": 8
+    },
+    {
+      "symbol": "is_notified",
+      "oracle": 6,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 6,
+      "grep_total": 7
+    },
+    {
+      "symbol": "is_parked",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "is_pending",
+      "oracle": 4,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "is_rt_shutdown_err",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "is_running",
+      "oracle": 6,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 6,
+      "grep_total": 6
+    },
+    {
+      "symbol": "is_shutdown",
+      "oracle": 6,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 6,
+      "grep_total": 8
+    },
+    {
+      "symbol": "is_temporary_os_thread_error",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "iter",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 28,
+      "grep_recall": 2,
+      "grep_total": 28
+    },
+    {
+      "symbol": "launch",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "len",
+      "oracle": 26,
+      "anfs_recall": 22,
+      "anfs_total": 33,
+      "grep_recall": 26,
+      "grep_total": 48
+    },
+    {
+      "symbol": "level_for",
+      "oracle": 8,
+      "anfs_recall": 4,
+      "anfs_total": 8,
+      "grep_recall": 8,
+      "grep_total": 22
+    },
+    {
+      "symbol": "level_range",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "load",
+      "oracle": 50,
+      "anfs_recall": 42,
+      "anfs_total": 55,
+      "grep_recall": 50,
+      "grep_total": 95
+    },
+    {
+      "symbol": "local",
+      "oracle": 11,
+      "anfs_recall": 11,
+      "anfs_total": 21,
+      "grep_recall": 11,
+      "grep_total": 21
+    },
+    {
+      "symbol": "lock",
+      "oracle": 49,
+      "anfs_recall": 47,
+      "anfs_total": 66,
+      "grep_recall": 49,
+      "grep_total": 69
+    },
+    {
+      "symbol": "maintenance",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "make_fixed_size",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "mark_pending",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "mask",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "max_capacity",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "max_value",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "metrics",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "metrics_poll_count_histogram_builder",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "might_be_registered",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "model",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 45,
+      "grep_recall": 4,
+      "grep_total": 45
+    },
+    {
+      "symbol": "name",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 7,
+      "grep_recall": 3,
+      "grep_total": 7
+    },
+    {
+      "symbol": "needs_release",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "new",
+      "oracle": 212,
+      "anfs_recall": 182,
+      "anfs_total": 307,
+      "grep_recall": 207,
+      "grep_total": 352
+    },
+    {
+      "symbol": "new_current_thread",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 13,
+      "grep_recall": 3,
+      "grep_total": 14
+    },
+    {
+      "symbol": "new_multi_thread",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 9,
+      "grep_recall": 1,
+      "grep_total": 9
+    },
+    {
+      "symbol": "new_no_context",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "new_stats",
+      "oracle": 7,
+      "anfs_recall": 7,
+      "anfs_total": 15,
+      "grep_recall": 7,
+      "grep_total": 15
+    },
+    {
+      "symbol": "new_thread_local_destroyed",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "next",
+      "oracle": 18,
+      "anfs_recall": 17,
+      "anfs_total": 22,
+      "grep_recall": 18,
+      "grep_total": 25
+    },
+    {
+      "symbol": "next_expiration",
+      "oracle": 6,
+      "anfs_recall": 5,
+      "anfs_total": 9,
+      "grep_recall": 6,
+      "grep_total": 11
+    },
+    {
+      "symbol": "next_expiration_time",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 1,
+      "grep_total": 3
+    },
+    {
+      "symbol": "next_local_task",
+      "oracle": 6,
+      "anfs_recall": 6,
+      "anfs_total": 6,
+      "grep_recall": 6,
+      "grep_total": 6
+    },
+    {
+      "symbol": "next_occupied_slot",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "next_remote_task",
+      "oracle": 5,
+      "anfs_recall": 3,
+      "anfs_total": 5,
+      "grep_recall": 5,
+      "grep_total": 5
+    },
+    {
+      "symbol": "next_task",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "no_expirations_before",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "normal_or_miri",
+      "oracle": 8,
+      "anfs_recall": 8,
+      "anfs_total": 8,
+      "grep_recall": 8,
+      "grep_total": 8
+    },
+    {
+      "symbol": "notify_all",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 7,
+      "grep_recall": 4,
+      "grep_total": 7
+    },
+    {
+      "symbol": "notify_if_work_pending",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "notify_parked_local",
+      "oracle": 6,
+      "anfs_recall": 6,
+      "anfs_total": 6,
+      "grep_recall": 6,
+      "grep_total": 6
+    },
+    {
+      "symbol": "notify_parked_remote",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "notify_should_wakeup",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "now",
+      "oracle": 25,
+      "anfs_recall": 24,
+      "anfs_total": 26,
+      "grep_recall": 24,
+      "grep_total": 27
+    },
+    {
+      "symbol": "num_alive_tasks",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 4,
+      "grep_total": 5
+    },
+    {
+      "symbol": "num_idle_threads",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 4
+    },
+    {
+      "symbol": "num_searching",
+      "oracle": 7,
+      "anfs_recall": 5,
+      "anfs_total": 5,
+      "grep_recall": 7,
+      "grep_total": 7
+    },
+    {
+      "symbol": "num_threads",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 6
+    },
+    {
+      "symbol": "num_unparked",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "num_workers",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "occupied_bit",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 6,
+      "grep_recall": 4,
+      "grep_total": 8
+    },
+    {
+      "symbol": "owned_id",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "pack",
+      "oracle": 7,
+      "anfs_recall": 7,
+      "anfs_total": 7,
+      "grep_recall": 7,
+      "grep_total": 7
+    },
+    {
+      "symbol": "panic",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "panic_payload_as_str",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "panic_result_to_join_error",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "panic_to_error",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "park",
+      "oracle": 18,
+      "anfs_recall": 13,
+      "anfs_total": 13,
+      "grep_recall": 18,
+      "grep_total": 19
+    },
+    {
+      "symbol": "park_condvar",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "park_driver",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "park_internal",
+      "oracle": 6,
+      "anfs_recall": 6,
+      "anfs_total": 6,
+      "grep_recall": 6,
+      "grep_total": 6
+    },
+    {
+      "symbol": "park_timeout",
+      "oracle": 18,
+      "anfs_recall": 11,
+      "anfs_total": 11,
+      "grep_recall": 18,
+      "grep_total": 20
+    },
+    {
+      "symbol": "park_yield",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "poll",
+      "oracle": 26,
+      "anfs_recall": 13,
+      "anfs_total": 21,
+      "grep_recall": 13,
+      "grep_total": 23
+    },
+    {
+      "symbol": "poll_at",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "poll_elapsed",
+      "oracle": 12,
+      "anfs_recall": 3,
+      "anfs_total": 8,
+      "grep_recall": 12,
+      "grep_total": 13
+    },
+    {
+      "symbol": "poll_future",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "poll_inner",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "poll_io",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "poll_readiness",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "poll_ready",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "pop",
+      "oracle": 25,
+      "anfs_recall": 17,
+      "anfs_total": 30,
+      "grep_recall": 25,
+      "grep_total": 40
+    },
+    {
+      "symbol": "pop_front",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 15,
+      "grep_recall": 4,
+      "grep_total": 19
+    },
+    {
+      "symbol": "pop_n",
+      "oracle": 6,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 6,
+      "grep_total": 6
+    },
+    {
+      "symbol": "pre_shutdown",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "process",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "process_at_time",
+      "oracle": 11,
+      "anfs_recall": 11,
+      "anfs_total": 11,
+      "grep_recall": 11,
+      "grep_total": 11
+    },
+    {
+      "symbol": "process_expiration",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "ptr_eq",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 4
+    },
+    {
+      "symbol": "push",
+      "oracle": 22,
+      "anfs_recall": 22,
+      "anfs_total": 40,
+      "grep_recall": 22,
+      "grep_total": 42
+    },
+    {
+      "symbol": "push_back",
+      "oracle": 9,
+      "anfs_recall": 9,
+      "anfs_total": 10,
+      "grep_recall": 9,
+      "grep_total": 10
+    },
+    {
+      "symbol": "push_back_finish",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "push_back_or_overflow",
+      "oracle": 9,
+      "anfs_recall": 6,
+      "anfs_total": 16,
+      "grep_recall": 9,
+      "grep_total": 16
+    },
+    {
+      "symbol": "push_batch",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "push_batch_inner",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "push_front",
+      "oracle": 5,
+      "anfs_recall": 4,
+      "anfs_total": 27,
+      "grep_recall": 5,
+      "grep_total": 27
+    },
+    {
+      "symbol": "push_overflow",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "push_remote_task",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "push_task",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "raw_waker",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "read_state",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "readiness",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "readiness_fut",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "ready_event",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "ref_count",
+      "oracle": 13,
+      "anfs_recall": 7,
+      "anfs_total": 7,
+      "grep_recall": 13,
+      "grep_total": 13
+    },
+    {
+      "symbol": "ref_dec",
+      "oracle": 8,
+      "anfs_recall": 8,
+      "anfs_total": 8,
+      "grep_recall": 8,
+      "grep_total": 8
+    },
+    {
+      "symbol": "ref_dec_twice",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "ref_inc",
+      "oracle": 8,
+      "anfs_recall": 8,
+      "anfs_total": 8,
+      "grep_recall": 8,
+      "grep_total": 9
+    },
+    {
+      "symbol": "register_signal_receiver",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "registered_when",
+      "oracle": 5,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 5,
+      "grep_total": 5
+    },
+    {
+      "symbol": "release",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "release_pending_registrations",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "remaining_slots",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "remote_abort",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "remove",
+      "oracle": 14,
+      "anfs_recall": 12,
+      "anfs_total": 20,
+      "grep_recall": 14,
+      "grep_total": 20
+    },
+    {
+      "symbol": "remove_entry",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "reregister",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "reset",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "reset_lifo_enabled",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "reset_woken",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "rt",
+      "oracle": 7,
+      "anfs_recall": 7,
+      "anfs_total": 7,
+      "grep_recall": 7,
+      "grep_total": 7
+    },
+    {
+      "symbol": "run",
+      "oracle": 12,
+      "anfs_recall": 11,
+      "anfs_total": 12,
+      "grep_recall": 12,
+      "grep_total": 13
+    },
+    {
+      "symbol": "run_task",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "schedule",
+      "oracle": 9,
+      "anfs_recall": 7,
+      "anfs_total": 8,
+      "grep_recall": 8,
+      "grep_total": 8
+    },
+    {
+      "symbol": "schedule_local",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "schedule_option_task_without_yield",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "schedule_task",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "set",
+      "oracle": 18,
+      "anfs_recall": 16,
+      "anfs_total": 20,
+      "grep_recall": 18,
+      "grep_total": 23
+    },
+    {
+      "symbol": "set_cancelled",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "set_current",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "set_elapsed",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "set_expiration",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "set_join_waker",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "set_next",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "set_notified",
+      "oracle": 6,
+      "anfs_recall": 6,
+      "anfs_total": 6,
+      "grep_recall": 6,
+      "grep_total": 7
+    },
+    {
+      "symbol": "set_owner_id",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "set_queue_depth",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "set_queue_next",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "set_readiness",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "set_registered_when",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "set_running",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "set_stage",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "set_thread_id",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "set_waker",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "should_notify_others",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "shutdown",
+      "oracle": 45,
+      "anfs_recall": 38,
+      "anfs_total": 38,
+      "grep_recall": 44,
+      "grep_total": 45
+    },
+    {
+      "symbol": "shutdown2",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "shutdown_core",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "shutdown_or_run_if_mandatory",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "shutdown_timeout",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "slot_for",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 8
+    },
+    {
+      "symbol": "slot_range",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 6,
+      "grep_recall": 3,
+      "grep_total": 6
+    },
+    {
+      "symbol": "spawn",
+      "oracle": 20,
+      "anfs_recall": 18,
+      "anfs_total": 67,
+      "grep_recall": 20,
+      "grep_total": 70
+    },
+    {
+      "symbol": "spawn_blocking",
+      "oracle": 8,
+      "anfs_recall": 6,
+      "anfs_total": 13,
+      "grep_recall": 6,
+      "grep_total": 13
+    },
+    {
+      "symbol": "spawn_blocking_inner",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "spawn_local",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 4
+    },
+    {
+      "symbol": "spawn_local_named",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "spawn_named",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "spawn_task",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "spawn_thread",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "spawner",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "start_poll",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "start_processing_scheduled_tasks",
+      "oracle": 8,
+      "anfs_recall": 8,
+      "anfs_total": 8,
+      "grep_recall": 8,
+      "grep_total": 8
+    },
+    {
+      "symbol": "start_time",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "state",
+      "oracle": 14,
+      "anfs_recall": 13,
+      "anfs_total": 14,
+      "grep_recall": 14,
+      "grep_total": 15
+    },
+    {
+      "symbol": "steal_into",
+      "oracle": 4,
+      "anfs_recall": 2,
+      "anfs_total": 9,
+      "grep_recall": 4,
+      "grep_total": 10
+    },
+    {
+      "symbol": "steal_into2",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "steal_work",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "store_output",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "submit",
+      "oracle": 5,
+      "anfs_recall": 2,
+      "anfs_total": 16,
+      "grep_recall": 5,
+      "grep_total": 18
+    },
+    {
+      "symbol": "submit_metrics",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "sync_when",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "take",
+      "oracle": 35,
+      "anfs_recall": 32,
+      "anfs_total": 62,
+      "grep_recall": 35,
+      "grep_total": 64
+    },
+    {
+      "symbol": "take_core",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "take_deferred",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "take_entries",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "take_output",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "take_slot",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "tick",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "tick_max",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 4,
+      "grep_recall": 4,
+      "grep_total": 4
+    },
+    {
+      "symbol": "tick_to_duration",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 2,
+      "grep_recall": 1,
+      "grep_total": 2
+    },
+    {
+      "symbol": "time_source",
+      "oracle": 8,
+      "anfs_recall": 6,
+      "anfs_total": 11,
+      "grep_recall": 8,
+      "grep_total": 11
+    },
+    {
+      "symbol": "token",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "trace_core",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "trace_leaf",
+      "oracle": 2,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "trace_requested",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "trailer",
+      "oracle": 6,
+      "anfs_recall": 6,
+      "anfs_total": 7,
+      "grep_recall": 6,
+      "grep_total": 7
+    },
+    {
+      "symbol": "trailer_ptr",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "transition_from_parked",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "transition_from_searching",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "transition_to_complete",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "transition_to_idle",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "transition_to_join_handle_dropped",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "transition_to_notified_and_cancel",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "transition_to_notified_by_ref",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "transition_to_notified_by_val",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "transition_to_parked",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "transition_to_running",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "transition_to_searching",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "transition_to_shutdown",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "transition_to_terminal",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "transition_worker_from_searching",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "transition_worker_to_parked",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "transition_worker_to_searching",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "true_when",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "try_enter_blocking_region",
+      "oracle": 3,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "try_id",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "try_into_panic",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "try_read_output",
+      "oracle": 3,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "try_set_current",
+      "oracle": 4,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "try_set_join_waker",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "tune_global_queue_interval",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "tuned_global_queue_interval",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "turn",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "unhandled_panic",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "unowned",
+      "oracle": 23,
+      "anfs_recall": 21,
+      "anfs_total": 28,
+      "grep_recall": 21,
+      "grep_total": 28
+    },
+    {
+      "symbol": "unpack",
+      "oracle": 32,
+      "anfs_recall": 31,
+      "anfs_total": 31,
+      "grep_recall": 32,
+      "grep_total": 32
+    },
+    {
+      "symbol": "unpark",
+      "oracle": 21,
+      "anfs_recall": 17,
+      "anfs_total": 17,
+      "grep_recall": 20,
+      "grep_total": 21
+    },
+    {
+      "symbol": "unpark_condvar",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "unpark_one",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "unpark_worker_by_id",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "unparked",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 3,
+      "grep_recall": 3,
+      "grep_total": 3
+    },
+    {
+      "symbol": "unparker_to_raw_waker",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "unset_join_interested",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "unset_join_waker",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "unset_notified",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "unset_running",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "unset_waker",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "unset_waker_after_complete",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "vtable",
+      "oracle": 1,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 0,
+      "grep_total": 0
+    },
+    {
+      "symbol": "wait",
+      "oracle": 5,
+      "anfs_recall": 5,
+      "anfs_total": 8,
+      "grep_recall": 5,
+      "grep_total": 8
+    },
+    {
+      "symbol": "wake",
+      "oracle": 13,
+      "anfs_recall": 12,
+      "anfs_total": 16,
+      "grep_recall": 12,
+      "grep_total": 16
+    },
+    {
+      "symbol": "wake_all",
+      "oracle": 4,
+      "anfs_recall": 4,
+      "anfs_total": 13,
+      "grep_recall": 4,
+      "grep_total": 13
+    },
+    {
+      "symbol": "wake_by_ref",
+      "oracle": 8,
+      "anfs_recall": 5,
+      "anfs_total": 8,
+      "grep_recall": 6,
+      "grep_total": 9
+    },
+    {
+      "symbol": "wake_by_val",
+      "oracle": 2,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "wake_deferred_tasks_and_free",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "wake_join",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "waker",
+      "oracle": 9,
+      "anfs_recall": 9,
+      "anfs_total": 17,
+      "grep_recall": 9,
+      "grep_total": 17
+    },
+    {
+      "symbol": "waker_ref",
+      "oracle": 6,
+      "anfs_recall": 2,
+      "anfs_total": 3,
+      "grep_recall": 2,
+      "grep_total": 3
+    },
+    {
+      "symbol": "when",
+      "oracle": 1,
+      "anfs_recall": 1,
+      "anfs_total": 1,
+      "grep_recall": 1,
+      "grep_total": 1
+    },
+    {
+      "symbol": "will_wake",
+      "oracle": 3,
+      "anfs_recall": 3,
+      "anfs_total": 5,
+      "grep_recall": 3,
+      "grep_total": 5
+    },
+    {
+      "symbol": "with",
+      "oracle": 24,
+      "anfs_recall": 20,
+      "anfs_total": 26,
+      "grep_recall": 24,
+      "grep_total": 28
+    },
+    {
+      "symbol": "with_current",
+      "oracle": 12,
+      "anfs_recall": 10,
+      "anfs_total": 11,
+      "grep_recall": 11,
+      "grep_total": 12
+    },
+    {
+      "symbol": "with_inner",
+      "oracle": 6,
+      "anfs_recall": 6,
+      "anfs_total": 6,
+      "grep_recall": 6,
+      "grep_total": 6
+    },
+    {
+      "symbol": "with_mut",
+      "oracle": 14,
+      "anfs_recall": 13,
+      "anfs_total": 14,
+      "grep_recall": 14,
+      "grep_total": 14
+    },
+    {
+      "symbol": "worker_metrics",
+      "oracle": 4,
+      "anfs_recall": 0,
+      "anfs_total": 0,
+      "grep_recall": 4,
+      "grep_total": 17
+    },
+    {
+      "symbol": "worker_to_notify",
+      "oracle": 2,
+      "anfs_recall": 2,
+      "anfs_total": 2,
+      "grep_recall": 2,
+      "grep_total": 2
+    },
+    {
+      "symbol": "yield_now",
+      "oracle": 10,
+      "anfs_recall": 9,
+      "anfs_total": 24,
+      "grep_recall": 10,
+      "grep_total": 24
+    }
+  ]
+}

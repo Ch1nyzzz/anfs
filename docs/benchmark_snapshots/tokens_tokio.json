@@ -1,0 +1,48 @@
+{
+  "repo": "tokio",
+  "lang": "rust",
+  "question": "How does tokio schedule and run async tasks on its runtime?",
+  "model": "deepseek-v4-flash",
+  "runs": 1,
+  "corpus_files": 124,
+  "arms": {
+    "baseline": {
+      "total_tokens": 539133,
+      "uncached_tokens": 46973,
+      "tool_calls": 25,
+      "success": 1,
+      "runs": [
+        {
+          "tool_calls": 25,
+          "prompt_tokens": 534966,
+          "completion_tokens": 4167,
+          "cache_miss_tokens": 42806,
+          "uncached_tokens": 46973,
+          "total_tokens": 539133,
+          "steps": 17,
+          "stopped": "answer",
+          "answer": "Now I have a thorough understanding. Here's the explanation.\n\n---\n\n## How Tokio Schedules and Runs Async Tasks\n\nTokio has two scheduler flavors: **`CurrentThread`** (single-threaded) and **`MultiThread`** (work-stealing thread pool). Both share the same task infrastructure but differ in how they dispatch and execute tasks.\n\n### 1. Task Representation\n\nEvery spawned future is wrapped in a heap-allocated `Cell<T, S>` (defined in `task/core.rs`), which contains:\n\n- **`Header`** \u2013 atomic `State` bits (`RUNNING`, `COMPLETE`, `NOTIFIED`, `CANCELLED`, `JOIN_INTEREST`, ref-count), plus a vtable pointer.\n- **`Core<T, S>`** \u2013 the pinned future (`Stage`), the scheduler reference (`S`), and the task `Id`.\n- **`Trailer`** \u2013 waker for the `JoinHandle`.\n\nThe vtable (`raw::Vtable`) stores function pointers for `poll`, `schedule`, `dealloc`, etc., specialized for the concrete `T` (future) and `S` (scheduler) types.\n\n### 2. Spawning a Task\n\nWhen you call `runtime.spawn(future)`:\n\n1. **`Runtime::spawn`** \u2192 calls `handle.spawn_named(...)`.\n2. The handle delegates to the scheduler-specific spawn:\n   - **CurrentThread**: `Handle::spawn` calls `shared.owned.bind(future, handle, id, ...)`, which allocates the `Task<S>` and returns a `Notified` handle. If this is the first reference, it calls `self.schedule(notified)`.\n   - **MultiThread**: `Handle::bind_new_task` does the same.\n3. The task is stored in **`OwnedTasks`** (`task/list.rs`), a sharded linked list that tracks all live tasks and enables safe removal during shutdown.\n\n### 3. The `Schedule` Trait \u2013 How Tasks Get Queued\n\nBoth schedulers implement `task::Schedule` for `Arc<Handle>`:\n\n- **`schedule(task)`** \u2013 called when a waker wakes the task or when a task is first spawned.\n- **`yield_now(task)`** \u2013 called when a task yields (e.g. `tokio::task::yield_now()`), which schedules it for re-polling.\n- **`release(task)`** \u2013 removes the task from `OwnedTasks` when its ref-count drops to zero.\n\nThe key wiring is in `raw.rs`:\n\n```rust\nunsafe fn schedule<S: Schedule>(ptr: NonNull<Header>) {\n    let scheduler = Header::get_scheduler::<S>(ptr);\n    scheduler.as_ref().schedule(Notified(Task::from_raw(ptr.cast())));\n}\n```\n\nThis is called from the **waker** (`waker.rs`): when a waker's `wake_by_val` or `wake_by_ref` fires, it transitions the task state to `NOTIFIED` and calls the vtable's `schedule` function, which invokes `S::schedule`.\n\n### 4. CurrentThread Scheduler\n\n**Core loop** is in `CoreGuard::block_on` (in `current_thread/mod.rs`):\n\n```\nloop {\n    // 1. Poll the \"block_on\" future if woken\n    if handle.reset_woken() {\n        poll(block_on_future);\n        if Ready => return;\n    }\n\n    // 2. Process tasks from local queue for `event_interval` ticks\n    for _ in 0..event_interval {\n        tick();\n        let task = core.next_task(handle);  // alternates local & global queues\n        if let Some(task) = task {\n            task.run();  // calls Harness::poll -> polls the future\n        } else {\n            park_yield() or park();  // yield to I/O driver or sleep\n        }\n    }\n\n    // 3. Periodically yield to driver (drives I/O, timers)\n    park_yield(core);\n}\n```\n\n**Queue strategy (`Core::next_task`)**:\n- Every `global_queue_interval` ticks (default 31), it checks the **inject (global) queue** first, then the **local run queue** (`VecDeque<Notified>`).\n- Other ticks check local first, then global.\n- When scheduled from within the same runtime context, tasks go directly to the **local queue** (`core.push_task`).\n- When scheduled from **outside** the runtime (another thread), tasks go to the injection queue and `driver.unpark()` is called to wake the thread.\n\n**Parking** (`Context::park`): takes the I/O driver, parks the thread on it (or for 0ms in `park_yield`), which drives I/O events and timers. Deferred tasks (from `yield_now`) are woken after unparking.\n\n### 5. MultiThread (Work-Stealing) Scheduler\n\nEach worker thread runs the `run` function in `worker.rs`:\n\n```\nwhile !core.is_shutdown {\n    core.tick();\n    core = self.maintenance(core);  // periodic I/O driver yield\n\n    // 1. Try to get a task locally\n    if let Some(task) = core.next_task(&self.worker) {\n        core = self.run_task(task, core)?;\n        continue;\n    }\n\n    // 2. No local work \u2192 try to steal\n    core.stats.end_processing_scheduled_tasks();\n    if let Some(task) = core.steal_work(&self.worker) {\n        core = self.run_task(task, core)?;\n    } else {\n        core = self.park(core);  // sleep until notified\n    }\n}\n```\n\n**Local queue structure** (per-worker `Core`):\n- **`lifo_slot: Option<Notified>`** \u2013 stores the most recently scheduled task from the same worker (LIFO optimization). Polled up to `MAX_LIFO_POLLS_PER_TICK` (3) times before being demoted to the run queue, preventing starvation.\n- **`run_queue: queue::Local<Arc<Handle>>`** \u2013 a fixed-capacity concurrent queue (array-based, with CAS operations for stealing).\n- Tasks from the same worker go to `lifo_slot` (if enabled) or `run_queue`.\n\n**Global / inject queue** (`inject::Shared`): a lock-protected linked list for tasks scheduled from outside the worker pool. Workers batch-pull multiple tasks from the inject queue to amortize locking.\n\n**Work stealing** (`Core::steal_work`):\n1. Transitions the worker to **searching** state (via `Idle` coordinator, which limits how many workers search simultaneously).\n2. Randomly iterates over other workers' `Remote` entries and calls `steal.steal_into(&mut self.run_queue)` \u2013 a CAS-based pop from the middle of the target's local queue.\n3. Falls back to the injection queue if no steal succeeds.\n\n**Parking** (`Context::park`):\n- `transition_to_parked` coordinates with `Idle` to track parked workers.\n- The **last searching worker** must re-check all queues before parking (preventing lost wakeups).\n- When parked, the worker takes the I/O driver and blocks on it. Other workers notify via `Unparker::unpark`.\n\n**Task execution** (`Context::run_task`):\n1. `task.run()` \u2192 `Harness::poll` \u2192 `Core::poll` \u2192 calls `future.poll(cx)`.\n2. After the task returns `Poll::Pending`, `transition_to_idle` checks if the task was cancelled.\n3. If the task yielded (via `yield_now`), it returns `PollFuture::Notified`, and the scheduler re-queues it via `S::yield_now`.\n4. LIFO continuation: after a task yields, the worker immediately polls any task that was pushed to the `lifo_slot` during the poll, up to 3 times, improving cache locality for message-passing patterns.\n\n### 6. The Full Flow (End-to-End)\n\n```\nfuture.await\n  \u2192 waker.wake()\n    \u2192 raw_waker::wake_by_val/ref\n      \u2192 RawTask::wake_by_val/ref\n        \u2192 state.transition_to_notified_by_val/ref\n          \u2192 vtable.schedule(ptr)\n            \u2192 S::schedule(Notified(task))\n              \u2192 [CurrentThread] context::with_scheduler:\n                   if on same thread \u2192 push to local VecDeque\n                   else \u2192 push to inject queue + driver.unpark()\n              \u2192 [MultiThread] with_current:\n                   if on same worker + have core \u2192 schedule_local (LIFO slot or run_queue)\n                   else \u2192 push_remote_task (inject queue) + notify_parked_remote()\n\nWorker loop:\n  \u2192 next_task() pulls from local queue (LIFO first, then run_queue)\n    \u2192 every N ticks, also drains inject queue in batch\n  \u2192 run_task(task):\n    \u2192 task.run() \u2192 Harness::poll \u2192 Core::poll \u2192 future.poll(cx)\n    \u2192 if Ready(()) \u2192 complete task, store output, wake JoinHandle\n    \u2192 if Pending \u2192 transition_to_idle, done\n```\n\n### Key Types and Functions\n\n| Type/Function | Role |\n|---|---|\n| `Runtime` | Top-level; holds `Scheduler`"
+        }
+      ]
+    },
+    "anfs": {
+      "total_tokens": 278280,
+      "uncached_tokens": 25352,
+      "tool_calls": 25,
+      "success": 0,
+      "runs": [
+        {
+          "tool_calls": 25,
+          "prompt_tokens": 275816,
+          "completion_tokens": 2464,
+          "cache_miss_tokens": 22888,
+          "uncached_tokens": 25352,
+          "total_tokens": 278280,
+          "steps": 20,
+          "stopped": "max_steps",
+          "answer": ""
+        }
+      ]
+    }
+  }
+}
