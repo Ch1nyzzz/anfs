@@ -25,7 +25,7 @@ def test_markdown_fragments_indexed_and_outlined(anfs_engine):
     # every fragment is content-addressed
     assert all(row[0].startswith("frag:") for row in frags)
     # byte ranges are well formed and inside the blob
-    for _fid, _kind, _name, _path, start, end in frags:
+    for _fid, _kind, _name, _path, start, end, _parent in frags:
         assert 0 <= start <= end <= len(content)
 
 
@@ -79,7 +79,7 @@ def test_rust_fragments_extract_symbols(anfs_engine):
     assert edge_count == 0
 
     by_kind = {}
-    for _fid, kind, name, _path, start, end in fs.node_fragments(node):
+    for _fid, kind, name, _path, start, end, _parent in fs.node_fragments(node):
         by_kind.setdefault(kind, set()).add(name)
         assert src[start:end]  # span slices to real bytes
 
@@ -265,4 +265,118 @@ def test_call_graph_records_audit_event(anfs_engine):
     _index_chain(fs)
     fs.call_graph("top", "callees", 2, 4, 2000, agent_id="walker", tool_call_id="tc_cg")
     assert len(fs.events(kind="code_call_graph")) == 1
+    assert fs.verify_integrity() == []
+
+
+# ---------------------------------------------------------------------------
+# Unified parser contract: parent_fragment_id containment tree (any parser) +
+# `references` edges from the span parsers (JSON $ref, Markdown links).
+# ---------------------------------------------------------------------------
+
+
+def test_parent_fragment_id_rust_impl_contains_method(anfs_engine):
+    fs = anfs_engine
+    ws = fs.open_workspace("ws:parent_rs", "a")
+    src = (
+        b"impl Point {\n"
+        b"    pub fn norm(&self) -> i64 { self.x + self.y }\n"
+        b"}\n"
+    )
+    node = ws.write("lib.rs", src, [])
+    fs.index_node_fragments(node, "tree-sitter-rust")
+    frags = fs.node_fragments(node)
+    impl = next(r for r in frags if r[1] == "impl")
+    norm = next(r for r in frags if r[2] == "norm")
+    assert norm[6] == impl[0]  # method's parent is the impl block
+    assert impl[6] is None  # top-level item has no parent
+
+
+def test_parent_and_reference_json_ref(anfs_engine):
+    fs = anfs_engine
+    ws = fs.open_workspace("ws:parent_json", "a")
+    src = (
+        b'{"definitions": {'
+        b'"Owner": {"type": "string"}, '
+        b'"Pet": {"owner": {"$ref": "#/definitions/Owner"}}'
+        b'}}'
+    )
+    node = ws.write("schema.json", src, [])
+    _, edge_count = fs.index_node_fragments(node, "span-json")
+    assert edge_count == 1
+
+    by_path = {r[3]: r for r in fs.node_fragments(node)}
+    # containment tree from object nesting
+    assert by_path["$.definitions.Pet.owner"][6] == by_path["$.definitions.Pet"][0]
+    assert by_path["$.definitions.Pet"][6] == by_path["$.definitions"][0]
+
+    # the holder object references the pointed definition
+    callers = fs.fragment_callers("Owner")
+    assert any(r[2] == "owner" for r in callers)  # src_name is the holder field
+    _nodes, edges, _ = fs.call_graph("owner", "callees", 2, 4, 2000)
+    resolved = [e for e in edges if e[2] == "Owner"]
+    assert resolved and resolved[0][3] is not None  # dst resolves to the Owner fragment
+    assert fs.verify_integrity() == []
+
+
+def test_parent_and_reference_markdown_link(anfs_engine):
+    fs = anfs_engine
+    ws = fs.open_workspace("ws:parent_md", "a")
+    src = (
+        b"# Top\n\n"
+        b"intro\n\n"
+        b"## Sub\n\n"
+        b"see [the top](#top) and `[not](a-link)` here\n"
+    )
+    node = ws.write("doc.md", src, [])
+    _, edge_count = fs.index_node_fragments(node, "span-markdown")
+    assert edge_count == 1  # the code-span link is not counted
+
+    frags = fs.node_fragments(node)
+    h1 = next(r for r in frags if r[1] == "h1")
+    h2 = next(r for r in frags if r[1] == "h2")
+    assert h2[6] == h1[0]  # subsection's parent is the section
+    assert h1[6] is None
+
+    callers = fs.fragment_callers("top")
+    assert any(r[0] == h2[0] for r in callers)  # the Sub section references anchor 'top'
+    assert fs.verify_integrity() == []
+
+
+def test_markdown_link_scan_no_panic_on_leading_bracket(anfs_engine):
+    fs = anfs_engine
+    ws = fs.open_workspace("ws:md_edge", "a")
+    # first byte of the document is '[' — the scanner must not index out of bounds
+    node = ws.write("d.md", b"[top](#h)\n\n# H\n\nbody\n", [])
+    fs.index_node_fragments(node, "span-markdown")  # must not panic
+    assert fs.verify_integrity() == []
+
+
+# ---------------------------------------------------------------------------
+# Converged policy span surface: a field policy label slices via the SAME
+# `fragments` table the graph uses (auto-indexing), not a separate re-parse.
+# ---------------------------------------------------------------------------
+
+
+def test_json_field_label_indexes_into_shared_fragments(anfs_engine):
+    fs = anfs_engine
+    ws = fs.open_workspace("ws:conv_json", "a")
+    node = ws.write("d.json", b'{"customer": {"ssn": "123-45-6789"}}', [])
+    assert fs.node_fragments(node) == []  # not indexed yet
+    fs.set_json_field_policy_label(node, "$.customer.ssn", "pii", "true", "policy_agent")
+    paths = {r[3] for r in fs.node_fragments(node)}
+    assert "$.customer.ssn" in paths  # labeling used the shared span-json parser
+    assert fs.verify_integrity() == []
+
+
+def test_markdown_frontmatter_label_indexes_into_shared_fragments(anfs_engine):
+    fs = anfs_engine
+    ws = fs.open_workspace("ws:conv_md", "a")
+    content = b"---\nowner_email: ada@example.com\n---\n\n# Body\n\ntext\n"
+    node = ws.write("d.md", content, [])
+    fs.set_markdown_field_policy_label(
+        node, "frontmatter.owner_email", "pii", "true", "policy_agent"
+    )
+    paths = {r[3] for r in fs.node_fragments(node)}
+    assert "frontmatter.owner_email" in paths  # frontmatter and body are one slice
+    assert any(p.startswith("body.") for p in paths)
     assert fs.verify_integrity() == []

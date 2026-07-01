@@ -366,22 +366,6 @@ pub(crate) fn json_field_spans(
     Ok(spans)
 }
 
-pub(crate) fn json_field_span(
-    conn: &Connection,
-    objects_dir: &Path,
-    node_id: &str,
-    json_path: &str,
-) -> AnfsResult<crate::JsonFieldSpanRow> {
-    json_field_spans(conn, objects_dir, node_id)?
-        .into_iter()
-        .find(|(path, _offset, _length, _kind)| path == json_path)
-        .ok_or_else(|| {
-            AnfsError::PolicyDenied(format!(
-                "json field path {json_path} not found in node {node_id}"
-            ))
-        })
-}
-
 pub(crate) fn markdown_field_spans(
     conn: &Connection,
     objects_dir: &Path,
@@ -416,22 +400,6 @@ pub(crate) fn markdown_field_values(
         .collect()
 }
 
-pub(crate) fn markdown_field_span(
-    conn: &Connection,
-    objects_dir: &Path,
-    node_id: &str,
-    field_path: &str,
-) -> AnfsResult<crate::MarkdownFieldSpanRow> {
-    markdown_field_spans(conn, objects_dir, node_id)?
-        .into_iter()
-        .find(|(path, _offset, _length, _kind)| path == field_path)
-        .ok_or_else(|| {
-            AnfsError::PolicyDenied(format!(
-                "markdown field path {field_path} not found in node {node_id}"
-            ))
-        })
-}
-
 pub(crate) fn markdown_section_spans(
     conn: &Connection,
     objects_dir: &Path,
@@ -444,22 +412,6 @@ pub(crate) fn markdown_section_spans(
         ))
     })?;
     markdown_body_section_spans(text, node_id)
-}
-
-pub(crate) fn markdown_section_span(
-    conn: &Connection,
-    objects_dir: &Path,
-    node_id: &str,
-    section_path: &str,
-) -> AnfsResult<crate::MarkdownSectionSpanRow> {
-    markdown_section_spans(conn, objects_dir, node_id)?
-        .into_iter()
-        .find(|(path, _offset, _length, _kind)| path == section_path)
-        .ok_or_else(|| {
-            AnfsError::PolicyDenied(format!(
-                "markdown section path {section_path} not found in node {node_id}"
-            ))
-        })
 }
 
 fn validate_chunk_size(chunk_size: i64) -> AnfsResult<()> {

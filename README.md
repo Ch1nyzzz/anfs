@@ -25,25 +25,38 @@ why" is reconstructable, not a matter of trust.
   search-as-context …), with immutability triggers and recursive lineage in SQL.
 - **Derived (indexes):** projections rebuilt from canonical state and bound to
   `(blob_hash, parser_version)` so they're verifiable and incrementally
-  rebuildable — FTS, chunk maps, embeddings, and the **code graph**.
+  rebuildable — FTS, chunk maps, embeddings, and the **fragment graph**
+  (structural outlines + typed edges over *any* file, code or not).
 - **Context API:** the token-saving, auditable retrieval surface —
   `search` / `query` / `outline` / `read_range` / `context_pack` / `call_graph`.
 
-## The code graph is a native projection, not a bolt-on
+## Structure is a native projection: one fragment parser system
 
-Because ANFS already stores every file as an immutable node, its code structure
-is just *another derived view of those nodes* — it falls out of the design
-rather than being a separate index glued on:
+Because ANFS already stores every file as an immutable node, structure is just
+*another derived view of those nodes* — it falls out of the design rather than
+being a separate "code graph" glued on. There is **one system, not a code
+feature**:
 
-- A **symbol** is a fragment pointing at a node's byte range — no copied bytes
-  (`node_fragments` → the outline).
-- A **`calls` edge** carries the byte position of the call site as *evidence*
-  (`fragment_callers` → exact, attributed call sites).
+- A **fragment** is a named, kinded byte range pointing into a node — no copied
+  bytes. A code symbol, a Markdown heading, and a JSON field are all fragments;
+  `parent_fragment_id` gives them a subordination tree (`node_fragments` → the
+  outline).
+- An **edge** carries the byte position of the reference site as *evidence*. A
+  `calls` edge (code) and a `references` edge (a Markdown link, a JSON `$ref`)
+  are the same primitive (`fragment_callers` → exact, attributed sites).
 - **`call_graph(seed, direction, depth)`** walks those edges both ways
   (callees = execution flow, callers = blast radius), cycle-safe and
   token-bounded.
-- **`context_pack(seed, budget)`** returns a symbol plus its callers within a
-  token budget.
+- **`context_pack(seed, budget)`** returns a fragment plus what references it,
+  within a token budget.
+
+One **parser per format** is the only format-aware component; everything
+downstream (`outline` / `callers` / `call_graph` / `context_pack` / policy
+labels) is format-blind. Adding a language or a document format = adding a
+parser, nothing else changes. Registered today: `tree-sitter-{rust, python,
+typescript, go, java, swift}` (`calls` edges) and `span-{markdown, json}`
+(structural slices). Full model:
+[`docs/12_unified_fragment_parser_system.md`](docs/12_unified_fragment_parser_system.md).
 
 Two properties come for free from being part of the provenance kernel, and are
 the reason this isn't "just another code index":
@@ -51,18 +64,17 @@ the reason this isn't "just another code index":
 1. **Auditable retrieval.** `context_pack` / `call_graph` record a
    `code_context_query` / `code_call_graph` event with input edges to the exact
    nodes the model saw — so retrieval is replayable, not ephemeral.
-2. **Content-addressed & incremental.** The graph is keyed on `blob_hash`;
-   re-indexing only re-parses changed files, and policy-hidden byte ranges are
-   never surfaced.
+2. **Content-addressed & incremental.** Fragments are keyed on
+   `(blob_hash, parser_version)`; re-indexing only re-parses changed files, and
+   policy-hidden byte ranges are never surfaced.
 
-Six languages today via tree-sitter: Rust, Python, TypeScript, Go, Java, Swift.
-Cross-file name resolution happens at query time over active nodes; nothing
+Cross-node name resolution happens at query time over active nodes; nothing
 probabilistic is written back into the canonical store.
 
 ## How agents integrate
 
 Files are **imported into ANFS as immutable content nodes** (ANFS is the file
-system, not a read-only index beside one). The code graph is a content-hash
+system, not a read-only index beside one). The fragment graph is a content-hash
 derived projection, so it's built once and updated incrementally as files
 change — not re-indexed wholesale. ANFS is a pyo3 library today; an **MCP server
 wrapper** (exposing `outline` / `symbol_search` / `callers` / `call_graph` /
@@ -85,7 +97,7 @@ The killer demo proves the kernel refuses to let a stale test result
 (`artifact:test_result@v1`) approve a newer patch (`artifact:patch@v2`) — a
 lineage violation enforced in Rust, not by convention.
 
-### Index a repo and query its code graph
+### Index a repo and query its fragments
 
 ```python
 import anfs_core
@@ -119,11 +131,13 @@ control it beats:
 - **Compatibility** — agents work on an ordinary materialized worktree at native
   speed; ANFS overhead is a bounded per-session cost.
   (`worktree_cost_benchmark.py`, `coding_agent_compat_benchmark.py`)
-- **Code-graph retrieval** — accuracy & token study below.
+- **Fragment retrieval (code parsers)** — accuracy & token study below.
 
-### Code-graph retrieval, on a public multi-language benchmark
+### Fragment retrieval: the code parsers, on a public multi-language benchmark
 
-To check the native code graph holds up on real, large codebases, we ran it
+This measures one parser family of the fragment system — the `tree-sitter-*`
+parsers and their `calls` edges. To check they hold up on real, large
+codebases, we ran them
 against a public benchmark corpus — 7 OSS repos across 6 languages, one
 architectural question each (the same set the
 [codegraph](https://github.com/colbymchenry/codegraph) project uses, reused here
@@ -181,7 +195,7 @@ snapshots in `docs/benchmark_snapshots/`.
 
 ## Honest limitations
 
-- Code-graph `calls` extraction is AST-without-types: it misses operator-desugared
+- The code parsers' `calls` extraction is AST-without-types: it misses operator-desugared
   calls, macro-internal calls, and dynamic dispatch — so recall trails `grep` on
   macro/dynamic-heavy languages. Precision and auditability do not have this issue.
 - No MCP server yet (pyo3 library only).

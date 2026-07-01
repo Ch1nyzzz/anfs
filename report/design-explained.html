@@ -128,7 +128,7 @@
 <aside class="toc">
   <div class="brand">ANFS<small>设计详解 / Design Explained</small></div>
   <nav>
-    <a href="index.html" style="color:var(--amber,#e8b339)">← 内核设计与验证报告（含代码图实验）</a>
+    <a href="index.html" style="color:var(--amber,#e8b339)">← 内核设计与验证报告（含 fragment 检索实验）</a>
     <div class="grp">起点</div>
     <a href="#intro">导言 · 一句话定义</a>
     <a href="#why">01 · 为什么传统 FS 不够</a>
@@ -147,7 +147,7 @@
     <a href="#policy">11 · 字节级权限</a>
     <div class="grp">协作与时间</div>
     <a href="#workspace">12 · 工作区与合并</a>
-    <a href="#codegraph">13 · 代码图省 token</a>
+    <a href="#codegraph">13 · fragment 系统省 token</a>
     <a href="#replay">14 · Replay 时间回放</a>
     <a href="#worktree">15 · Worktree 双向同步</a>
     <div class="grp">健壮与总结</div>
@@ -554,9 +554,9 @@ ANFS:   <b>ref</b> ──► <b>node</b> ──► <b>blob</b>                  
 <p>非冲突的改动可以原子合并；冲突被明确报出而不是悄悄覆盖。整个 event_sequence 提供全序，让并发也有确定的审计与回放。</p>
 
 <!-- ============================================================ -->
-<h2 id="codegraph"><span class="n">13</span>代码图：原生理解结构、省 token</h2>
+<h2 id="codegraph"><span class="n">13</span>fragment parser 系统：原生理解结构、省 token</h2>
 
-<p>这是把"agent 省 token"做成 ANFS 一等能力的一层——不是外挂 codegraph，而是把代码当作 node 字节的<strong>派生投影</strong>：用 parser 把文件解析成 <em>fragment</em>（命名的字节范围 = symbol）和 <em>edge</em>（calls / imports），存进通用表，绑 <code>(node_id, blob_hash, parser, parser_version)</code> 保证可重建。<strong>加一门语言 = 加一个 parser，别处不动</strong>（已接 Markdown / JSON / tree-sitter Rust）。</p>
+<p>ANFS 里<strong>没有"代码图"这个独立功能</strong>——只有一个 fragment parser 系统，代码只是"parser 恰好是 tree-sitter、edge 恰好是 calls"的那个实例。把<strong>任何</strong>文件当作 node 字节的<strong>派生投影</strong>：一个 parser 把文件解析成 <em>fragment</em>（命名的字节范围——代码 symbol、Markdown 标题、JSON 字段都是它，<code>parent_fragment_id</code> 给出从属层级）和 <em>edge</em>（calls / references，带调用/引用点字节证据），存进通用表，绑 <code>(node_id, blob_hash, parser, parser_version)</code> 保证可重建。<strong>加一门语言或一种文档格式 = 加一个 parser，下游 outline / callers / call_graph / context_pack / 策略全部 format-blind、一行不改</strong>（已注册 <code>tree-sitter-{rust,python,ts,go,java,swift}</code> 与 <code>span-{markdown,json}</code>；完整模型见 <code>docs/12_unified_fragment_parser_system.md</code>）。</p>
 
 <table>
   <thead><tr><th>能力</th><th>API</th><th>替代了什么烧 token 的做法</th></tr></thead>
@@ -622,7 +622,7 @@ ANFS:   <b>ref</b> ──► <b>node</b> ──► <b>blob</b>                  
 <span class="n">28</span>   <span class="f">check_blobs</span>(…)?;                     <span class="c">// blob hash / size 匹配，文件存在</span>
 <span class="n">29</span>   <span class="f">check_chunk_indexes</span>(…)?;            <span class="c">// 分块索引一致</span>
 <span class="n">31</span>   <span class="f">check_fts</span>(…)?;  <span class="f">check_embeddings</span>(…)?; <span class="c">// 派生索引一致</span>
-<span class="n">32</span>   <span class="f">check_fragments</span>(…)?;             <span class="c">// 代码图 fragment/edge 绑 blob_hash 不 stale</span>
+<span class="n">32</span>   <span class="f">check_fragments</span>(…)?;             <span class="c">// fragment/edge 绑 blob_hash 不 stale</span>
 <span class="n">33</span>   <span class="f">check_chunked_nodes</span>(…)?;         <span class="c">// 分块节点的 chunk blob 都存在</span>
 <span class="n">35</span>   <span class="f">check_ref_event_linkage</span>(…)?;        <span class="c">// ref 事件指向正确的 node</span>
 <span class="n">40</span>   <span class="f">check_policy_labels</span>(…)?;            <span class="c">// 策略边引用的 ref/node 存在</span>
@@ -670,19 +670,19 @@ ANFS:   <b>ref</b> ──► <b>node</b> ──► <b>blob</b>                  
 <div class="axis">
   <div class="a"><div class="h">方便 Agent</div><div class="d">接口永远是 read/write/ls/grep/find，底层复杂度对模型透明（§01、§17）。</div></div>
   <div class="a"><div class="h">可溯源</div><div class="d">事实不可变 + 事件 + 血缘边 + 检索即事件 + 回放（§05–09、§14）。</div></div>
-  <div class="a"><div class="h">更省 token</div><div class="d">内容寻址去重 + 代码图 outline/callers/context_pack 只取必要片段 + token 记账（§04、§09、§13）。</div></div>
+  <div class="a"><div class="h">更省 token</div><div class="d">内容寻址去重 + fragment 系统 outline/callers/context_pack 只取必要片段 + token 记账（§04、§09、§13）。</div></div>
   <div class="a"><div class="h">Robust</div><div class="d">派生层可重建、绑哈希、不污染事实 + 27 项不变量自检（§10、§16）。</div></div>
   <div class="a"><div class="h">结构清晰</div><div class="d">canonical / derived / context 三层分明，适配器保守守边界（§02、§15）。</div></div>
 </div>
 
-<h3>代码图已落地（见 §13），真正的后续</h3>
+<h3>fragment 系统已落地（见 §13），真正的后续</h3>
 <p>"用派生投影把代码变成可省 token 的结构图"已经实现并合并进 main：统一 fragment/edge 表、tree-sitter Rust、<code>context_pack</code> 实测省 86% token、<code>code_context_query</code> 审计事件。还在路上的是：</p>
 <ul>
   <li><strong>内容定义分块（CDC）</strong>：当前大文件分块是定长，对"文件开头插入"不鲁棒；CDC 让插入也能复用未变 chunk；</li>
   <li><strong>更多语言 parser</strong> + 按 media_type 自动选 parser（目前由调用方显式选）；</li>
   <li><strong>workspace 隔离</strong>：在"一次性 session 工作区"模型下，owner 绑定被有意搁置（没有别的 agent 需要拦，是伪问题）；<code>fork_workspace</code> 已作为死概念移除，kernel 回到最小通用模型。</li>
 </ul>
-<p>一句话：<strong>普通 codegraph 只省 token；ANFS-native 代码图在省 token 的同时保留审计、血缘与权限</strong>——这已经是 main 上的现实，不再是设想。</p>
+<p>一句话：<strong>普通 codegraph 只省 token；ANFS 的 fragment 系统在省 token 的同时保留审计、血缘与权限</strong>，而且这套省 token 的机制对代码、Markdown、JSON 是同一套——这已经是 main 上的现实，不再是设想。</p>
 
 <!-- ============================================================ -->
 <h2 id="glossary"><span class="n">19</span>术语表</h2>

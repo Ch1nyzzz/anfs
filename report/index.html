@@ -180,8 +180,8 @@
     <div class="row"><div class="k">CORE</div><div class="v">Rust + SQLite + PyO3 · 本地优先语义内核</div></div>
     <div class="row"><div class="k">KERNEL SIZE</div><div class="v"><b>28,240</b> 行 / 28 模块</div></div>
     <div class="row"><div class="k">VERIFICATION</div><div class="v"><b>167</b> 测试全过 · 每场景 verify_integrity()==[]</div></div>
-    <div class="row"><div class="k">CODE GRAPH</div><div class="v">tree-sitter <b>6 语言</b>（Rust·Python·TS·Go·Java·Swift）· callers / call_graph / context_pack</div></div>
-    <div class="row"><div class="k">PROVEN</div><div class="v">C1 防泄漏 · C2 并发 · C3 溯源 · C4 兼容性 · <b>C5 代码图（7 repo 对照编译器 oracle）</b></div></div>
+    <div class="row"><div class="k">FRAGMENTS</div><div class="v">一个 parser 系统：<code>span-{markdown,json}</code> + tree-sitter <b>6 语言</b>（Rust·Python·TS·Go·Java·Swift）· callers / call_graph / context_pack</div></div>
+    <div class="row"><div class="k">PROVEN</div><div class="v">C1 防泄漏 · C2 并发 · C3 溯源 · C4 兼容性 · <b>C5 fragment 检索：代码 parser（7 repo 对照编译器 oracle）</b></div></div>
   </div>
 </div></header>
 
@@ -494,11 +494,11 @@ if exists("patch.diff"): consume()<br>
   </div>
 </div></section>
 
-<!-- ============ CODE-GRAPH STUDY ============ -->
+<!-- ============ FRAGMENT-RETRIEVAL STUDY ============ -->
 <section><div class="wrap">
-  <div class="sec-no">§10 · Code-Graph Study</div>
-  <h2 class="title">原生代码图：在公开多语言基准上对照编译器 oracle 验证</h2>
-  <p class="sub">代码图是 ANFS 从不可变 node 派生出的<b>原生投影</b>（symbol=指向字节范围的 fragment，calls 边带调用点证据，<span class="mono">call_graph</span>/<span class="mono">context_pack</span> 落审计事件）。为验证它在真实大仓上成立，跑一个公开基准——7 个开源仓库、6 语言、每仓一道架构题（即 <span class="mono">codegraph</span> 用的那套，这里只当中立共享测试集借用）。把"哪些位置调用了符号 X"用 <b class="g">ANFS callers/call_graph（一次查询）</b> 对比<b>无工具 agent 的 grep</b>，双方都对<b>各语言编译器级 oracle</b> 打分（rust-analyzer · scip-python · scip-typescript · scip-go · scip-java；Swift 无 SCIP 索引器，用 sourcekit-lsp 自建）。不挑题、不自己定对错。</p>
+  <div class="sec-no">§10 · Fragment Retrieval Study（代码 parser）</div>
+  <h2 class="title">fragment 系统的代码 parser：在公开多语言基准上对照编译器 oracle 验证</h2>
+  <p class="sub">这里验证 fragment 系统的<b>一个 parser 家族</b>——tree-sitter 代码 parser 及其 calls 边（symbol=指向字节范围的 fragment，calls 边带调用点证据，<span class="mono">call_graph</span>/<span class="mono">context_pack</span> 落审计事件；同一套下游对 Markdown/JSON 也成立）。为验证它在真实大仓上成立，跑一个公开基准——7 个开源仓库、6 语言、每仓一道架构题（即 <span class="mono">codegraph</span> 用的那套，这里只当中立共享测试集借用）。把"哪些位置调用了符号 X"用 <b class="g">ANFS callers/call_graph（一次查询）</b> 对比<b>无工具 agent 的 grep</b>，双方都对<b>各语言编译器级 oracle</b> 打分（rust-analyzer · scip-python · scip-typescript · scip-go · scip-java；Swift 无 SCIP 索引器，用 sourcekit-lsp 自建）。不挑题、不自己定对错。</p>
 
   <h3 class="disp" style="font-size:1.25rem;margin:34px 0 8px">准确性（对编译器 oracle，确定性，无 LLM）</h3>
   <table style="width:100%;border-collapse:collapse;font-size:.86rem;font-family:var(--mono)">
@@ -567,7 +567,7 @@ python benchmarks/concurrency_real_benchmark.py        <span class="c"># §01 §
 python benchmarks/provenance_benchmark.py              <span class="c"># §02 §06  闭包 100% vs git 0%</span>
 python benchmarks/worktree_cost_benchmark.py           <span class="c"># C4  边界 vs 内循环代价</span>
 
-<span class="c"># 代码图研究：7 repo 对照编译器 oracle（§10）</span>
+<span class="c"># fragment 检索研究：7 repo 对照编译器 oracle（§10）</span>
 python benchmarks/structural_accuracy_benchmark.py --repo gin --root &lt;repo&gt; --scip &lt;index.scip&gt;
 python benchmarks/token_efficiency_benchmark.py   --repo gin --root &lt;repo&gt;     <span class="c"># token 对比</span>
 python benchmarks/aggregate_report.py                  <span class="c"># 汇总双表</span>
@@ -579,7 +579,7 @@ python benchmarks/coding_agent_compat_benchmark.py     <span class="c"># C4  5/5
 
 <footer><div class="wrap">
   ANFS · Agent-Native File System —— 内核设计与验证报告。<br>
-  内核契约 docs/06 · 复杂度审计 docs/09 · 代码图研究 §10（structural_accuracy / token_efficiency / aggregate_report）· benchmark 快照 docs/benchmark_snapshots/
+  内核契约 docs/06 · 复杂度审计 docs/09 · fragment 检索研究 §10（structural_accuracy / token_efficiency / aggregate_report）· benchmark 快照 docs/benchmark_snapshots/
 </div></footer>
 
 </body>

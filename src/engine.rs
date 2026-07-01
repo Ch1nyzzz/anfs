@@ -21,16 +21,17 @@ use crate::{
     DerivedIndexRepairResult, ensure_node_exists, event_list, event_record, EventListRow,
     EventRecord, export_event_bundle, export_history_archive, export_run_bundle,
     ExportBundleResult, fetch_ref, fetch_run, finish_run, call_graph, context_pack,
-    fragment_callers, fragment_policy_labels, CallGraphEdgeRow, CallGraphNodeRow, CallerRow,
+    fragment_callers, fragment_policy_labels, fragment_span_by_path,
+    CallGraphEdgeRow, CallGraphNodeRow, CallerRow,
     ContextItemRow, FragmentPolicyLabelRow, FragmentRow,
     gc_candidates, gc_pins, gc_roots, GcPinRow, index_node_fragments, node_fragments,
     GcResultRow, import_event_bundle, ImportBundleResult, infer_ref_kind, init_db,
     InlineBlobCompactionResult, insert_edge, insert_event, insert_merge_policy_decision_event,
-    insert_new_ref, insert_policy_decision_event, json_field_span, json_field_spans,
+    insert_new_ref, insert_policy_decision_event, json_field_spans,
     JsonFieldSpanRow, lineage_ancestors, lineage_evidence_covers_target, lineage_graph,
     lineage_nodes, LineageGraphRow, lock_conn, manifest_child_records, manifest_children,
-    ManifestChildRecord, markdown_field_span, markdown_field_spans, markdown_field_values,
-    markdown_section_span, markdown_section_spans, MarkdownFieldSpanRow, MarkdownFieldValueRow,
+    ManifestChildRecord, markdown_field_spans, markdown_field_values,
+    markdown_section_spans, MarkdownFieldSpanRow, MarkdownFieldValueRow,
     MarkdownSectionSpanRow, materialize_blob_file, materialize_ref_view_at_event,
     materialize_workspace, MaterializedViewRow, merge_target_prefix_for_base, new_event_id,
     node_chunk_embedding, node_chunks, node_embedding, node_event_list, NodeChunkRow,
@@ -2597,8 +2598,8 @@ impl AnfsEngine {
         tool_call_id: Option<String>,
     ) -> AnfsResult<()> {
         let mut conn = lock_conn(&self.inner)?;
-        let (_path, offset, length, _kind) =
-            json_field_span(&conn, &self.inner.objects_dir, node_id, json_path)?;
+        let (offset, length) =
+            fragment_span_by_path(&mut conn, &self.inner.objects_dir, node_id, "span-json", json_path)?;
         set_fragment_policy_label(
             &mut conn,
             node_id,
@@ -2623,8 +2624,13 @@ impl AnfsEngine {
         tool_call_id: Option<String>,
     ) -> AnfsResult<()> {
         let mut conn = lock_conn(&self.inner)?;
-        let (_path, offset, length, _kind) =
-            markdown_field_span(&conn, &self.inner.objects_dir, node_id, field_path)?;
+        let (offset, length) = fragment_span_by_path(
+            &mut conn,
+            &self.inner.objects_dir,
+            node_id,
+            "span-markdown",
+            field_path,
+        )?;
         set_fragment_policy_label(
             &mut conn,
             node_id,
@@ -2649,8 +2655,13 @@ impl AnfsEngine {
         tool_call_id: Option<String>,
     ) -> AnfsResult<()> {
         let mut conn = lock_conn(&self.inner)?;
-        let (_path, offset, length, _kind) =
-            markdown_section_span(&conn, &self.inner.objects_dir, node_id, section_path)?;
+        let (offset, length) = fragment_span_by_path(
+            &mut conn,
+            &self.inner.objects_dir,
+            node_id,
+            "span-markdown",
+            section_path,
+        )?;
         set_fragment_policy_label(
             &mut conn,
             node_id,

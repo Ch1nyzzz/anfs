@@ -12,7 +12,9 @@ use std::path::Path;
 use rusqlite::{params, Connection, OptionalExtension};
 
 use crate::events::{insert_edge, insert_event};
-use crate::manifest::{json_field_spans, markdown_section_spans, read_node_bytes};
+use crate::manifest::{
+    json_field_spans, markdown_field_spans, markdown_section_spans, read_node_bytes,
+};
 use crate::visibility::node_range_hidden;
 use crate::{new_event_id, now_millis, sha256_hex, AnfsError, AnfsResult};
 
@@ -27,8 +29,9 @@ type SpanRow = (String, i64, i64, String);
 /// resolution to the candidate set happens at query time, never written back.
 type EdgeRow = (String, i64, i64, String, String, i64, i64);
 
-/// (fragment_id, kind, name, path, byte_start, byte_end) — outline row.
-pub(crate) type FragmentRow = (String, String, Option<String>, String, i64, i64);
+/// (fragment_id, kind, name, path, byte_start, byte_end, parent_fragment_id) —
+/// outline row; `parent_fragment_id` gives the containment tree.
+pub(crate) type FragmentRow = (String, String, Option<String>, String, i64, i64, Option<String>);
 
 /// (src_fragment_id, src_kind, src_name, src_node_id, evidence_start, evidence_end).
 pub(crate) type CallerRow = (String, String, Option<String>, String, i64, i64);
@@ -71,8 +74,27 @@ fn run_parser(
     parser: &str,
 ) -> AnfsResult<(Vec<SpanRow>, Vec<EdgeRow>)> {
     match parser {
-        "span-markdown" => Ok((markdown_section_spans(conn, objects_dir, node_id)?, Vec::new())),
-        "span-json" => Ok((json_field_spans(conn, objects_dir, node_id)?, Vec::new())),
+        "span-markdown" => {
+            // One Markdown slice: frontmatter fields + body sections/blocks, in
+            // the same `fragments` table policy reads from. Each family errors
+            // when its region is absent; a doc needs at least one.
+            let mut spans = markdown_field_spans(conn, objects_dir, node_id).unwrap_or_default();
+            spans.extend(markdown_section_spans(conn, objects_dir, node_id).unwrap_or_default());
+            if spans.is_empty() {
+                return Err(AnfsError::PolicyDenied(format!(
+                    "node {node_id} has no Markdown frontmatter fields or body blocks"
+                )));
+            }
+            let bytes = read_node_bytes(conn, objects_dir, node_id)?;
+            let edges = markdown_reference_edges(&spans, &bytes);
+            Ok((spans, edges))
+        }
+        "span-json" => {
+            let spans = json_field_spans(conn, objects_dir, node_id)?;
+            let bytes = read_node_bytes(conn, objects_dir, node_id)?;
+            let edges = json_reference_edges(&spans, &bytes);
+            Ok((spans, edges))
+        }
         "tree-sitter-rust" => {
             let bytes = read_node_bytes(conn, objects_dir, node_id)?;
             let text = std::str::from_utf8(&bytes).map_err(|err| {
@@ -117,6 +139,221 @@ fn parser_language(parser: &str) -> Option<&'static str> {
         "tree-sitter-swift" => Some("swift"),
         _ => None,
     }
+}
+
+/// `references` edges for JSON: a `$ref` string value points at the last segment
+/// of its pointer (`"#/definitions/Owner"` -> `Owner`). The *holder* object (the
+/// field carrying the `$ref`) is the source, so `callees("owner")` reaches
+/// `Owner`; the pointer string bytes are the evidence. Reuses the field spans
+/// already computed — no re-parse. Conservative: only string `$ref` keys whose
+/// holder is a named span.
+fn json_reference_edges(spans: &[SpanRow], bytes: &[u8]) -> Vec<EdgeRow> {
+    let mut edges = Vec::new();
+    for (path, offset, length, kind) in spans {
+        let holder_path = match (kind == "string").then(|| path.strip_suffix(".[\"$ref\"]")).flatten()
+        {
+            Some(holder) => holder,
+            None => continue,
+        };
+        let holder = match spans.iter().find(|(p, _, _, _)| p == holder_path) {
+            Some((p, off, len, _)) => (p, *off, *off + *len),
+            None => continue,
+        };
+        let (start, end) = (*offset, *offset + *length);
+        let raw = match bytes
+            .get(start as usize..end as usize)
+            .and_then(|b| std::str::from_utf8(b).ok())
+        {
+            Some(text) => text.trim().trim_matches('"'),
+            None => continue,
+        };
+        let target = raw.rsplit('/').next().unwrap_or(raw);
+        if target.is_empty() {
+            continue;
+        }
+        edges.push((
+            holder.0.clone(),
+            holder.1,
+            holder.2,
+            "references".to_string(),
+            target.to_string(),
+            start,
+            end,
+        ));
+    }
+    edges
+}
+
+fn is_heading_kind(kind: &str) -> bool {
+    let bytes = kind.as_bytes();
+    bytes.len() == 2 && bytes[0] == b'h' && bytes[1].is_ascii_digit()
+}
+
+/// The tightest heading span whose byte range covers `pos`, or None when the
+/// position sits above the first heading.
+fn enclosing_heading<'a>(headings: &[&'a SpanRow], pos: i64) -> Option<&'a SpanRow> {
+    let mut best: Option<&SpanRow> = None;
+    for heading in headings {
+        let (start, end) = (heading.1, heading.1 + heading.2);
+        if start <= pos && pos < end && best.map_or(true, |b| heading.2 < b.2) {
+            best = Some(heading);
+        }
+    }
+    best
+}
+
+/// `references` edges for Markdown: each inline `[text](dest)` link is an edge
+/// from its enclosing heading section to the destination (anchor `#name` -> the
+/// section it targets; otherwise the raw destination as an external name). The
+/// whole `[..](..)` span is the evidence. Fenced code and images are skipped.
+fn markdown_reference_edges(spans: &[SpanRow], bytes: &[u8]) -> Vec<EdgeRow> {
+    let headings: Vec<&SpanRow> = spans.iter().filter(|s| is_heading_kind(&s.3)).collect();
+    let mut edges = Vec::new();
+    for (dst_name, ev_start, ev_end) in scan_markdown_links(bytes) {
+        if let Some(section) = enclosing_heading(&headings, ev_start as i64) {
+            edges.push((
+                section.0.clone(),
+                section.1,
+                section.1 + section.2,
+                "references".to_string(),
+                dst_name,
+                ev_start as i64,
+                ev_end as i64,
+            ));
+        }
+    }
+    edges
+}
+
+/// Destination -> a resolvable name: `#anchor` yields the anchor, everything
+/// else yields the first whitespace-delimited token (URL/path), stripped of
+/// angle brackets and any trailing link title.
+fn link_dest_name(dest: &str) -> String {
+    let token = dest.split_whitespace().next().unwrap_or(dest);
+    let token = token.trim_start_matches('<').trim_end_matches('>');
+    token.strip_prefix('#').unwrap_or(token).to_string()
+}
+
+/// Conservative inline-link scan: line-based, skips fenced code blocks, and for
+/// each unescaped `[text](dest)` (not an `![image]`) records
+/// `(dest_name, link_start, link_end)`. Destinations end at the first `)`.
+fn scan_markdown_links(bytes: &[u8]) -> Vec<(String, usize, usize)> {
+    let mut out = Vec::new();
+    let mut in_fence = false;
+    let mut line_start = 0usize;
+    let n = bytes.len();
+    let mut i = 0usize;
+    while i <= n {
+        if i == n || bytes[i] == b'\n' {
+            let line = &bytes[line_start..i];
+            let indent = line.iter().take_while(|b| **b == b' ' || **b == b'\t').count();
+            let trimmed = &line[indent..];
+            if indent <= 3 && (trimmed.starts_with(b"```") || trimmed.starts_with(b"~~~")) {
+                in_fence = !in_fence;
+            } else if !in_fence {
+                scan_line_links(bytes, line_start, i, &mut out);
+            }
+            line_start = i + 1;
+        }
+        i += 1;
+    }
+    out
+}
+
+fn scan_line_links(bytes: &[u8], start: usize, end: usize, out: &mut Vec<(String, usize, usize)>) {
+    let mut i = start;
+    while i < end {
+        match bytes[i] {
+            // Skip an inline code span so its contents can't look like a link.
+            b'`' => {
+                let run = bytes[i..end].iter().take_while(|b| **b == b'`').count();
+                let mut j = i + run;
+                while j + run <= end {
+                    if bytes[j] == b'`' && bytes[j..].iter().take_while(|b| **b == b'`').count() == run {
+                        break;
+                    }
+                    j += 1;
+                }
+                i = (j + run).min(end);
+            }
+            b'[' if i == start || bytes[i - 1] != b'\\' => {
+                // An image `![alt](src)` is not a link edge.
+                if i > start && bytes[i - 1] == b'!' {
+                    i += 1;
+                    continue;
+                }
+                if let Some(link_end) = parse_inline_link(bytes, i, end, out) {
+                    i = link_end;
+                    continue;
+                }
+                i += 1;
+            }
+            _ => i += 1,
+        }
+    }
+}
+
+/// Parse `[text](dest)` starting at `open` (`bytes[open] == b'['`). On success
+/// pushes `(dest_name, open, close+1)` and returns the byte after `)`.
+fn parse_inline_link(
+    bytes: &[u8],
+    open: usize,
+    end: usize,
+    out: &mut Vec<(String, usize, usize)>,
+) -> Option<usize> {
+    let text_close = bytes[open + 1..end].iter().position(|b| *b == b']')? + open + 1;
+    if bytes.get(text_close + 1) != Some(&b'(') {
+        return None;
+    }
+    let dest_start = text_close + 2;
+    let dest_close = bytes[dest_start..end].iter().position(|b| *b == b')')? + dest_start;
+    let dest = std::str::from_utf8(&bytes[dest_start..dest_close]).ok()?.trim();
+    let name = link_dest_name(dest);
+    if !name.is_empty() {
+        out.push((name, open, dest_close + 1));
+    }
+    Some(dest_close + 1)
+}
+
+/// The parent of each span: the tightest *strictly* larger span that contains
+/// it, by byte range. Format-agnostic — code impl/method, JSON object/field,
+/// Markdown section/subsection all nest, so containment is the one rule. Equal
+/// ranges never nest (avoids self/cycles); ties break deterministically.
+fn derive_parents(blob_hash: &str, parser: &str, spans: &[SpanRow]) -> Vec<Option<String>> {
+    let ranges: Vec<(i64, i64)> = spans.iter().map(|(_, off, len, _)| (*off, *off + *len)).collect();
+    let ids: Vec<String> = spans
+        .iter()
+        .map(|(path, off, len, _)| fragment_id(blob_hash, parser, path, *off, *off + *len))
+        .collect();
+    (0..spans.len())
+        .map(|i| {
+            let (fs, fe) = ranges[i];
+            let fw = fe - fs;
+            let mut best: Option<usize> = None;
+            for j in 0..spans.len() {
+                if i == j {
+                    continue;
+                }
+                let (ps, pe) = ranges[j];
+                if ps <= fs && pe >= fe && (pe - ps) > fw && better_parent(&ranges, &ids, j, best) {
+                    best = Some(j);
+                }
+            }
+            best.map(|b| ids[b].clone())
+        })
+        .collect()
+}
+
+/// Prefer the tighter (smaller-width) container; on equal width prefer the later
+/// start, then the earlier end, then the smaller id — total and deterministic.
+fn better_parent(ranges: &[(i64, i64)], ids: &[String], cand: usize, best: Option<usize>) -> bool {
+    let best = match best {
+        None => return true,
+        Some(b) => b,
+    };
+    let (cs, ce) = ranges[cand];
+    let (bs, be) = ranges[best];
+    (ce - cs, bs, be, &ids[best]) < (be - bs, cs, ce, &ids[cand])
 }
 
 /// Extract top-level (and impl/trait/mod member) Rust symbols as fragments.
@@ -623,8 +860,9 @@ pub(crate) fn index_node_fragments(
         params![node_id, parser],
     )?;
 
+    let parents = derive_parents(&blob_hash, parser, &spans);
     let mut fragment_count = 0i64;
-    for (path, offset, length, kind) in &spans {
+    for ((path, offset, length, kind), parent) in spans.iter().zip(&parents) {
         let start = *offset;
         let end = *offset + *length;
         let fragment_id = fragment_id(&blob_hash, parser, path, start, end);
@@ -633,7 +871,7 @@ pub(crate) fn index_node_fragments(
             "INSERT OR REPLACE INTO fragments
              (fragment_id, node_id, blob_hash, parser, parser_version,
               kind, name, path, byte_start, byte_end, parent_fragment_id)
-             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, NULL)",
+             VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)",
             params![
                 fragment_id,
                 node_id,
@@ -644,7 +882,8 @@ pub(crate) fn index_node_fragments(
                 name,
                 path,
                 start,
-                end
+                end,
+                parent
             ],
         )?;
         fragment_count += 1;
@@ -702,7 +941,7 @@ pub(crate) fn fragment_callers(conn: &Connection, name: &str) -> AnfsResult<Vec<
         "SELECT f.fragment_id, f.kind, f.name, f.node_id, e.evidence_start, e.evidence_end
          FROM fragment_edges e
          JOIN fragments f ON f.fragment_id = e.src_fragment_id
-         WHERE e.edge_kind = 'calls' AND e.dst_name = ?1
+         WHERE e.dst_name = ?1
          ORDER BY f.node_id, e.evidence_start",
     )?;
     let rows = stmt.query_map(params![name], |row| {
@@ -894,7 +1133,8 @@ fn fragment_by_id(conn: &Connection, fragment_id: &str) -> AnfsResult<Option<Def
         .optional()?)
 }
 
-/// Outgoing `calls` edges of a fragment: `(dst_name, evidence_node_id, start, end)`.
+/// Outgoing reference edges of a fragment (`calls` for code, `references` for
+/// docs/data): `(dst_name, evidence_node_id, start, end)`.
 fn fragment_callees(
     conn: &Connection,
     src_fragment_id: &str,
@@ -902,7 +1142,7 @@ fn fragment_callees(
     let mut stmt = conn.prepare(
         "SELECT dst_name, evidence_node_id, evidence_start, evidence_end
          FROM fragment_edges
-         WHERE src_fragment_id = ?1 AND edge_kind = 'calls'
+         WHERE src_fragment_id = ?1
          ORDER BY evidence_start",
     )?;
     let rows = stmt.query_map(params![src_fragment_id], |row| {
@@ -1108,10 +1348,40 @@ pub(crate) fn call_graph(
     Ok((nodes, edges, tokens))
 }
 
+/// Byte range `(offset, length)` of the fragment at `path` for `parser`,
+/// indexing the node on demand (idempotent) so a field is sliced once — by the
+/// parser into `fragments` — and policy labels ride that same canonical slice
+/// instead of re-parsing the file per label.
+pub(crate) fn fragment_span_by_path(
+    conn: &mut Connection,
+    objects_dir: &Path,
+    node_id: &str,
+    parser: &str,
+    path: &str,
+) -> AnfsResult<(i64, i64)> {
+    index_node_fragments(conn, objects_dir, node_id, parser)?;
+    conn.query_row(
+        "SELECT byte_start, byte_end FROM fragments
+         WHERE node_id = ?1 AND parser = ?2 AND path = ?3",
+        params![node_id, parser, path],
+        |row| {
+            let start: i64 = row.get(0)?;
+            let end: i64 = row.get(1)?;
+            Ok((start, end - start))
+        },
+    )
+    .optional()?
+    .ok_or_else(|| {
+        AnfsError::PolicyDenied(format!(
+            "fragment path {path} not found in node {node_id} ({parser})"
+        ))
+    })
+}
+
 /// Outline of a node: its fragments ordered by byte position.
 pub(crate) fn node_fragments(conn: &Connection, node_id: &str) -> AnfsResult<Vec<FragmentRow>> {
     let mut stmt = conn.prepare(
-        "SELECT fragment_id, kind, name, path, byte_start, byte_end
+        "SELECT fragment_id, kind, name, path, byte_start, byte_end, parent_fragment_id
          FROM fragments WHERE node_id = ?1
          ORDER BY byte_start, byte_end",
     )?;
@@ -1123,6 +1393,7 @@ pub(crate) fn node_fragments(conn: &Connection, node_id: &str) -> AnfsResult<Vec
             row.get(3)?,
             row.get(4)?,
             row.get(5)?,
+            row.get(6)?,
         ))
     })?;
     let mut out = Vec::new();
